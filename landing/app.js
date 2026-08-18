@@ -190,9 +190,12 @@ function initCategoryTabs() {
    Modal State Machine, Isolated Iframe Runner & Focus Trapping
    ========================================================================== */
 
+let lastFocusedElement = null;
+
 const modalState = {
   isOpen: false,
   triggerElement: null,
+  lastFocusedElement: null,
   activeRoute: '',
   activeTitle: '',
   viewportMode: 'desktop'
@@ -213,7 +216,8 @@ function getFocusableElements(container) {
   return Array.from(container.querySelectorAll(FOCUSABLE_ELEMENTS_SELECTOR)).filter(el => {
     return !el.hasAttribute('disabled') &&
            el.getAttribute('aria-hidden') !== 'true' &&
-           (el.offsetWidth > 0 || el.offsetHeight > 0 || el === document.getElementById('modal-iframe') || el.getClientRects().length > 0);
+           !el.hasAttribute('hidden') &&
+           (el.offsetWidth > 0 || el.offsetHeight > 0 || el === document.getElementById('modal-iframe') || (typeof el.getClientRects === 'function' && el.getClientRects().length > 0) || el.tabIndex >= 0);
   });
 }
 
@@ -286,13 +290,6 @@ function openModal(title, route, triggerEl = null) {
   const modal = document.getElementById('preview-modal');
   if (!modal) return;
 
-  // Save triggering element for focus restoration
-  modalState.triggerElement = triggerEl || document.activeElement;
-  modalState.activeTitle = title || 'Project Preview';
-
-  // Reset viewport to desktop on new preview open
-  setPreviewViewport('desktop');
-
   // Normalize route with trailing slash
   let formattedRoute = route || '/';
   if (!formattedRoute.startsWith('/') && !formattedRoute.startsWith('http')) {
@@ -301,8 +298,28 @@ function openModal(title, route, triggerEl = null) {
   if (!formattedRoute.endsWith('/') && !formattedRoute.includes('.') && !formattedRoute.includes('?')) {
     formattedRoute = formattedRoute + '/';
   }
+
+  // Reliably capture lastFocusedElement for accessibility focus restoration
+  let targetTrigger = triggerEl;
+  if (!targetTrigger) {
+    if (document.activeElement && document.activeElement !== document.body && document.activeElement !== document.documentElement) {
+      targetTrigger = document.activeElement;
+    } else {
+      targetTrigger = document.querySelector(`.btn-quick-view[data-route="${formattedRoute}"]`) ||
+                      document.querySelector(`.btn-quick-view[data-slug="${formattedRoute.replace(/\//g, '')}"]`) ||
+                      document.querySelector(`.card[data-slug] .btn-quick-view`) || null;
+    }
+  }
+
+  lastFocusedElement = targetTrigger;
+  modalState.triggerElement = targetTrigger;
+  modalState.lastFocusedElement = targetTrigger;
+  modalState.activeTitle = title || 'Project Preview';
   modalState.activeRoute = formattedRoute;
   modalState.isOpen = true;
+
+  // Reset viewport to desktop on new preview open
+  setPreviewViewport('desktop');
 
   // Update modal title and route
   const titleEl = document.getElementById('modal-project-title');
@@ -380,25 +397,43 @@ function closeModal() {
     }
   }, 200);
 
-  // Restore keyboard focus to saved trigger element
-  const trigger = modalState.triggerElement;
-  if (trigger && typeof trigger.focus === 'function') {
+  // Restore keyboard focus context to originating element with robust fallbacks
+  const targetToFocus = lastFocusedElement || modalState.triggerElement || modalState.lastFocusedElement;
+  if (targetToFocus && typeof targetToFocus.focus === 'function') {
     try {
-      trigger.focus();
-    } catch (_) {}
+      if (typeof targetToFocus.isConnected === 'boolean' && !targetToFocus.isConnected) {
+        const fallback = document.querySelector('.btn-quick-view') || document.getElementById('search-input');
+        if (fallback && typeof fallback.focus === 'function') fallback.focus();
+      } else {
+        targetToFocus.focus();
+      }
+    } catch (_) {
+      const fallback = document.querySelector('.btn-quick-view') || document.getElementById('search-input');
+      if (fallback && typeof fallback.focus === 'function') {
+        try { fallback.focus(); } catch (_) {}
+      }
+    }
+  } else {
+    const fallback = document.querySelector('.btn-quick-view') || document.getElementById('search-input');
+    if (fallback && typeof fallback.focus === 'function') {
+      try { fallback.focus(); } catch (_) {}
+    }
   }
+
+  lastFocusedElement = null;
   modalState.triggerElement = null;
+  modalState.lastFocusedElement = null;
 }
 
-function handleModalFocusTrap(e) {
+function handleModalKeydown(e) {
   if (!modalState.isOpen || e.key !== 'Tab') return;
 
   const modal = document.getElementById('preview-modal');
-  if (!modal) return;
+  if (!modal || modal.hasAttribute('hidden') || modal.classList.contains('is-closing')) return;
 
   const focusables = getFocusableElements(modal);
   if (focusables.length === 0) {
-    e.preventDefault();
+    if (typeof e.preventDefault === 'function') e.preventDefault();
     return;
   }
 
@@ -408,17 +443,19 @@ function handleModalFocusTrap(e) {
   if (e.shiftKey) {
     // Shift + Tab (Backwards)
     if (document.activeElement === firstEl || !modal.contains(document.activeElement)) {
-      e.preventDefault();
+      if (typeof e.preventDefault === 'function') e.preventDefault();
       lastEl.focus();
     }
   } else {
     // Tab (Forwards)
     if (document.activeElement === lastEl || !modal.contains(document.activeElement)) {
-      e.preventDefault();
+      if (typeof e.preventDefault === 'function') e.preventDefault();
       firstEl.focus();
     }
   }
 }
+
+const handleModalFocusTrap = handleModalKeydown;
 
 function focusSearchInput(select = true) {
   const input = document.getElementById('search-input');
@@ -678,13 +715,18 @@ window.riffApp = {
   reloadModalIframe,
   setPreviewViewport,
   handleGlobalKeydown,
+  handleModalKeydown,
+  handleModalFocusTrap,
+  getLastFocusedElement: () => lastFocusedElement || modalState.triggerElement || modalState.lastFocusedElement,
   modal: {
     open: openModal,
     close: closeModal,
     reload: reloadModalIframe,
     setViewport: setPreviewViewport,
     isOpen: () => modalState.isOpen,
-    getViewport: () => modalState.viewportMode
+    getViewport: () => modalState.viewportMode,
+    getTriggerElement: () => lastFocusedElement || modalState.triggerElement || modalState.lastFocusedElement,
+    getLastFocusedElement: () => lastFocusedElement || modalState.triggerElement || modalState.lastFocusedElement
   },
   setSearchQuery: q => {
     const input = document.getElementById('search-input');
