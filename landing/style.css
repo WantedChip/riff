@@ -700,12 +700,16 @@ kbd,
   border-color: var(--border-hover);
 }
 
-#search-input:focus {
+#search-input:focus,
+.search-box:focus-within #search-input,
+.search-container:focus-within #search-input {
   border-color: var(--border-accent);
-  box-shadow: 0 0 0 2px var(--accent-glow);
+  box-shadow: 0 0 16px -2px rgba(255, 94, 58, 0.35);
   background-color: rgba(14, 16, 23, 0.95);
 }
 
+kbd.keycap,
+.keycap,
 .shortcut-key {
   position: absolute;
   right: var(--space-3);
@@ -717,8 +721,31 @@ kbd,
   font-family: var(--font-mono);
   font-size: 0.6875rem;
   font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
   pointer-events: none;
   user-select: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
+  transition: border-color var(--duration-fast) var(--ease-spring),
+              color var(--duration-fast) var(--ease-spring),
+              background-color var(--duration-fast) var(--ease-spring),
+              box-shadow var(--duration-fast) var(--ease-spring);
+}
+
+.search-box:focus-within .keycap,
+.search-box:focus-within .shortcut-key,
+.search-container:focus-within .keycap,
+.search-container:focus-within .shortcut-key,
+#search-input:focus ~ .keycap,
+#search-input:focus ~ .shortcut-key {
+  border-color: var(--border-accent);
+  color: var(--accent-flame);
+  background: rgba(255, 94, 58, 0.08);
+  box-shadow: 0 0 8px rgba(255, 94, 58, 0.20);
 }
 
 
@@ -1325,6 +1352,7 @@ h3.card-title {
     padding-right: var(--space-8, 32px);
   }
 
+  .keycap,
   .shortcut-key {
     display: none;
   }
@@ -1415,18 +1443,19 @@ h3.card-title {
    ========================================================================== */
 
 /* Modal Overlay Backdrop with Glassmorphic Blur */
+/* Modal Overlay Backdrop with Glassmorphic Blur */
 .modal-overlay,
 #preview-modal {
   position: fixed;
   inset: 0;
   z-index: 2000;
-  background-color: var(--bg-overlay, rgba(7, 8, 11, 0.85));
+  background-color: var(--bg-overlay);
   backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-6, 24px);
+  padding: var(--space-6);
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
@@ -1450,9 +1479,9 @@ h3.card-title {
 
 /* Modal Shell Container with Spring Physics */
 .modal-shell {
-  background-color: var(--bg-surface, #0E1017);
-  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
-  border-radius: var(--radius-xl, 16px);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-xl);
   box-shadow: 0 24px 64px -12px rgba(0, 0, 0, 0.9),
               0 0 32px -4px rgba(255, 94, 58, 0.15);
   max-width: 1200px;
@@ -1483,10 +1512,10 @@ h3.card-title {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: var(--space-4, 16px);
-  padding: var(--space-3, 12px) var(--space-5, 20px);
+  gap: var(--space-4);
+  padding: var(--space-3) var(--space-5);
   background-color: rgba(7, 8, 11, 0.85);
-  border-bottom: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+  border-bottom: 1px solid var(--border-subtle);
   min-height: 56px;
   flex-shrink: 0;
   user-select: none;
@@ -1495,17 +1524,17 @@ h3.card-title {
 .modal-header-info {
   display: flex;
   align-items: center;
-  gap: var(--space-3, 12px);
+  gap: var(--space-3);
   min-width: 0;
 }
 
 .modal-project-title,
 #modal-project-title {
-  font-family: var(--font-display, 'Plus Jakarta Sans', sans-serif);
+  font-family: var(--font-display);
   font-size: 1.125rem;
   font-weight: 700;
   letter-spacing: -0.015em;
-  color: var(--text-primary, #F4F6FB);
+  color: var(--text-primary);
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
@@ -1514,13 +1543,13 @@ h3.card-title {
 
 .modal-project-route,
 #modal-project-route {
-  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-family: var(--font-mono);
   font-size: 0.75rem;
-  color: var(--text-muted, #68738B);
-  background: var(--bg-badge, rgba(255, 255, 255, 0.05));
-  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+  color: var(--text-muted);
+  background: var(--bg-badge);
+  border: 1px solid var(--border-subtle);
   padding: 2px 8px;
-  border-radius: var(--radius-sm, 6px);
+  border-radius: var(--radius-sm);
   white-space: nowrap;
 }
 
@@ -1529,16 +1558,16 @@ h3.card-title {
 #modal-viewport-toolbar {
   display: flex;
   align-items: center;
-  gap: var(--space-2, 8px);
+  gap: var(--space-2);
 }
 
 .viewport-switcher,
 #viewport-switcher {
   display: inline-flex;
   align-items: center;
-  background-color: var(--bg-badge, rgba(255, 255, 255, 0.05));
-  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
-  border-radius: var(--radius-md, 8px);
+  background-color: var(--bg-badge);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
   padding: 2px;
   gap: 2px;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
@@ -1548,30 +1577,30 @@ h3.card-title {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: var(--space-1, 4px);
-  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  gap: var(--space-1);
+  font-family: var(--font-mono);
   font-size: 0.75rem;
   font-weight: 500;
-  color: var(--text-secondary, #949EB2);
+  color: var(--text-secondary);
   background: transparent;
   border: 1px solid transparent;
-  border-radius: var(--radius-sm, 6px);
+  border-radius: var(--radius-sm);
   padding: 4px 10px;
   height: 30px;
   cursor: pointer;
   user-select: none;
   white-space: nowrap;
-  transition: background-color var(--duration-fast, 150ms) var(--ease-spring),
-              border-color var(--duration-fast, 150ms) var(--ease-spring),
-              color var(--duration-fast, 150ms) var(--ease-spring),
-              box-shadow var(--duration-fast, 150ms) var(--ease-spring),
+  transition: background-color var(--duration-fast) var(--ease-spring),
+              border-color var(--duration-fast) var(--ease-spring),
+              color var(--duration-fast) var(--ease-spring),
+              box-shadow var(--duration-fast) var(--ease-spring),
               transform 120ms var(--ease-spring);
 }
 
 .btn-viewport:hover {
-  color: var(--text-primary, #F4F6FB);
+  color: var(--text-primary);
   background-color: rgba(255, 255, 255, 0.08);
-  border-color: var(--border-hover, rgba(255, 255, 255, 0.22));
+  border-color: var(--border-hover);
 }
 
 .btn-viewport:active {
@@ -1580,15 +1609,15 @@ h3.card-title {
 
 .btn-viewport.active,
 .btn-viewport[aria-pressed="true"] {
-  color: var(--accent-flame, #FF5E3A);
+  color: var(--accent-flame);
   background-color: rgba(255, 94, 58, 0.12);
-  border-color: var(--border-accent, rgba(255, 94, 58, 0.40));
+  border-color: var(--border-accent);
   font-weight: 600;
   box-shadow: 0 0 12px rgba(255, 94, 58, 0.20);
 }
 
 .btn-viewport:focus-visible {
-  outline: 2px solid var(--accent-flame, #FF5E3A);
+  outline: 2px solid var(--accent-flame);
   outline-offset: 2px;
 }
 
@@ -1596,7 +1625,7 @@ h3.card-title {
 .modal-actions {
   display: flex;
   align-items: center;
-  gap: var(--space-2, 8px);
+  gap: var(--space-2);
 }
 
 .modal-action-btn,
@@ -1612,19 +1641,19 @@ h3.card-title {
   width: 36px;
   height: 36px;
   min-width: 36px;
-  border-radius: var(--radius-md, 8px);
-  background: var(--bg-badge, rgba(255, 255, 255, 0.05));
-  border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
-  color: var(--text-secondary, #949EB2);
+  border-radius: var(--radius-md);
+  background: var(--bg-badge);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
   text-decoration: none;
   cursor: pointer;
   padding: 0;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
-  transition: background-color var(--duration-fast, 150ms) var(--ease-spring),
-              border-color var(--duration-fast, 150ms) var(--ease-spring),
-              color var(--duration-fast, 150ms) var(--ease-spring),
+  transition: background-color var(--duration-fast) var(--ease-spring),
+              border-color var(--duration-fast) var(--ease-spring),
+              color var(--duration-fast) var(--ease-spring),
               transform 120ms var(--ease-spring),
-              box-shadow var(--duration-fast, 150ms) var(--ease-spring);
+              box-shadow var(--duration-fast) var(--ease-spring);
   user-select: none;
 }
 
@@ -1636,8 +1665,8 @@ h3.card-title {
 #btn-modal-close:hover,
 #modal-close-btn:hover {
   background-color: rgba(255, 255, 255, 0.10);
-  border-color: var(--border-hover, rgba(255, 255, 255, 0.22));
-  color: var(--text-primary, #F4F6FB);
+  border-color: var(--border-hover);
+  color: var(--text-primary);
   transform: translateY(-1px);
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
@@ -1661,18 +1690,18 @@ h3.card-title {
 #link-modal-external:focus-visible,
 #btn-modal-close:focus-visible,
 #modal-close-btn:focus-visible {
-  outline: 2px solid var(--accent-flame, #FF5E3A);
+  outline: 2px solid var(--accent-flame);
   outline-offset: 2px;
 }
 
 #btn-modal-reload:hover svg,
 .modal-btn-reload:hover svg {
-  color: var(--accent-flame, #FF5E3A);
+  color: var(--accent-flame);
 }
 
 #link-modal-external:hover svg,
 .modal-btn-external:hover svg {
-  color: var(--text-primary, #F4F6FB);
+  color: var(--text-primary);
 }
 
 .modal-action-btn.is-reloading svg,
@@ -1690,7 +1719,7 @@ h3.card-title {
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--bg-void, #07080B);
+  background-color: var(--bg-void);
   overflow: hidden;
   padding: 0;
   transition: max-width 220ms cubic-bezier(0.16, 1, 0.3, 1),
@@ -1711,8 +1740,8 @@ h3.card-title {
   max-width: 768px;
   height: 100%;
   margin: 0 auto;
-  border-left: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
-  border-right: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+  border-left: 1px solid var(--border-subtle);
+  border-right: 1px solid var(--border-subtle);
   box-shadow: 0 0 32px rgba(0, 0, 0, 0.6);
 }
 
@@ -1720,8 +1749,8 @@ h3.card-title {
   max-width: 375px;
   height: 100%;
   margin: 0 auto;
-  border-left: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
-  border-right: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
+  border-left: 1px solid var(--border-subtle);
+  border-right: 1px solid var(--border-subtle);
   box-shadow: 0 0 32px rgba(0, 0, 0, 0.6);
 }
 
@@ -1735,8 +1764,8 @@ h3.card-title {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: var(--space-3, 12px);
-  background-color: var(--bg-void, #07080B);
+  gap: var(--space-3);
+  background-color: var(--bg-void);
   opacity: 1;
   visibility: visible;
   pointer-events: none;
@@ -1757,17 +1786,17 @@ h3.card-title {
   width: 38px;
   height: 38px;
   border: 3px solid rgba(255, 255, 255, 0.1);
-  border-top-color: var(--accent-flame, #FF5E3A);
+  border-top-color: var(--accent-flame);
   border-radius: 50%;
   animation: iframe-spin 0.75s linear infinite;
-  box-shadow: 0 0 16px var(--accent-glow, rgba(255, 94, 58, 0.35));
+  box-shadow: 0 0 16px var(--accent-glow);
 }
 
 .spinner-text {
-  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-family: var(--font-mono);
   font-size: 0.75rem;
   font-weight: 500;
-  color: var(--text-muted, #68738B);
+  color: var(--text-muted);
   letter-spacing: 0.04em;
   user-select: none;
 }
@@ -1785,7 +1814,7 @@ h3.card-title {
   border: none;
   outline: none;
   display: block;
-  background-color: var(--bg-void, #07080B);
+  background-color: var(--bg-void);
   transition: max-width 220ms var(--ease-spring),
               opacity 150ms var(--ease-spring);
 }
@@ -1794,7 +1823,7 @@ h3.card-title {
 @media (max-width: 768px) {
   .modal-overlay,
   #preview-modal {
-    padding: var(--space-3, 12px);
+    padding: var(--space-3);
   }
 
   .modal-shell {
@@ -1802,7 +1831,7 @@ h3.card-title {
   }
 
   .modal-header {
-    padding: var(--space-2, 8px) var(--space-4, 16px);
+    padding: var(--space-2) var(--space-4);
     min-height: 50px;
   }
 
@@ -1832,12 +1861,12 @@ h3.card-title {
 @media (max-width: 480px) {
   .modal-overlay,
   #preview-modal {
-    padding: var(--space-2, 8px);
+    padding: var(--space-2);
   }
 
   .modal-shell {
     height: 96vh;
-    border-radius: var(--radius-lg, 12px);
+    border-radius: var(--radius-lg);
   }
 
   .modal-project-route,
@@ -1846,8 +1875,8 @@ h3.card-title {
   }
 
   .modal-header {
-    padding: var(--space-2, 8px) var(--space-3, 12px);
-    gap: var(--space-2, 8px);
+    padding: var(--space-2) var(--space-3);
+    gap: var(--space-2);
   }
 }
 

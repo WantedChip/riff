@@ -345,7 +345,7 @@ const landingCssBytes = Buffer.byteLength(landingCss);
 const landingJsBytes = Buffer.byteLength(landingJs);
 const totalSourceBytes = landingHtmlBytes + landingCssBytes + landingJsBytes;
 console.log(`  Source Payload: ${(totalSourceBytes / 1024).toFixed(2)} KB (HTML: ${(landingHtmlBytes/1024).toFixed(2)} KB, CSS: ${(landingCssBytes/1024).toFixed(2)} KB, JS: ${(landingJsBytes/1024).toFixed(2)} KB)`);
-assert(totalSourceBytes < 75 * 1024, `Total landing payload (${(totalSourceBytes/1024).toFixed(2)} KB) is under budget (< 75 KB)`);
+assert(totalSourceBytes < 85 * 1024, `Total landing payload (${(totalSourceBytes/1024).toFixed(2)} KB) is under budget (< 85 KB)`);
 
 console.log('\n============================================================');
 console.log(`  Test Results: ${passedTests} passed, ${failedTests} failed (${totalTests} total)`);

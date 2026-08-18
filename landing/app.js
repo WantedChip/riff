@@ -420,6 +420,98 @@ function handleModalFocusTrap(e) {
   }
 }
 
+function focusSearchInput(select = true) {
+  const input = document.getElementById('search-input');
+  if (!input) return false;
+
+  input.focus();
+  if (select && typeof input.select === 'function') {
+    input.select();
+  }
+
+  try {
+    const rect = input.getBoundingClientRect();
+    const isVisible = (
+      rect.top >= 0 &&
+      rect.left >= 0 &&
+      rect.bottom <= (window.innerHeight || document.documentElement.clientHeight) &&
+      rect.right <= (window.innerWidth || document.documentElement.clientWidth)
+    );
+    if (!isVisible && typeof input.scrollIntoView === 'function') {
+      input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+  } catch (_) {}
+
+  return true;
+}
+
+function handleGlobalKeydown(e) {
+  // Modal focus trap & Escape handling
+  if (modalState && modalState.isOpen) {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeModal();
+      return;
+    }
+    if (e.key === 'Tab') {
+      handleModalFocusTrap(e);
+      return;
+    }
+    // Prevent global '/' shortcut from stealing focus when modal preview is open
+    if (e.key === '/' || e.code === 'Slash') {
+      return;
+    }
+  }
+
+  // Global '/' Shortcut to focus Search
+  if ((e.key === '/' || e.code === 'Slash') && !e.ctrlKey && !e.metaKey && !e.altKey) {
+    const target = e.target;
+    const activeEl = document.activeElement;
+
+    // Guard condition: ensure target / activeElement is NOT an input, textarea, select, contenteditable, or inside an active modal dialog
+    const isInputTarget = target && (
+      ['INPUT', 'TEXTAREA', 'SELECT'].includes(target.tagName) ||
+      target.isContentEditable ||
+      (typeof target.closest === 'function' && target.closest('[contenteditable="true"]'))
+    );
+    const isInputActive = activeEl && (
+      ['INPUT', 'TEXTAREA', 'SELECT'].includes(activeEl.tagName) ||
+      activeEl.isContentEditable ||
+      (typeof activeEl.closest === 'function' && activeEl.closest('[contenteditable="true"]'))
+    );
+
+    const modalEl = document.getElementById('preview-modal');
+    const isModalVisible = (modalState && modalState.isOpen) || (modalEl && !modalEl.hasAttribute('hidden'));
+    const isInsideModal = isModalVisible ||
+      (target && typeof target.closest === 'function' && target.closest('#preview-modal, [role="dialog"]')) ||
+      (activeEl && typeof activeEl.closest === 'function' && activeEl.closest('#preview-modal, [role="dialog"]'));
+
+    if (isInputTarget || isInputActive || isInsideModal) {
+      return;
+    }
+
+    const input = document.getElementById('search-input');
+    if (input) {
+      e.preventDefault();
+      focusSearchInput(true);
+    }
+    return;
+  }
+
+  // Escape key handling on search input
+  if (e.key === 'Escape') {
+    const input = document.getElementById('search-input');
+    if (input && document.activeElement === input) {
+      if (input.value) {
+        input.value = '';
+        state.searchQuery = '';
+        applyFilters();
+      }
+      input.blur();
+    }
+  }
+}
+
 function initApp() {
   const cards = document.querySelectorAll('#project-grid .card, #project-grid article');
   state.cards = Array.from(cards).map(card => {
@@ -511,34 +603,20 @@ function initApp() {
     }
   });
 
-  document.addEventListener('keydown', e => {
-    // Modal focus trap & Escape handling
-    if (modalState.isOpen) {
-      if (e.key === 'Escape') {
-        e.preventDefault();
-        closeModal();
-        return;
-      }
-      if (e.key === 'Tab') {
-        handleModalFocusTrap(e);
-        return;
-      }
-    }
-
-    const input = document.getElementById('search-input');
-    if (e.key === '/' && document.activeElement !== input && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) {
-      e.preventDefault();
-      if (input) { input.focus(); input.select(); }
-    } else if (e.key === 'Escape' && document.activeElement === input) {
-      if (input.value) { input.value = ''; state.searchQuery = ''; applyFilters(); }
-      input.blur();
-    }
-  });
+  if (typeof window !== 'undefined' && typeof window.addEventListener === 'function') {
+    window.addEventListener('keydown', handleGlobalKeydown);
+  } else if (typeof document !== 'undefined' && typeof document.addEventListener === 'function') {
+    document.addEventListener('keydown', handleGlobalKeydown);
+  }
 
   fetch('/projects.json').then(r => r.ok ? r.json() : null).then(data => {
     if (Array.isArray(data)) { state.projects = data; window.__RIFF_PROJECTS__ = data; }
   }).catch(() => {});
 }
+
+window.focusSearch = function() {
+  return focusSearchInput(true);
+};
 
 window.openPreview = function(title, route) {
   let trigger = document.activeElement;
@@ -572,6 +650,7 @@ window.riffApp = {
   handleTagClick,
   resetFilters,
   announceFilter,
+  focusSearch: focusSearchInput,
   openModal,
   closeModal,
   reloadModalIframe,
