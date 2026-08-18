@@ -522,7 +522,7 @@ function renderProjectCardsHtml(projects) {
               ${tagsHtml}
             </div>
             <div class="card-actions">
-              <a href="${p.route}" class="btn btn-primary btn-launch">Launch Riff &rarr;</a>
+              <a href="${p.route}" class="btn btn-primary btn-launch" aria-label="Launch ${escapeHtml(title)} project">Launch Riff &rarr;</a>
               <button type="button" class="btn btn-secondary btn-quick-view btn-preview" data-slug="${escapeHtml(p.slug)}" data-route="${p.route}" onclick="openPreview('${escapeJs(title)}', '${p.route}')" aria-label="Quick view ${escapeHtml(title)}">&#x2B13; Quick View</button>
             </div>
           </div>
@@ -643,8 +643,8 @@ function get404Html() {
             <div class="console-line console-success"><span class="console-tag">[ACTION]</span> Re-routing recommended to primary showcase matrix.</div>
           </div>
           <div class="error-actions">
-            <a href="/" class="btn btn-primary btn-launch">&larr; Return to Riff Portal</a>
-            <a href="https://github.com/sohamlabs/riff" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">&nearr; View Source Code</a>
+            <a href="/" class="btn btn-primary btn-launch" aria-label="Return to Riff Showcase Matrix">&larr; Return to Riff Portal</a>
+            <a href="https://github.com/sohamlabs/riff" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" aria-label="View Riff source code on GitHub">&nearr; View Source Code</a>
           </div>
         </div>
       </div>
@@ -654,9 +654,9 @@ function get404Html() {
     <div class="footer-container">
       <div class="footer-primary-row">
         <div class="footer-legal">
-          <span class="footer-brand-copy">&copy; 2026 Riff by <a href="https://github.com/sohamlabs/riff" target="_blank" rel="noopener noreferrer" class="footer-link">sohamlabs</a></span>
+          <span class="footer-brand-copy">&copy; 2026 Riff by <a href="https://github.com/sohamlabs/riff" target="_blank" rel="noopener noreferrer" class="footer-link" aria-label="sohamlabs on GitHub">sohamlabs</a></span>
           <span class="footer-divider" aria-hidden="true">&bull;</span>
-          <a href="./LICENSE" class="footer-link footer-license-link">MIT License</a>
+          <a href="./LICENSE" class="footer-link footer-license-link" aria-label="View MIT License">MIT License</a>
         </div>
         <div class="footer-hosting-badge" aria-label="Edge hosting platform">
           <span class="footer-badge-dot" aria-hidden="true"></span>
@@ -1195,9 +1195,9 @@ ${cardsHtml}
     <div class="footer-container">
       <div class="footer-primary-row">
         <div class="footer-legal">
-          <span class="footer-brand-copy">&copy; ${new Date().getFullYear()} Riff by <a href="https://github.com/sohamlabs/riff" target="_blank" rel="noopener noreferrer" class="footer-link">sohamlabs</a></span>
+          <span class="footer-brand-copy">&copy; ${new Date().getFullYear()} Riff by <a href="https://github.com/sohamlabs/riff" target="_blank" rel="noopener noreferrer" class="footer-link" aria-label="sohamlabs on GitHub">sohamlabs</a></span>
           <span class="footer-divider" aria-hidden="true">&bull;</span>
-          <a href="./LICENSE" class="footer-link footer-license-link">MIT License</a>
+          <a href="./LICENSE" class="footer-link footer-license-link" aria-label="View MIT License">MIT License</a>
         </div>
         <div class="footer-hosting-badge" aria-label="Edge hosting platform">
           <span class="footer-badge-dot" aria-hidden="true"></span>
@@ -1251,8 +1251,8 @@ ${cardsHtml}
               <p class="card-desc">\${p.description}</p>
               <div class="card-tags">\${tagsHtml}</div>
               <div class="card-actions">
-                <a href="\${p.route}" class="btn-launch">Launch Riff →</a>
-                <button class="btn-preview" onclick="openPreview('\${(p.title || p.name).replace(/'/g, "\\\\'")}', '\${p.route}')">Quick View</button>
+                <a href="\${p.route}" class="btn-launch" aria-label="Launch \${p.title || p.name} project">Launch Riff →</a>
+                <button class="btn-preview" onclick="openPreview('\${(p.title || p.name).replace(/'/g, "\\\\'")}', '\${p.route}')" aria-label="Quick view \${p.title || p.name}">Quick View</button>
               </div>
             </div>
           </div>

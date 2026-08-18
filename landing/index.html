@@ -103,7 +103,7 @@
           </div>
           <h2 class="empty-title">No matching design riffs found</h2>
           <p class="empty-desc">No projects match your current query or category filter. Try refining your keywords.</p>
-          <button type="button" id="btn-reset-filters" class="btn btn-primary btn-reset-filters">Reset All Filters</button>
+          <button type="button" id="btn-reset-filters" class="btn btn-primary btn-reset-filters" aria-label="Reset all search and category filters">Reset All Filters</button>
         </div>
         <div id="a11y-filter-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
       </div>
@@ -113,9 +113,9 @@
     <div class="footer-container">
       <div class="footer-primary-row">
         <div class="footer-legal">
-          <span class="footer-brand-copy">&copy; 2026 Riff by <a href="https://github.com/sohamlabs/riff" target="_blank" rel="noopener noreferrer" class="footer-link">sohamlabs</a></span>
+          <span class="footer-brand-copy">&copy; 2026 Riff by <a href="https://github.com/sohamlabs/riff" target="_blank" rel="noopener noreferrer" class="footer-link" aria-label="sohamlabs on GitHub">sohamlabs</a></span>
           <span class="footer-divider" aria-hidden="true">&bull;</span>
-          <a href="./LICENSE" class="footer-link footer-license-link">MIT License</a>
+          <a href="./LICENSE" class="footer-link footer-license-link" aria-label="View MIT License">MIT License</a>
         </div>
         <div class="footer-hosting-badge" aria-label="Edge hosting platform">
           <span class="footer-badge-dot" aria-hidden="true"></span>
@@ -134,9 +134,9 @@
         </div>
         <div class="modal-toolbar" id="modal-viewport-toolbar" role="toolbar" aria-label="Viewport controls">
           <div class="viewport-switcher" id="viewport-switcher" role="group" aria-label="Device Viewport Switcher">
-            <button type="button" class="btn-viewport active" data-viewport="desktop" aria-pressed="true">🖥️ Desktop</button>
-            <button type="button" class="btn-viewport" data-viewport="tablet" aria-pressed="false">📱 Tablet</button>
-            <button type="button" class="btn-viewport" data-viewport="mobile" aria-pressed="false">📱 Mobile</button>
+            <button type="button" class="btn-viewport active" data-viewport="desktop" aria-pressed="true" aria-label="Switch preview to Desktop viewport (100% width)">🖥️ Desktop</button>
+            <button type="button" class="btn-viewport" data-viewport="tablet" aria-pressed="false" aria-label="Switch preview to Tablet viewport (768px width)">📱 Tablet</button>
+            <button type="button" class="btn-viewport" data-viewport="mobile" aria-pressed="false" aria-label="Switch preview to Mobile viewport (375px width)">📱 Mobile</button>
           </div>
         </div>
         <div class="modal-actions">

@@ -21,7 +21,7 @@
   /* Text & Content Tokens (30% Secondary Hierarchy) */
   --text-primary: #F4F6FB;
   --text-secondary: #949EB2;
-  --text-muted: #68738B;
+  --text-muted: #8593A8;
 
   /* Accent & Energy Tokens (10% Focus & Highlights) */
   --accent-flame: #FF5E3A;
@@ -183,6 +183,29 @@ h6 {
 
 :focus:not(:focus-visible) {
   outline: none;
+}
+
+#search-input:focus-visible,
+.btn:focus-visible,
+.btn-primary:focus-visible,
+.btn-secondary:focus-visible,
+.btn-launch:focus-visible,
+.btn-preview:focus-visible,
+.btn-quick-view:focus-visible,
+.filter-pill:focus-visible,
+.brand:focus-visible,
+.nav-link:focus-visible,
+.footer-link:focus-visible,
+.btn-viewport:focus-visible,
+.modal-action-btn:focus-visible,
+#btn-modal-reload:focus-visible,
+#link-modal-external:focus-visible,
+#btn-modal-close:focus-visible,
+#btn-reset-filters:focus-visible,
+.tag:focus-visible,
+.card-tag:focus-visible {
+  outline: 2px solid var(--accent-flame);
+  outline-offset: 2px;
 }
 
 .skip-link {
@@ -1514,6 +1537,23 @@ h3.card-title {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+
+  .card-media img,
+  .card,
+  .card:hover,
+  .card:focus-within,
+  .card:hover .card-media img,
+  .card:focus-within .card-media img,
+  .modal-shell,
+  .btn,
+  .btn:hover,
+  .btn-primary:hover,
+  .btn-secondary:hover,
+  .filter-pill:active,
+  .btn-viewport:active,
+  .modal-action-btn:hover {
+    transform: none !important;
   }
 }
 
