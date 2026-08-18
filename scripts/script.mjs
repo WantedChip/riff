@@ -493,9 +493,11 @@ async function compileProject(projectFolder) {
  */
 function renderProjectCardsHtml(projects) {
   if (!projects || projects.length === 0) {
-    return `      <div class="empty-state" style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--text-muted, #949EB2); font-size: 16px;">
-        No riffs or projects available yet.
-      </div>`;
+    return `        <div class="empty-state">
+          <div class="empty-icon" aria-hidden="true">🔍</div>
+          <h3 class="empty-title">No riffs found</h3>
+          <p class="empty-desc">No projects match the current filter or search query.</p>
+        </div>`;
   }
 
   return projects.map(p => {
@@ -503,28 +505,28 @@ function renderProjectCardsHtml(projects) {
     const category = p.category || 'Clone';
     const tags = Array.isArray(p.tags) ? p.tags : [];
     const previewHtml = p.thumbnail
-      ? `<img src="${p.thumbnail}" alt="${escapeHtml(title)}" loading="lazy">`
+      ? `<img src="${p.thumbnail}" alt="${escapeHtml(title)}" loading="lazy" width="640" height="360">`
       : `<div class="card-preview-placeholder"><span>✨</span><span>Interactive Demo</span></div>`;
 
-    const tagsHtml = tags.map(t => `<span class="tag" data-tag="${escapeHtml(t)}">${escapeHtml(t)}</span>`).join('\n            ');
+    const tagsHtml = tags.map(t => `<span class="tag" data-tag="${escapeHtml(t)}">${escapeHtml(t)}</span>`).join('\n              ');
 
-    return `      <article class="card" data-slug="${escapeHtml(p.slug)}" data-category="${escapeHtml(category)}" data-tags="${escapeHtml(tags.join(','))}">
-        <div class="card-preview">
-          ${previewHtml}
-          <div class="card-category-badge">${escapeHtml(category)}</div>
-        </div>
-        <div class="card-body">
-          <h2 class="card-title">${escapeHtml(title)}</h2>
-          <p class="card-desc">${escapeHtml(p.description || '')}</p>
-          <div class="card-tags">
-            ${tagsHtml}
+    return `        <article class="card" data-slug="${escapeHtml(p.slug)}" data-category="${escapeHtml(category)}" data-tags="${escapeHtml(tags.join(','))}">
+          <div class="card-media card-preview">
+            ${previewHtml}
+            <div class="card-category-badge badge-category" data-category="${escapeHtml(category)}">${escapeHtml(category)}</div>
           </div>
-          <div class="card-actions">
-            <a href="${p.route}" class="btn-launch">Launch Riff →</a>
-            <button class="btn-preview" onclick="openPreview('${escapeJs(title)}', '${p.route}')" data-preview="${p.route}">Quick View</button>
+          <div class="card-body">
+            <h3 class="card-title">${escapeHtml(title)}</h3>
+            <p class="card-desc">${escapeHtml(p.description || '')}</p>
+            <div class="card-tags">
+              ${tagsHtml}
+            </div>
+            <div class="card-actions">
+              <a href="${p.route}" class="btn btn-primary btn-launch">Launch Riff &rarr;</a>
+              <button type="button" class="btn btn-secondary btn-quick-view btn-preview" data-slug="${escapeHtml(p.slug)}" data-route="${p.route}" onclick="openPreview('${escapeJs(title)}', '${p.route}')" aria-label="Quick view ${escapeHtml(title)}">&#x2B13; Quick View</button>
+            </div>
           </div>
-        </div>
-      </article>`;
+        </article>`;
   }).join('\n');
 }
 

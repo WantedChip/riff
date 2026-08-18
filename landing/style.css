@@ -625,7 +625,534 @@ kbd,
   font-family: var(--font-mono);
 }
 
-/* Responsive Breakpoints for Header & Hero */
+/* ==========================================================================
+   8. Search & Filter Controls Toolbar
+   ========================================================================== */
+
+.controls-section {
+  width: 100%;
+  padding: 0 var(--space-6) var(--space-8);
+  display: flex;
+  justify-content: center;
+}
+
+.controls-container {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+/* Search Box Component */
+.search-box {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: var(--space-4);
+  font-size: 0.9375rem;
+  color: var(--text-muted);
+  pointer-events: none;
+  line-height: 1;
+}
+
+#search-input {
+  width: 100%;
+  height: 48px;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 0 var(--space-12) 0 44px;
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color var(--duration-fast) var(--ease-spring),
+              box-shadow var(--duration-fast) var(--ease-spring),
+              background-color var(--duration-fast) var(--ease-spring);
+}
+
+#search-input::placeholder {
+  color: var(--text-muted);
+}
+
+#search-input:hover {
+  border-color: var(--border-hover);
+}
+
+#search-input:focus {
+  border-color: var(--border-accent);
+  box-shadow: 0 0 0 2px var(--accent-glow);
+  background-color: rgba(14, 16, 23, 0.95);
+}
+
+.shortcut-key {
+  position: absolute;
+  right: var(--space-3);
+  background: var(--bg-badge);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-muted);
+  padding: 2px 8px;
+  border-radius: var(--radius-xs);
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Filter Pills Navigation */
+.filter-pills {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.filter-pill {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  padding: 6px 14px;
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  min-height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color var(--duration-fast) var(--ease-spring),
+              border-color var(--duration-fast) var(--ease-spring),
+              color var(--duration-fast) var(--ease-spring),
+              box-shadow var(--duration-fast) var(--ease-spring);
+}
+
+.filter-pill:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+  background-color: rgba(255, 255, 255, 0.05);
+}
+
+.filter-pill.active,
+.filter-pill[aria-pressed="true"] {
+  background-color: rgba(255, 94, 58, 0.12);
+  border-color: var(--border-accent);
+  color: var(--accent-flame);
+  font-weight: 600;
+  box-shadow: 0 0 12px rgba(255, 94, 58, 0.18);
+}
+
+/* ==========================================================================
+   9. Showcase Matrix Grid & Card Component
+   ========================================================================== */
+
+.showcase,
+.showcase-section {
+  width: 100%;
+  padding: 0 var(--space-6) var(--space-16);
+  display: flex;
+  justify-content: center;
+}
+
+.showcase-container {
+  max-width: 1280px;
+  width: 100%;
+  margin: 0 auto;
+}
+
+.grid,
+.project-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: var(--space-6);
+  width: 100%;
+}
+
+/* Card Container Component */
+.card,
+article.card {
+  background-color: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-card);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  transition: transform var(--duration-normal) var(--ease-spring),
+              border-color var(--duration-fast) var(--ease-spring),
+              background-color var(--duration-fast) var(--ease-spring),
+              box-shadow var(--duration-normal) var(--ease-spring);
+  will-change: transform;
+}
+
+.card:hover,
+.card:focus-within {
+  transform: translateY(-4px);
+  border-color: var(--border-hover);
+  background-color: var(--bg-card-hover);
+  box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.85),
+              0 0 20px -4px rgba(255, 94, 58, 0.15);
+}
+
+/* 16:9 Media Header Frame */
+.card-media,
+.card-preview {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background-color: var(--bg-surface);
+}
+
+.card-media img,
+.card-preview img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform var(--duration-normal) var(--ease-spring);
+}
+
+.card:hover .card-media img,
+.card:hover .card-preview img {
+  transform: scale(1.03);
+}
+
+/* Placeholder for Projects without Cover Art */
+.card-preview-placeholder,
+.card-media-placeholder {
+  width: 100%;
+  height: 100%;
+  aspect-ratio: 16 / 9;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  background: linear-gradient(135deg, var(--bg-surface), #1A1E2C);
+  color: var(--text-muted);
+  font-family: var(--font-mono);
+  font-size: 0.8125rem;
+  user-select: none;
+}
+
+/* Category Badges on Card Media */
+.card-category-badge,
+.badge-category {
+  position: absolute;
+  top: var(--space-3);
+  right: var(--space-3);
+  z-index: 2;
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  background: rgba(7, 8, 11, 0.80);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  user-select: none;
+}
+
+/* Specific Category Color Accents */
+.card-category-badge[data-category="Clone"],
+.card[data-category="Clone"] .card-category-badge,
+.badge-clone {
+  background: rgba(139, 92, 246, 0.18);
+  border-color: rgba(139, 92, 246, 0.40);
+  color: #C4B5FD;
+}
+
+.card-category-badge[data-category="Design Riff"],
+.card[data-category="Design Riff"] .card-category-badge,
+.badge-design-riff {
+  background: rgba(255, 94, 58, 0.18);
+  border-color: rgba(255, 94, 58, 0.40);
+  color: var(--accent-flame);
+}
+
+.card-category-badge[data-category="Animation"],
+.card[data-category="Animation"] .card-category-badge,
+.badge-animation {
+  background: rgba(6, 182, 212, 0.18);
+  border-color: rgba(6, 182, 212, 0.40);
+  color: var(--accent-cyan);
+}
+
+.card-category-badge[data-category="Lab"],
+.card[data-category="Lab"] .card-category-badge,
+.badge-lab {
+  background: rgba(245, 158, 11, 0.18);
+  border-color: rgba(245, 158, 11, 0.40);
+  color: var(--accent-amber);
+}
+
+/* Content Body */
+.card-body {
+  padding: var(--space-5);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  gap: var(--space-3);
+}
+
+/* Project Title */
+.card-title,
+h2.card-title,
+h3.card-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  line-height: 1.3;
+  letter-spacing: -0.015em;
+  color: var(--text-primary);
+  margin: 0;
+  transition: color var(--duration-fast) var(--ease-spring);
+}
+
+.card:hover .card-title {
+  color: #FFFFFF;
+}
+
+/* 2-Line Clamped Description */
+.card-desc {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.55;
+  color: var(--text-secondary);
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Tech Stack Badges Container */
+.card-tags,
+.card-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: auto;
+  padding-top: var(--space-2);
+}
+
+.tag,
+.card-tag {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  color: var(--text-secondary);
+  background: var(--bg-badge);
+  border: 1px solid var(--border-subtle);
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  user-select: none;
+  transition: border-color var(--duration-fast) var(--ease-spring),
+              color var(--duration-fast) var(--ease-spring),
+              background-color var(--duration-fast) var(--ease-spring);
+}
+
+.tag:hover,
+.card-tag:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* Action Footer Container */
+.card-actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding-top: var(--space-3);
+  border-top: 1px solid rgba(255, 255, 255, 0.05);
+  margin-top: var(--space-2);
+}
+
+/* Universal Button Architecture with Touch Target >= 44px */
+.btn,
+.btn-primary,
+.btn-secondary,
+.btn-launch,
+.btn-preview,
+.btn-quick-view {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-2);
+  min-height: 44px;
+  padding: 0 var(--space-4);
+  border-radius: var(--radius-md);
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+  border: 1px solid transparent;
+  transition: background-color var(--duration-fast) var(--ease-spring),
+              border-color var(--duration-fast) var(--ease-spring),
+              color var(--duration-fast) var(--ease-spring),
+              transform 120ms var(--ease-spring),
+              box-shadow var(--duration-fast) var(--ease-spring);
+}
+
+/* Primary Action Trigger: Solid Flame Orange */
+.btn-primary,
+.btn-launch {
+  background-color: var(--accent-flame);
+  color: #07080B;
+  border-color: var(--accent-flame);
+  flex: 1;
+}
+
+.btn-primary:hover,
+.btn-launch:hover {
+  background-color: var(--accent-flame-hover);
+  border-color: var(--accent-flame-hover);
+  color: #07080B;
+  box-shadow: 0 0 16px var(--accent-glow);
+  transform: translateY(-1px);
+}
+
+.btn-primary:active,
+.btn-launch:active {
+  transform: translateY(0);
+}
+
+/* Secondary Action Trigger: Ghost Surface Button */
+.btn-secondary,
+.btn-preview,
+.btn-quick-view {
+  background-color: var(--bg-surface);
+  border-color: var(--border-subtle);
+  color: var(--text-secondary);
+  flex: 1;
+}
+
+.btn-secondary:hover,
+.btn-preview:hover,
+.btn-quick-view:hover {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.btn-secondary:active,
+.btn-preview:active,
+.btn-quick-view:active {
+  transform: translateY(0);
+}
+
+/* Zero-Match Empty State */
+.empty-state {
+  grid-column: 1 / -1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: var(--space-16) var(--space-6);
+  background: var(--bg-surface);
+  border: 1px dashed var(--border-subtle);
+  border-radius: var(--radius-lg);
+  gap: var(--space-3);
+}
+
+.empty-icon {
+  font-size: 2rem;
+  line-height: 1;
+  margin-bottom: var(--space-2);
+}
+
+.empty-title {
+  font-family: var(--font-display);
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.empty-desc {
+  font-family: var(--font-sans);
+  font-size: 0.875rem;
+  color: var(--text-secondary);
+  max-width: 400px;
+}
+
+/* ==========================================================================
+   10. Engineering Footer Component
+   ========================================================================== */
+
+.site-footer {
+  width: 100%;
+  margin-top: auto;
+  border-top: 1px solid var(--border-subtle);
+  background-color: rgba(7, 8, 11, 0.95);
+  padding: var(--space-8) var(--space-6);
+}
+
+.footer-container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-2);
+}
+
+.footer-copy {
+  font-family: var(--font-sans);
+  font-size: 0.8125rem;
+  color: var(--text-secondary);
+}
+
+.footer-copy a {
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color var(--duration-fast) var(--ease-spring);
+}
+
+.footer-copy a:hover {
+  color: var(--accent-flame);
+}
+
+.footer-disclaimer {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  max-width: 600px;
+}
+
+/* ==========================================================================
+   11. Responsive Breakpoints & Mobile Adaptation
+   ========================================================================== */
+
 @media (max-width: 640px) {
   .header-container {
     padding: 0 var(--space-4);
@@ -654,10 +1181,56 @@ kbd,
     width: 100%;
     justify-content: center;
   }
+
+  .controls-section {
+    padding: 0 var(--space-4) var(--space-6);
+  }
+
+  .filter-pills {
+    overflow-x: auto;
+    flex-wrap: nowrap;
+    padding-bottom: var(--space-2);
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .filter-pills::-webkit-scrollbar {
+    display: none;
+  }
+
+  .filter-pill {
+    flex-shrink: 0;
+  }
+
+  .showcase,
+  .showcase-section {
+    padding: 0 var(--space-4) var(--space-12);
+  }
+
+  .grid,
+  .project-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .card-actions {
+    flex-direction: row;
+    gap: var(--space-2);
+  }
+
+  .btn,
+  .btn-primary,
+  .btn-secondary,
+  .btn-launch,
+  .btn-preview,
+  .btn-quick-view {
+    font-size: 0.8125rem;
+    padding: 0 var(--space-2);
+  }
 }
 
 /* ==========================================================================
-   8. Motion Suppression & Accessibility
+   12. Motion Suppression & Accessibility
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
@@ -670,3 +1243,4 @@ kbd,
     scroll-behavior: auto !important;
   }
 }
+

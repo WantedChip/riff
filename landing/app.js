@@ -15,6 +15,13 @@ function initTelemetry() {
   }
 }
 
+/**
+ * Preview handler stub for Quick View actions (enhanced in v0.5)
+ */
+window.openPreview = function(title, route) {
+  console.log(`[riff] Quick View requested for: ${title} (${route})`);
+};
+
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', initTelemetry);
 } else {
