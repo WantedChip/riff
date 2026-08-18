@@ -312,21 +312,27 @@ async function extractProjectMetadata(projectDir, folderName, rawSlug) {
   // 4. Auto-detect cover/hero/thumbnail images
   let autoDetectedThumbnailRelPath = '';
   const candidateAssets = [
+    'assets/images/hero-alyx.webp',
     'assets/images/hero-alyx.jpg',
+    'assets/images/cover.webp',
     'assets/images/cover.jpg',
     'assets/images/cover.png',
-    'assets/images/cover.webp',
+    'assets/images/thumbnail.webp',
     'assets/images/thumbnail.jpg',
     'assets/images/thumbnail.png',
-    'assets/images/thumbnail.webp',
+    'assets/images/preview.webp',
     'assets/images/preview.jpg',
     'assets/images/preview.png',
+    'assets/cover.webp',
     'assets/cover.jpg',
     'assets/cover.png',
+    'assets/thumbnail.webp',
     'assets/thumbnail.jpg',
     'assets/thumbnail.png',
+    'cover.webp',
     'cover.png',
     'cover.jpg',
+    'thumbnail.webp',
     'thumbnail.jpg',
     'thumbnail.png'
   ];
@@ -343,7 +349,12 @@ async function extractProjectMetadata(projectDir, folderName, rawSlug) {
     const imagesDir = path.join(projectDir, 'assets', 'images');
     if (fs.existsSync(imagesDir)) {
       try {
-        const imageFiles = (await fsp.readdir(imagesDir)).filter(f => /\.(jpg|jpeg|png|webp|svg)$/i.test(f));
+        const imageFiles = (await fsp.readdir(imagesDir)).filter(f => /\.(webp|jpg|jpeg|png|svg)$/i.test(f));
+        imageFiles.sort((a, b) => {
+          if (a.toLowerCase().endsWith('.webp') && !b.toLowerCase().endsWith('.webp')) return -1;
+          if (!a.toLowerCase().endsWith('.webp') && b.toLowerCase().endsWith('.webp')) return 1;
+          return 0;
+        });
         if (imageFiles.length > 0) {
           autoDetectedThumbnailRelPath = `assets/images/${imageFiles[0]}`;
         }
@@ -1235,7 +1246,7 @@ ${cardsHtml}
 
       grid.innerHTML = filtered.map(p => {
         const previewHtml = p.thumbnail 
-          ? \`<img src="\${p.thumbnail}" alt="\${p.title || p.name}" loading="lazy">\`
+          ? \`<img src="\${p.thumbnail}" alt="\${p.title || p.name}" loading="lazy" width="640" height="360">\`
           : \`<div class="card-preview-placeholder"><span>✨</span><span>Interactive Demo</span></div>\`;
 
         const tagsHtml = (p.tags || []).map(t => \`<span class="tag">\${t}</span>\`).join('');
@@ -1296,6 +1307,41 @@ ${cardsHtml}
 }
 
 /**
+ * Minify CSS helper for production dist bundle
+ */
+function minifyCss(c) {
+  return c
+    .replace(/\/\*[\s\S]*?\*\//g, '')
+    .replace(/\s+/g, ' ')
+    .replace(/\s*([\{\};>~+])\s*/g, '$1')
+    .replace(/:\s+/g, ': ')
+    .replace(/;}/g, '}')
+    .trim();
+}
+
+/**
+ * Minify JavaScript helper for production dist bundle
+ */
+function minifyJs(src) {
+  let s = src.replace(/\/\*[\s\S]*?\*\//g, '').replace(/(^|[^\:])\/\/.*$/gm, '$1');
+  s = s.replace(/[ \t]+/g, ' ');
+  s = s.replace(/\s*([\{\}\(\)\[\]=;:,\+\-\*\/><!&\|\?~^%])\s*/g, '$1');
+  s = s.replace(/\n+/g, '\n').trim();
+  return s;
+}
+
+/**
+ * Minify HTML helper for production dist bundle
+ */
+function minifyHtml(h) {
+  return h
+    .replace(/<!--[\s\S]*?-->/g, '')
+    .replace(/\s+/g, ' ')
+    .replace(/>\s+</g, '><')
+    .trim();
+}
+
+/**
  * Compile landing portal: copy assets, pre-render dist/index.html, and ensure 404 handler
  */
 async function compileLanding(projectManifests) {
@@ -1317,6 +1363,14 @@ async function compileLanding(projectManifests) {
     if (entry.isDirectory()) {
       await copyDir(srcPath, destPath);
       logSuccess(`Copied directory: landing/${entry.name}/ -> dist/${entry.name}/`);
+    } else if (entry.name === 'style.css') {
+      const rawCss = await fsp.readFile(srcPath, 'utf8');
+      await fsp.writeFile(destPath, minifyCss(rawCss), 'utf8');
+      logSuccess(`Compiled & minified: landing/style.css -> dist/style.css`);
+    } else if (entry.name === 'app.js') {
+      const rawJs = await fsp.readFile(srcPath, 'utf8');
+      await fsp.writeFile(destPath, minifyJs(rawJs), 'utf8');
+      logSuccess(`Compiled & minified: landing/app.js -> dist/app.js`);
     } else {
       await fsp.copyFile(srcPath, destPath);
       logSuccess(`Copied asset: landing/${entry.name} -> dist/${entry.name}`);
@@ -1328,12 +1382,12 @@ async function compileLanding(projectManifests) {
   if (fs.existsSync(landingIndexPath)) {
     const rawHtml = await fsp.readFile(landingIndexPath, 'utf8');
     const preRenderedHtml = preRenderLandingHtml(rawHtml, projectManifests);
-    await fsp.writeFile(path.join(DIST_DIR, 'index.html'), preRenderedHtml, 'utf8');
+    await fsp.writeFile(path.join(DIST_DIR, 'index.html'), minifyHtml(preRenderedHtml), 'utf8');
     logSuccess('Pre-rendered landing/index.html with pre-baked project cards -> dist/index.html');
   } else {
     // Generate default landing page with pre-baked project cards in #project-grid
     const defaultHtml = getDefaultLandingHtml(projectManifests);
-    await fsp.writeFile(path.join(DIST_DIR, 'index.html'), defaultHtml, 'utf8');
+    await fsp.writeFile(path.join(DIST_DIR, 'index.html'), minifyHtml(defaultHtml), 'utf8');
     logSuccess('Generated landing portal dist/index.html with pre-rendered project cards.');
   }
 
@@ -1342,10 +1396,11 @@ async function compileLanding(projectManifests) {
   if (!fs.existsSync(dist404Path)) {
     const landing404Path = path.join(LANDING_DIR, '404.html');
     if (fs.existsSync(landing404Path)) {
-      await fsp.copyFile(landing404Path, dist404Path);
+      const raw404 = await fsp.readFile(landing404Path, 'utf8');
+      await fsp.writeFile(dist404Path, minifyHtml(raw404), 'utf8');
       logSuccess('Copied landing/404.html to dist/404.html');
     } else {
-      await fsp.writeFile(dist404Path, get404Html(), 'utf8');
+      await fsp.writeFile(dist404Path, minifyHtml(get404Html()), 'utf8');
       logSuccess('Generated 404.html error handler in dist/');
     }
   }
@@ -1509,7 +1564,8 @@ async function build(options = {}) {
 /**
  * Local Static File HTTP Server (Zero Dependencies)
  */
-function startServer(port = (process.env.PORT ? parseInt(process.env.PORT, 10) : 8080)) {
+function startServer(portOrOptions = (process.env.PORT ? parseInt(process.env.PORT, 10) : 8080)) {
+  const port = typeof portOrOptions === 'object' && portOrOptions !== null ? (portOrOptions.port || 8080) : portOrOptions;
   const MIME_TYPES = {
     '.html': 'text/html; charset=utf-8',
     '.htm': 'text/html; charset=utf-8',
