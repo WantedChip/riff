@@ -4,15 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#07080B">
-  
-  <!-- Primary SEO Metadata -->
   <title>riff — Front-End Reimaginations &amp; Design Labs</title>
   <meta name="description" content="A curated collection of front-end design riffs, practice builds, and interactive interface reimaginings by sohamlabs.">
   <meta name="author" content="sohamlabs">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://riff.sohamlabs.workers.dev/">
-
-  <!-- OpenGraph Metadata -->
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://riff.sohamlabs.workers.dev/">
   <meta property="og:title" content="riff — Front-End Reimaginations &amp; Design Labs">
@@ -22,31 +18,20 @@
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="riff — Tactile Interface Laboratory &amp; Design Riffs">
   <meta property="og:site_name" content="riff">
-
-  <!-- Twitter Card Metadata -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://riff.sohamlabs.workers.dev/">
   <meta name="twitter:title" content="riff — Front-End Reimaginations &amp; Design Labs">
   <meta name="twitter:description" content="A curated collection of front-end design riffs, practice builds, and interactive interface reimaginings by sohamlabs.">
   <meta name="twitter:image" content="https://riff.sohamlabs.workers.dev/assets/images/og-cover.png">
   <meta name="twitter:image:alt" content="riff — Tactile Interface Laboratory &amp; Design Riffs">
-
-  <!-- Typography Preconnect & Import -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-
-  <!-- Stylesheet -->
   <link rel="stylesheet" href="style.css">
-
-  <!-- Application Script Module -->
   <script type="module" src="app.js" defer></script>
 </head>
 <body>
-  <!-- Accessibility Skip Link -->
   <a href="#main-content" class="skip-link">Skip to main content</a>
-
-  <!-- Header Landmark -->
   <header role="banner" class="site-header">
     <div class="header-container">
       <a href="/" class="brand" aria-label="riff showcase homepage">
@@ -71,35 +56,19 @@
       </nav>
     </div>
   </header>
-
-  <!-- Main Content Landmark -->
   <main id="main-content" role="main" class="site-main">
-    <!-- Editorial Hero Section -->
     <section class="hero hero-section" aria-labelledby="hero-title">
       <div class="hero-container">
         <div class="hero-badge">⚡ Interface Laboratory &amp; Design Riffs</div>
         <h1 id="hero-title" class="hero-title">Front-End Riffs &amp; <span class="hero-title-accent">Design Crafts</span></h1>
-        <p class="hero-desc hero-manifesto">
-          &ldquo;A collection of front-end design riffs — practice builds and reimaginings of interfaces I find interesting. Each one is my own code and assets: names, images, and design all changed, nothing copied wholesale.&rdquo;
-        </p>
+        <p class="hero-desc hero-manifesto">&ldquo;A collection of front-end design riffs — practice builds and reimaginings of interfaces I find interesting. Each one is my own code and assets: names, images, and design all changed, nothing copied wholesale.&rdquo;</p>
         <div class="hero-telemetry" aria-label="Showcase telemetry status">
-          <div class="telemetry-pill">
-            <span class="telemetry-icon" aria-hidden="true">📦</span>
-            <span class="telemetry-value"><span id="telemetry-count">1</span> Projects Online</span>
-          </div>
-          <div class="telemetry-pill">
-            <span class="telemetry-icon" aria-hidden="true">⚡</span>
-            <span class="telemetry-value">100% Static HTML/CSS/JS</span>
-          </div>
-          <div class="telemetry-pill">
-            <span class="telemetry-icon" aria-hidden="true">🌐</span>
-            <span class="telemetry-value">Cloudflare Edge Hosted</span>
-          </div>
+          <div class="telemetry-pill"><span class="telemetry-icon" aria-hidden="true">📦</span><span class="telemetry-value"><span id="telemetry-count">1</span> Projects Online</span></div>
+          <div class="telemetry-pill"><span class="telemetry-icon" aria-hidden="true">⚡</span><span class="telemetry-value">100% Static HTML/CSS/JS</span></div>
+          <div class="telemetry-pill"><span class="telemetry-icon" aria-hidden="true">🌐</span><span class="telemetry-value">Cloudflare Edge Hosted</span></div>
         </div>
       </div>
     </section>
-
-    <!-- Search & Filter Controls -->
     <section class="controls-section" aria-label="Search and filter riffs">
       <div class="controls-container">
         <div class="search-box">
@@ -107,35 +76,30 @@
           <input type="search" id="search-input" placeholder="Search riffs by name, stack, or tag... (Press '/' to focus)" aria-label="Search riffs" autocomplete="off" spellcheck="false">
           <kbd class="shortcut-key" aria-hidden="true">/</kbd>
         </div>
-        <nav class="filter-pills" id="category-filters" aria-label="Category filters">
-          <button type="button" class="filter-pill active" data-category="all" aria-pressed="true">All Riffs</button>
-          <button type="button" class="filter-pill" data-category="Clone" aria-pressed="false">Clones</button>
-          <button type="button" class="filter-pill" data-category="Design Riff" aria-pressed="false">Design Riffs</button>
-          <button type="button" class="filter-pill" data-category="Animation" aria-pressed="false">Animations</button>
-          <button type="button" class="filter-pill" data-category="Lab" aria-pressed="false">Component Labs</button>
-        </nav>
+        <div class="controls-status-bar">
+          <nav class="filter-pills" id="category-filters" aria-label="Category filters">
+            <button type="button" class="filter-pill active" data-category="all" aria-pressed="true">All Riffs</button>
+            <button type="button" class="filter-pill" data-category="Clone" aria-pressed="false">Clones</button>
+            <button type="button" class="filter-pill" data-category="Design Riff" aria-pressed="false">Design Riffs</button>
+            <button type="button" class="filter-pill" data-category="Animation" aria-pressed="false">Animations</button>
+            <button type="button" class="filter-pill" data-category="Lab" aria-pressed="false">Component Labs</button>
+          </nav>
+          <div class="search-status" id="search-status" aria-live="polite">Showing <span id="search-count">1</span> of <span id="total-count">1</span> projects</div>
+        </div>
       </div>
     </section>
-
-    <!-- Project Matrix Grid -->
     <section class="showcase showcase-section" aria-label="Project showcase matrix">
       <div class="showcase-container">
         <div class="grid project-grid" id="project-grid" aria-live="polite">
-          <!-- Pre-rendered project cards are injected here at build time -->
+          <!-- Pre-rendered project cards injected at build time -->
         </div>
       </div>
     </section>
   </main>
-
-  <!-- Footer Landmark -->
   <footer role="contentinfo" class="site-footer">
     <div class="footer-container">
-      <p class="footer-copy">
-        MIT License &copy; 2026 <strong>riff</strong> by <a href="https://github.com" target="_blank" rel="noopener noreferrer">sohamlabs</a>. Hosted on Cloudflare Workers.
-      </p>
-      <p class="footer-disclaimer">
-        No attribution implied or given. All trademarks and original designs belong to their respective owners.
-      </p>
+      <p class="footer-copy">MIT License &copy; 2026 <strong>riff</strong> by <a href="https://github.com" target="_blank" rel="noopener noreferrer">sohamlabs</a>. Hosted on Cloudflare Workers.</p>
+      <p class="footer-disclaimer">No attribution implied or given. All trademarks and original designs belong to their respective owners.</p>
     </div>
   </footer>
 </body>
