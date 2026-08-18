@@ -146,12 +146,54 @@ async function copyDir(src, dest) {
 }
 
 /**
+ * Validate a project manifest object against the required schema contract
+ */
+function validateProjectManifest(manifest, folderName) {
+  const REQUIRED_FIELDS = [
+    'id', 'slug', 'name', 'title', 'description', 'category',
+    'tags', 'route', 'aliasRoute', 'folder', 'thumbnail',
+    'author', 'version', 'created', 'buildType'
+  ];
+
+  const errors = [];
+  for (const field of REQUIRED_FIELDS) {
+    if (manifest[field] === undefined || manifest[field] === null) {
+      errors.push(`Missing required field '${field}'`);
+    }
+  }
+
+  if (!Array.isArray(manifest.tags)) {
+    errors.push(`Field 'tags' must be an array, received ${typeof manifest.tags}`);
+  }
+
+  if (typeof manifest.slug !== 'string' || !manifest.slug.match(/^[a-z0-9-]+$/)) {
+    errors.push(`Field 'slug' must be a valid lowercase hyphenated string, received '${manifest.slug}'`);
+  }
+
+  if (typeof manifest.route !== 'string' || !manifest.route.startsWith('/') || !manifest.route.endsWith('/')) {
+    errors.push(`Field 'route' must start and end with '/', received '${manifest.route}'`);
+  }
+
+  if (typeof manifest.aliasRoute !== 'string' || !manifest.aliasRoute.startsWith('/projects/') || !manifest.aliasRoute.endsWith('/')) {
+    errors.push(`Field 'aliasRoute' must start with '/projects/' and end with '/', received '${manifest.aliasRoute}'`);
+  }
+
+  if (errors.length > 0) {
+    throw new Error(`Invalid manifest for project '${folderName}':\n  - ${errors.join('\n  - ')}`);
+  }
+
+  return true;
+}
+
+/**
  * Parse project metadata from config files or heuristics
  */
-async function extractProjectMetadata(projectDir, folderName, slug) {
+async function extractProjectMetadata(projectDir, folderName, rawSlug) {
+  const normalizedSlug = slugify(rawSlug || folderName);
+
   let meta = {
-    id: slug,
-    slug: slug,
+    id: normalizedSlug,
+    slug: normalizedSlug,
     name: folderName
       .replace(/[-_]/g, ' ')
       .replace(/\b\w/g, c => c.toUpperCase()),
@@ -159,8 +201,6 @@ async function extractProjectMetadata(projectDir, folderName, slug) {
     description: 'A front-end interface riff and reimagining.',
     category: 'Clone',
     tags: ['Static', 'HTML/CSS', 'JavaScript'],
-    route: `/${slug}`,
-    aliasRoute: `/projects/${slug}`,
     folder: folderName,
     thumbnail: '',
     author: 'sohamlabs',
@@ -169,25 +209,7 @@ async function extractProjectMetadata(projectDir, folderName, slug) {
     buildType: 'static'
   };
 
-  // 1. Check for explicit riff.json or project.json
-  const riffJsonPath = path.join(projectDir, 'riff.json');
-  const projectJsonPath = path.join(projectDir, 'project.json');
-  const configPath = fs.existsSync(riffJsonPath) ? riffJsonPath : (fs.existsSync(projectJsonPath) ? projectJsonPath : null);
-
-  if (configPath) {
-    try {
-      const customConfig = JSON.parse(await fsp.readFile(configPath, 'utf8'));
-      meta = { ...meta, ...customConfig };
-      if (customConfig.slug) meta.slug = slugify(customConfig.slug);
-      meta.route = `/${meta.slug}`;
-      meta.aliasRoute = `/projects/${meta.slug}`;
-      return meta;
-    } catch (e) {
-      logWarn(`Failed to parse config at ${configPath}: ${e.message}`);
-    }
-  }
-
-  // 2. Check PROJECT.md if available
+  // 1. Auto-extract from PROJECT.md if available
   const projectMdPath = path.join(projectDir, 'PROJECT.md');
   if (fs.existsSync(projectMdPath)) {
     try {
@@ -221,12 +243,15 @@ async function extractProjectMetadata(projectDir, folderName, slug) {
     }
   }
 
-  // 3. Check package.json if available
+  // 2. Auto-extract from package.json if available
   const pkgJsonPath = path.join(projectDir, 'package.json');
   if (fs.existsSync(pkgJsonPath)) {
     try {
       const pkg = JSON.parse(await fsp.readFile(pkgJsonPath, 'utf8'));
-      if (pkg.name && !meta.title) meta.name = pkg.name;
+      if (pkg.name && !meta.title) {
+        meta.name = pkg.name;
+        meta.title = pkg.name;
+      }
       if (pkg.description) meta.description = pkg.description;
       if (pkg.scripts && pkg.scripts.build) {
         meta.buildType = 'npm-build';
@@ -234,12 +259,16 @@ async function extractProjectMetadata(projectDir, folderName, slug) {
       if (Array.isArray(pkg.keywords) && pkg.keywords.length > 0) {
         meta.tags = pkg.keywords;
       }
+      if (pkg.author) {
+        meta.author = typeof pkg.author === 'string' ? pkg.author : (pkg.author.name || meta.author);
+      }
+      if (pkg.version) meta.version = pkg.version;
     } catch (e) {
-      // Ignore
+      // Ignore invalid JSON in package.json
     }
   }
 
-  // 4. Check index.html for title and meta description
+  // 3. Auto-extract from index.html for title and meta description
   const indexPath = path.join(projectDir, 'index.html');
   if (fs.existsSync(indexPath)) {
     try {
@@ -254,27 +283,122 @@ async function extractProjectMetadata(projectDir, folderName, slug) {
         meta.description = descMatch[1].trim();
       }
     } catch (e) {
-      // Ignore
+      // Ignore html parsing errors
     }
   }
 
-  // 5. Look for cover/hero/thumbnail images
-  const assetPaths = [
-    `assets/images/hero-alyx.jpg`,
-    `assets/images/cover.jpg`,
-    `assets/images/cover.png`,
-    `assets/images/thumbnail.jpg`,
-    `assets/images/thumbnail.png`,
-    `cover.png`,
-    `thumbnail.jpg`
+  // 4. Auto-detect cover/hero/thumbnail images
+  let autoDetectedThumbnailRelPath = '';
+  const candidateAssets = [
+    'assets/images/hero-alyx.jpg',
+    'assets/images/cover.jpg',
+    'assets/images/cover.png',
+    'assets/images/cover.webp',
+    'assets/images/thumbnail.jpg',
+    'assets/images/thumbnail.png',
+    'assets/images/thumbnail.webp',
+    'assets/images/preview.jpg',
+    'assets/images/preview.png',
+    'assets/cover.jpg',
+    'assets/cover.png',
+    'assets/thumbnail.jpg',
+    'assets/thumbnail.png',
+    'cover.png',
+    'cover.jpg',
+    'thumbnail.jpg',
+    'thumbnail.png'
   ];
 
-  for (const relPath of assetPaths) {
+  for (const relPath of candidateAssets) {
     if (fs.existsSync(path.join(projectDir, relPath))) {
-      meta.thumbnail = `/${meta.slug}/${relPath}`;
+      autoDetectedThumbnailRelPath = relPath;
       break;
     }
   }
+
+  // Fallback: search assets/images directory if no prioritized thumbnail was found
+  if (!autoDetectedThumbnailRelPath) {
+    const imagesDir = path.join(projectDir, 'assets', 'images');
+    if (fs.existsSync(imagesDir)) {
+      try {
+        const imageFiles = (await fsp.readdir(imagesDir)).filter(f => /\.(jpg|jpeg|png|webp|svg)$/i.test(f));
+        if (imageFiles.length > 0) {
+          autoDetectedThumbnailRelPath = `assets/images/${imageFiles[0]}`;
+        }
+      } catch (e) {
+        // Ignore
+      }
+    }
+  }
+
+  // 5. Apply explicit config overrides from riff.json or project.json
+  const riffJsonPath = path.join(projectDir, 'riff.json');
+  const projectJsonPath = path.join(projectDir, 'project.json');
+  const configPath = fs.existsSync(riffJsonPath) ? riffJsonPath : (fs.existsSync(projectJsonPath) ? projectJsonPath : null);
+  let customConfig = null;
+
+  if (configPath) {
+    try {
+      customConfig = JSON.parse(await fsp.readFile(configPath, 'utf8'));
+      for (const [key, value] of Object.entries(customConfig)) {
+        if (value !== undefined && value !== null) {
+          meta[key] = value;
+        }
+      }
+      if (customConfig.slug) {
+        meta.slug = slugify(customConfig.slug);
+      }
+      if (typeof customConfig.tags === 'string') {
+        meta.tags = customConfig.tags.split(',').map(t => t.trim()).filter(Boolean);
+      }
+    } catch (e) {
+      logWarn(`Failed to parse config at ${configPath}: ${e.message}`);
+    }
+  }
+
+  // 6. Normalize and sanitize final fields
+  meta.slug = slugify(meta.slug);
+  meta.id = meta.id ? String(meta.id) : meta.slug;
+  meta.folder = folderName;
+
+  if (!meta.title && meta.name) meta.title = meta.name;
+  if (!meta.name && meta.title) meta.name = meta.title;
+
+  // Route calculation
+  if (customConfig && customConfig.route) {
+    let r = String(customConfig.route).trim();
+    if (!r.startsWith('/')) r = '/' + r;
+    if (!r.endsWith('/')) r = r + '/';
+    meta.route = r;
+  } else {
+    meta.route = `/${meta.slug}/`;
+  }
+
+  // Alias route calculation
+  if (customConfig && customConfig.aliasRoute) {
+    let ar = String(customConfig.aliasRoute).trim();
+    if (!ar.startsWith('/')) ar = '/' + ar;
+    if (!ar.endsWith('/')) ar = ar + '/';
+    meta.aliasRoute = ar;
+  } else {
+    meta.aliasRoute = `/projects/${meta.slug}/`;
+  }
+
+  // Thumbnail path calculation
+  if (customConfig && customConfig.thumbnail) {
+    let t = String(customConfig.thumbnail).trim();
+    if (!t.startsWith('http') && !t.startsWith('/')) {
+      t = `/${meta.slug}/${t.replace(/^\/+/, '')}`;
+    }
+    meta.thumbnail = t;
+  } else if (autoDetectedThumbnailRelPath) {
+    meta.thumbnail = `/${meta.slug}/${autoDetectedThumbnailRelPath.replace(/\\/g, '/')}`;
+  } else {
+    meta.thumbnail = '';
+  }
+
+  // 7. Validate manifest against schema contract
+  validateProjectManifest(meta, folderName);
 
   return meta;
 }
@@ -989,8 +1113,8 @@ function getDefaultLandingHtml(projects) {
               <p class="card-desc">\${p.description}</p>
               <div class="card-tags">\${tagsHtml}</div>
               <div class="card-actions">
-                <a href="\${p.route}/" class="btn-launch">Launch Riff →</a>
-                <button class="btn-preview" onclick="openPreview('\${p.name}', '\${p.route}/')">Quick View</button>
+                <a href="\${p.route}" class="btn-launch">Launch Riff →</a>
+                <button class="btn-preview" onclick="openPreview('\${p.name}', '\${p.route}')">Quick View</button>
               </div>
             </div>
           </div>
@@ -1066,7 +1190,7 @@ async function build(options = {}) {
 
   const projectEntries = await fsp.readdir(PROJECTS_DIR, { withFileTypes: true });
   const projectFolders = projectEntries
-    .filter(e => e.isDirectory() && !shouldIgnore(e.name))
+    .filter(e => e.isDirectory() && !e.name.startsWith('.') && !shouldIgnore(e.name))
     .map(e => e.name);
 
   log(`Discovered ${colors.bright}${projectFolders.length}${colors.reset} project(s): [${projectFolders.join(', ')}]`);
@@ -1077,7 +1201,7 @@ async function build(options = {}) {
     try {
       const meta = await compileProject(folder);
       projectManifests.push(meta);
-      logSuccess(`Compiled: ${colors.bright}${meta.name}${colors.reset} -> ${colors.cyan}${meta.route}/${colors.reset} & ${colors.cyan}${meta.aliasRoute}/${colors.reset}`);
+      logSuccess(`Compiled: ${colors.bright}${meta.name}${colors.reset} -> ${colors.cyan}${meta.route}${colors.reset} & ${colors.cyan}${meta.aliasRoute}${colors.reset}`);
     } catch (err) {
       logError(`Failed to compile project '${folder}': ${err.message}`);
       console.error(err);
@@ -1147,7 +1271,7 @@ async function build(options = {}) {
     <priority>1.0</priority>
   </url>
 ${projectManifests.map(p => `  <url>
-    <loc>https://riff.sohamlabs.workers.dev${p.route}/</loc>
+    <loc>https://riff.sohamlabs.workers.dev${p.route}</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`).join('\n')}
