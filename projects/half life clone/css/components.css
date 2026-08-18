@@ -30,6 +30,7 @@
   align-items: center;
   justify-content: space-between;
   height: 72px;
+  padding-left: 130px;
 }
 
 /* Brand & Logo */
@@ -879,3 +880,92 @@
     flex-direction: row;
   }
 }
+
+/* ==========================================================================
+   RIFF RETURN NAVIGATION BREADCRUMB (.riff-back-pill)
+   Sub-phase v0.7.2: Floating edge return badge to Riff root portal
+   ========================================================================== */
+.riff-back-pill {
+  position: fixed;
+  top: 18px;
+  left: 16px;
+  z-index: 9999;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 14px;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+  color: #F4F6FB;
+  text-decoration: none !important;
+  background-color: rgba(7, 8, 11, 0.85);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 9999px !important;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(255, 255, 255, 0.06) !important;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1),
+              background-color 0.2s ease,
+              border-color 0.2s ease,
+              box-shadow 0.2s ease,
+              color 0.2s ease;
+}
+
+.riff-back-pill:hover {
+  transform: translateY(-2px);
+  background-color: rgba(14, 16, 23, 0.95);
+  border-color: rgba(255, 94, 58, 0.5);
+  color: #FFFFFF;
+  text-decoration: none !important;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.5), 0 0 12px rgba(255, 94, 58, 0.25) !important;
+}
+
+.riff-back-pill:active {
+  transform: translateY(0);
+}
+
+.riff-back-pill:focus {
+  outline: 2px solid #FF5E3A !important;
+  outline-offset: 2px;
+}
+
+.riff-back-pill:focus:not(:focus-visible) {
+  outline: none !important;
+}
+
+.riff-back-pill:focus-visible {
+  outline: 2px solid #FF5E3A !important;
+  outline-offset: 2px;
+}
+
+@media (max-width: 576px) {
+  .riff-back-pill {
+    top: 18px;
+    left: 8px;
+    padding: 5px 10px;
+    font-size: 11px;
+    gap: 4px;
+  }
+  .hl-header-inner,
+  .site-header-inner {
+    padding-left: 106px;
+  }
+}
+
+/* Accessibility: Spatial motion suppression */
+@media (prefers-reduced-motion: reduce) {
+  .riff-back-pill {
+    transition: none !important;
+    transform: none !important;
+  }
+  .riff-back-pill:hover {
+    transform: none !important;
+  }
+}
+
