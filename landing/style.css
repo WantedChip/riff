@@ -1532,52 +1532,92 @@ h3.card-title {
   gap: var(--space-2, 8px);
 }
 
-/* Modal Action Controls & Close Button */
+/* Modal Action Controls & Toolbar Buttons */
 .modal-actions {
   display: flex;
   align-items: center;
   gap: var(--space-2, 8px);
 }
 
+.modal-action-btn,
 .modal-close-btn,
-#modal-close-btn,
-.modal-btn-close {
+.modal-btn-close,
+#btn-modal-reload,
+#link-modal-external,
+#btn-modal-close,
+#modal-close-btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 36px;
   height: 36px;
+  min-width: 36px;
   border-radius: var(--radius-md, 8px);
   background: var(--bg-badge, rgba(255, 255, 255, 0.05));
   border: 1px solid var(--border-subtle, rgba(255, 255, 255, 0.08));
   color: var(--text-secondary, #949EB2);
+  text-decoration: none;
   cursor: pointer;
   padding: 0;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
   transition: background-color var(--duration-fast, 150ms) var(--ease-spring),
               border-color var(--duration-fast, 150ms) var(--ease-spring),
               color var(--duration-fast, 150ms) var(--ease-spring),
-              transform 120ms var(--ease-spring);
+              transform 120ms var(--ease-spring),
+              box-shadow var(--duration-fast, 150ms) var(--ease-spring);
+  user-select: none;
 }
 
+.modal-action-btn:hover,
 .modal-close-btn:hover,
-#modal-close-btn:hover,
-.modal-btn-close:hover {
-  background-color: rgba(255, 255, 255, 0.1);
+.modal-btn-close:hover,
+#btn-modal-reload:hover,
+#link-modal-external:hover,
+#btn-modal-close:hover,
+#modal-close-btn:hover {
+  background-color: rgba(255, 255, 255, 0.10);
   border-color: var(--border-hover, rgba(255, 255, 255, 0.22));
   color: var(--text-primary, #F4F6FB);
   transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
 }
 
+.modal-action-btn:active,
 .modal-close-btn:active,
-#modal-close-btn:active,
-.modal-btn-close:active {
+.modal-btn-close:active,
+#btn-modal-reload:active,
+#link-modal-external:active,
+#btn-modal-close:active,
+#modal-close-btn:active {
   transform: translateY(0);
+  background-color: rgba(255, 255, 255, 0.15);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.4);
 }
 
+.modal-action-btn:focus-visible,
 .modal-close-btn:focus-visible,
+.modal-btn-close:focus-visible,
+#btn-modal-reload:focus-visible,
+#link-modal-external:focus-visible,
+#btn-modal-close:focus-visible,
 #modal-close-btn:focus-visible {
   outline: 2px solid var(--accent-flame, #FF5E3A);
   outline-offset: 2px;
+}
+
+#btn-modal-reload:hover svg,
+.modal-btn-reload:hover svg {
+  color: var(--accent-flame, #FF5E3A);
+}
+
+#link-modal-external:hover svg,
+.modal-btn-external:hover svg {
+  color: var(--text-primary, #F4F6FB);
+}
+
+.modal-action-btn.is-reloading svg,
+#btn-modal-reload.is-reloading svg {
+  animation: iframe-spin 0.6s linear infinite;
 }
 
 /* Modal Body / Viewport Sandbox Container */
@@ -1595,15 +1635,69 @@ h3.card-title {
   padding: 0;
 }
 
+/* Iframe Loading Skeleton & Spinner */
+.iframe-spinner,
+#iframe-loader {
+  position: absolute;
+  inset: 0;
+  z-index: 10;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: var(--space-3, 12px);
+  background-color: var(--bg-void, #07080B);
+  opacity: 1;
+  visibility: visible;
+  pointer-events: none;
+  transition: opacity 200ms var(--ease-spring),
+              visibility 200ms var(--ease-spring);
+}
+
+.iframe-spinner.is-hidden,
+#iframe-loader.is-hidden,
+.iframe-spinner[hidden],
+#iframe-loader[hidden] {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.spinner-ring {
+  width: 38px;
+  height: 38px;
+  border: 3px solid rgba(255, 255, 255, 0.1);
+  border-top-color: var(--accent-flame, #FF5E3A);
+  border-radius: 50%;
+  animation: iframe-spin 0.75s linear infinite;
+  box-shadow: 0 0 16px var(--accent-glow, rgba(255, 94, 58, 0.35));
+}
+
+.spinner-text {
+  font-family: var(--font-mono, 'JetBrains Mono', monospace);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-muted, #68738B);
+  letter-spacing: 0.04em;
+  user-select: none;
+}
+
+@keyframes iframe-spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
 /* Modal Live Iframe Sandbox */
 .modal-iframe,
 #modal-iframe {
   width: 100%;
   height: 100%;
   border: none;
+  outline: none;
   display: block;
   background-color: var(--bg-void, #07080B);
-  transition: max-width 220ms var(--ease-spring);
+  transition: max-width 220ms var(--ease-spring),
+              opacity 150ms var(--ease-spring);
 }
 
 /* Responsive Modal Breakpoints */

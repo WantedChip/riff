@@ -187,7 +187,7 @@ function initCategoryTabs() {
 }
 
 /* ==========================================================================
-   Modal State Machine & Focus Trapping
+   Modal State Machine, Isolated Iframe Runner & Focus Trapping
    ========================================================================== */
 
 const modalState = {
@@ -216,6 +216,49 @@ function getFocusableElements(container) {
   });
 }
 
+function showIframeLoader() {
+  const loader = document.getElementById('iframe-loader');
+  if (loader) {
+    loader.classList.remove('is-hidden');
+    loader.removeAttribute('hidden');
+    loader.style.opacity = '1';
+    loader.style.visibility = 'visible';
+  }
+}
+
+function hideIframeLoader() {
+  const loader = document.getElementById('iframe-loader');
+  if (loader) {
+    loader.classList.add('is-hidden');
+    loader.style.opacity = '0';
+    loader.style.visibility = 'hidden';
+  }
+}
+
+function reloadModalIframe() {
+  if (!modalState.isOpen) return;
+  const iframe = document.getElementById('modal-iframe');
+  const btnReload = document.getElementById('btn-modal-reload') || document.querySelector('.modal-btn-reload');
+
+  if (btnReload) {
+    btnReload.classList.add('is-reloading');
+  }
+  showIframeLoader();
+
+  if (iframe) {
+    const targetUrl = modalState.activeRoute || iframe.src;
+    iframe.onload = () => {
+      hideIframeLoader();
+      if (btnReload) btnReload.classList.remove('is-reloading');
+    };
+    // Re-assign src to force reload sandbox without unmounting modal
+    iframe.src = targetUrl;
+  }
+  setTimeout(() => {
+    if (btnReload) btnReload.classList.remove('is-reloading');
+  }, 1200);
+}
+
 function openModal(title, route, triggerEl = null) {
   const modal = document.getElementById('preview-modal');
   if (!modal) return;
@@ -223,7 +266,16 @@ function openModal(title, route, triggerEl = null) {
   // Save triggering element for focus restoration
   modalState.triggerElement = triggerEl || document.activeElement;
   modalState.activeTitle = title || 'Project Preview';
-  modalState.activeRoute = route || '';
+
+  // Normalize route with trailing slash
+  let formattedRoute = route || '/';
+  if (!formattedRoute.startsWith('/') && !formattedRoute.startsWith('http')) {
+    formattedRoute = '/' + formattedRoute;
+  }
+  if (!formattedRoute.endsWith('/') && !formattedRoute.includes('.') && !formattedRoute.includes('?')) {
+    formattedRoute = formattedRoute + '/';
+  }
+  modalState.activeRoute = formattedRoute;
   modalState.isOpen = true;
 
   // Update modal title and route
@@ -233,11 +285,22 @@ function openModal(title, route, triggerEl = null) {
   const routeEl = document.getElementById('modal-project-route');
   if (routeEl) routeEl.textContent = modalState.activeRoute;
 
-  // Set iframe source
+  // Update External Launch Link
+  const externalLink = document.getElementById('link-modal-external');
+  if (externalLink) {
+    externalLink.href = modalState.activeRoute;
+    externalLink.setAttribute('aria-label', `Open ${modalState.activeTitle} in new tab`);
+  }
+
+  // Show loader and set iframe source
+  showIframeLoader();
   const iframe = document.getElementById('modal-iframe');
-  if (iframe && route) {
-    iframe.src = route;
-    iframe.title = `${modalState.activeTitle} Preview Sandbox`;
+  if (iframe) {
+    iframe.onload = () => {
+      hideIframeLoader();
+    };
+    iframe.src = modalState.activeRoute;
+    iframe.title = `${modalState.activeTitle} Live Preview`;
   }
 
   // Lock background body scroll
@@ -251,8 +314,8 @@ function openModal(title, route, triggerEl = null) {
     modal.classList.add('is-open', 'active');
     modal.classList.remove('is-closing');
 
-    // Focus the first interactive element or close button inside modal
-    const closeBtn = document.getElementById('modal-close-btn');
+    // Focus the close button or first focusable control inside modal
+    const closeBtn = document.getElementById('btn-modal-close') || document.getElementById('modal-close-btn') || modal.querySelector('.modal-close-btn');
     if (closeBtn) {
       closeBtn.focus();
     } else {
@@ -275,16 +338,19 @@ function closeModal() {
   // Unlock background body scroll
   document.body.style.overflow = '';
 
-  // Clean up iframe and hide modal after exit transition (200ms)
+  // Teardown iframe immediately to halt audio/animation loops
+  const iframe = document.getElementById('modal-iframe');
+  if (iframe) {
+    iframe.onload = null;
+    iframe.src = 'about:blank';
+  }
+  hideIframeLoader();
+
+  // Hide modal element after exit transition (200ms)
   setTimeout(() => {
     if (!modalState.isOpen) {
       modal.setAttribute('hidden', '');
       modal.classList.remove('is-closing');
-
-      const iframe = document.getElementById('modal-iframe');
-      if (iframe) {
-        iframe.src = 'about:blank';
-      }
     }
   }, 200);
 
@@ -362,8 +428,16 @@ function initApp() {
   initCategoryTabs();
 
   document.addEventListener('click', e => {
+    // Reload button trigger
+    const reloadBtn = e.target.closest('#btn-modal-reload, .modal-btn-reload, [data-action="reload-modal"], [data-action="reload-iframe"]');
+    if (reloadBtn) {
+      e.preventDefault();
+      reloadModalIframe();
+      return;
+    }
+
     // Modal close button trigger
-    const closeBtn = e.target.closest('#modal-close-btn, .modal-close-btn, .modal-close, [data-action="close-modal"]');
+    const closeBtn = e.target.closest('#btn-modal-close, #modal-close-btn, .modal-close-btn, .modal-close, [data-action="close-modal"]');
     if (closeBtn) {
       e.preventDefault();
       closeModal();
@@ -445,6 +519,10 @@ window.closePreview = function() {
   closeModal();
 };
 
+window.reloadPreview = function() {
+  reloadModalIframe();
+};
+
 window.riffApp = {
   state,
   modalState,
@@ -458,9 +536,11 @@ window.riffApp = {
   announceFilter,
   openModal,
   closeModal,
+  reloadModalIframe,
   modal: {
     open: openModal,
     close: closeModal,
+    reload: reloadModalIframe,
     isOpen: () => modalState.isOpen
   },
   setSearchQuery: q => {
