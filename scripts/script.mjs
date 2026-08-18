@@ -225,7 +225,7 @@ async function extractProjectMetadata(projectDir, folderName, rawSlug) {
     tags: ['Static', 'HTML/CSS', 'JavaScript'],
     folder: folderName,
     thumbnail: '',
-    author: 'sohamlabs',
+    author: 'WantedChip',
     version: '1.0.0',
     created: new Date().toISOString().split('T')[0],
     buildType: 'static'
@@ -598,25 +598,25 @@ function get404Html() {
   <meta name="theme-color" content="#07080B">
   <title>404: Riff Not Found — riff</title>
   <meta name="description" content="The requested project route does not exist or has been relocated. Return to the riff interface laboratory portal.">
-  <meta name="author" content="sohamlabs">
+  <meta name="author" content="WantedChip">
   <meta name="robots" content="noindex, follow">
-  <link rel="canonical" href="https://riff.sohamlabs.workers.dev/404.html">
+  <link rel="canonical" href="https://riff.WantedChip.workers.dev/404.html">
   <link rel="icon" type="image/svg+xml" href="assets/icons/brandmark.svg">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://riff.sohamlabs.workers.dev/404.html">
+  <meta property="og:url" content="https://riff.WantedChip.workers.dev/404.html">
   <meta property="og:title" content="404: Riff Not Found — riff">
   <meta property="og:description" content="The requested project route does not exist or has been relocated. Return to the riff interface laboratory portal.">
-  <meta property="og:image" content="https://riff.sohamlabs.workers.dev/assets/images/og-cover.png">
+  <meta property="og:image" content="https://riff.WantedChip.workers.dev/assets/images/og-cover.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="riff — 404 Riff Not Found">
   <meta property="og:site_name" content="riff">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="https://riff.sohamlabs.workers.dev/404.html">
+  <meta name="twitter:url" content="https://riff.WantedChip.workers.dev/404.html">
   <meta name="twitter:title" content="404: Riff Not Found — riff">
   <meta name="twitter:description" content="The requested project route does not exist or has been relocated.">
-  <meta name="twitter:image" content="https://riff.sohamlabs.workers.dev/assets/images/og-cover.png">
+  <meta name="twitter:image" content="https://riff.WantedChip.workers.dev/assets/images/og-cover.png">
   <meta name="twitter:image:alt" content="riff — 404 Riff Not Found">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -630,17 +630,17 @@ function get404Html() {
       <a href="/" class="brand" aria-label="riff showcase homepage">
         <div class="brand-icon" aria-hidden="true">r</div>
         <span class="brand-title">riff</span>
-        <span class="brand-badge">sohamlabs</span>
+        <span class="brand-badge">WantedChip</span>
       </a>
       <nav class="nav-links" aria-label="Primary Navigation">
-        <a href="https://riff.sohamlabs.workers.dev" class="nav-link edge-status" aria-label="Edge status: Active">
+        <a href="https://riff.WantedChip.workers.dev" class="nav-link edge-status" aria-label="Edge status: Active">
           <span class="edge-pulse" aria-hidden="true">
             <span class="edge-dot"></span>
             <span class="edge-ring"></span>
           </span>
           <span class="edge-label">Edge Active</span>
         </a>
-        <a href="https://github.com/sohamlabs/riff" target="_blank" rel="noopener noreferrer" class="nav-link github-link" aria-label="View source on GitHub">
+        <a href="https://github.com/WantedChip/riff" target="_blank" rel="noopener noreferrer" class="nav-link github-link" aria-label="View source on GitHub">
           <svg class="github-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
           </svg>
@@ -675,7 +675,7 @@ function get404Html() {
           </div>
           <div class="error-actions">
             <a href="/" class="btn btn-primary btn-launch" aria-label="Return to Riff Showcase Matrix">&larr; Return to Riff Portal</a>
-            <a href="https://github.com/sohamlabs/riff" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" aria-label="View Riff source code on GitHub">&nearr; View Source Code</a>
+            <a href="https://github.com/WantedChip/riff" target="_blank" rel="noopener noreferrer" class="btn btn-secondary" aria-label="View Riff source code on GitHub">&nearr; View Source Code</a>
           </div>
         </div>
       </div>
@@ -685,7 +685,7 @@ function get404Html() {
     <div class="footer-container">
       <div class="footer-primary-row">
         <div class="footer-legal">
-          <span class="footer-brand-copy">&copy; 2026 Riff by <a href="https://github.com/sohamlabs/riff" target="_blank" rel="noopener noreferrer" class="footer-link" aria-label="sohamlabs on GitHub">sohamlabs</a></span>
+          <span class="footer-brand-copy">&copy; 2026 Riff by <a href="https://github.com/WantedChip" target="_blank" rel="noopener noreferrer" class="footer-link" aria-label="WantedChip on GitHub">WantedChip</a></span>
           <span class="footer-divider" aria-hidden="true">&bull;</span>
           <a href="./LICENSE" class="footer-link footer-license-link" aria-label="View MIT License">MIT License</a>
         </div>
@@ -715,26 +715,26 @@ function getDefaultLandingHtml(projects) {
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="theme-color" content="#07080B">
   <title>riff — Front-End Reimaginations &amp; Design Labs</title>
-  <meta name="description" content="A curated collection of front-end design riffs, practice builds, and interactive interface reimaginings by sohamlabs.">
-  <meta name="author" content="sohamlabs">
+  <meta name="description" content="A curated collection of front-end design riffs, practice builds, and interactive interface reimaginings by WantedChip.">
+  <meta name="author" content="WantedChip">
   <meta name="robots" content="index, follow">
-  <link rel="canonical" href="https://riff.sohamlabs.workers.dev/">
+  <link rel="canonical" href="https://riff.WantedChip.workers.dev/">
   <link rel="icon" type="image/svg+xml" href="assets/icons/brandmark.svg">
   <meta property="og:type" content="website">
-  <meta property="og:url" content="https://riff.sohamlabs.workers.dev/">
+  <meta property="og:url" content="https://riff.WantedChip.workers.dev/">
   <meta property="og:title" content="riff — Front-End Reimaginations &amp; Design Labs">
-  <meta property="og:description" content="A curated collection of front-end design riffs, practice builds, and interactive interface reimaginings by sohamlabs.">
-  <meta property="og:image" content="https://riff.sohamlabs.workers.dev/assets/images/og-cover.png">
+  <meta property="og:description" content="A curated collection of front-end design riffs, practice builds, and interactive interface reimaginings by WantedChip.">
+  <meta property="og:image" content="https://riff.WantedChip.workers.dev/assets/images/og-cover.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="riff — Tactile Interface Laboratory &amp; Design Riffs">
   <meta property="og:site_name" content="riff">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:url" content="https://riff.sohamlabs.workers.dev/">
+  <meta name="twitter:url" content="https://riff.WantedChip.workers.dev/">
   <meta name="twitter:title" content="riff — Front-End Reimaginations &amp; Design Labs">
-  <meta name="twitter:description" content="A curated collection of front-end design riffs, practice builds, and interactive interface reimaginings by sohamlabs.">
-  <meta name="twitter:image" content="https://riff.sohamlabs.workers.dev/assets/images/og-cover.png">
+  <meta name="twitter:description" content="A curated collection of front-end design riffs, practice builds, and interactive interface reimaginings by WantedChip.">
+  <meta name="twitter:image" content="https://riff.WantedChip.workers.dev/assets/images/og-cover.png">
   <meta name="twitter:image:alt" content="riff — Tactile Interface Laboratory &amp; Design Riffs">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -1191,11 +1191,11 @@ function getDefaultLandingHtml(projects) {
       <a href="/" class="brand" aria-label="riff showcase homepage">
         <div class="brand-icon" aria-hidden="true">r</div>
         <span class="brand-title">riff</span>
-        <span class="brand-badge">sohamlabs</span>
+        <span class="brand-badge">WantedChip</span>
       </a>
       <div class="nav-links">
-        <a href="https://riff.sohamlabs.workers.dev" class="nav-link" aria-label="Edge status: Active">Live Edge</a>
-        <a href="https://github.com/sohamlabs/riff" target="_blank" rel="noopener noreferrer" class="nav-link" aria-label="View source on GitHub">GitHub</a>
+        <a href="https://riff.WantedChip.workers.dev" class="nav-link" aria-label="Edge status: Active">Live Edge</a>
+        <a href="https://github.com/WantedChip/riff" target="_blank" rel="noopener noreferrer" class="nav-link" aria-label="View source on GitHub">GitHub</a>
       </div>
     </div>
   </header>
@@ -1248,7 +1248,7 @@ ${cardsHtml}
     <div class="footer-container">
       <div class="footer-primary-row">
         <div class="footer-legal">
-          <span class="footer-brand-copy">&copy; ${new Date().getFullYear()} Riff by <a href="https://github.com/sohamlabs/riff" target="_blank" rel="noopener noreferrer" class="footer-link" aria-label="sohamlabs on GitHub">sohamlabs</a></span>
+          <span class="footer-brand-copy">&copy; ${new Date().getFullYear()} Riff by <a href="https://github.com/WantedChip" target="_blank" rel="noopener noreferrer" class="footer-link" aria-label="WantedChip on GitHub">WantedChip</a></span>
           <span class="footer-divider" aria-hidden="true">&bull;</span>
           <a href="./LICENSE" class="footer-link footer-license-link" aria-label="View MIT License">MIT License</a>
         </div>
@@ -1464,13 +1464,13 @@ async function compileLanding(projectManifests) {
 async function generateSitemapAndRobots(projectManifests) {
   log('Generating robots.txt and sitemap.xml...');
 
-  const robotsTxt = `User-agent: *\nAllow: /\nSitemap: https://riff.sohamlabs.workers.dev/sitemap.xml\n`;
+  const robotsTxt = `User-agent: *\nAllow: /\nSitemap: https://riff.WantedChip.workers.dev/sitemap.xml\n`;
   await fsp.writeFile(path.join(DIST_DIR, 'robots.txt'), robotsTxt, 'utf8');
   logSuccess('Generated dist/robots.txt');
 
   const sitemapUrls = [
     `  <url>
-    <loc>https://riff.sohamlabs.workers.dev/</loc>
+    <loc>https://riff.WantedChip.workers.dev/</loc>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
   </url>`
@@ -1479,14 +1479,14 @@ async function generateSitemapAndRobots(projectManifests) {
   for (const p of projectManifests) {
     if (p.route) {
       sitemapUrls.push(`  <url>
-    <loc>https://riff.sohamlabs.workers.dev${p.route}</loc>
+    <loc>https://riff.WantedChip.workers.dev${p.route}</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>`);
     }
     if (p.aliasRoute && p.aliasRoute !== p.route) {
       sitemapUrls.push(`  <url>
-    <loc>https://riff.sohamlabs.workers.dev${p.aliasRoute}</loc>
+    <loc>https://riff.WantedChip.workers.dev${p.aliasRoute}</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>`);
