@@ -1,8 +1,3 @@
-/**
- * Riff Landing Portal Application Module
- * Instant Client-Side Fuzzy Search Engine & Progressive State Management
- */
-
 const state = {
   projects: [],
   cards: [],
@@ -12,44 +7,54 @@ const state = {
   visibleCount: 0
 };
 
-function escapeHtml(str) {
-  return str ? String(str).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : '';
+function escapeHtml(s) {
+  return s ? String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;') : '';
 }
 
-function normalizeText(str) {
-  return str ? String(str).toLowerCase().trim() : '';
+function normalizeText(s) {
+  return s ? String(s).toLowerCase().trim() : '';
+}
+
+function normalizeCategory(cat) {
+  if (!cat) return 'all';
+  const s = String(cat).toLowerCase().trim();
+  if (['all', 'all riffs', 'all-riffs', '*'].includes(s)) return 'all';
+  if (s.startsWith('clone')) return 'clone';
+  if (s.startsWith('design')) return 'design riff';
+  if (s.startsWith('anim')) return 'animation';
+  if (s.includes('lab')) return 'lab';
+  return s;
+}
+
+function matchCategory(cardCat, selectedCat) {
+  const normSelected = normalizeCategory(selectedCat);
+  if (!normSelected || normSelected === 'all') return true;
+  const normCard = normalizeCategory(cardCat);
+  return normCard === normSelected || normCard.includes(normSelected) || normSelected.includes(normCard);
 }
 
 function isSubsequence(needle, haystack) {
   const n = needle.toLowerCase(), h = haystack.toLowerCase();
   let i = 0;
-  for (let j = 0; j < h.length && i < n.length; j++) {
-    if (h[j] === n[i]) i++;
-  }
+  for (let j = 0; j < h.length && i < n.length; j++) if (h[j] === n[i]) i++;
   return i === n.length;
 }
 
 function matchProject(cardData, rawQuery) {
   const query = normalizeText(rawQuery);
   if (!query) return true;
-
   const { title, description, category, tags, slug, rawText } = cardData;
   if (rawText.includes(query)) return true;
-
   const tokens = query.split(/[\s,]+/).filter(Boolean);
   if (!tokens.length) return true;
-
-  return tokens.every(token => {
-    if (rawText.includes(token)) return true;
-    const cleanToken = token.replace(/[^\w]/g, '');
-    const cleanRaw = rawText.replace(/[^\w\s]/g, '');
-    if (cleanToken && cleanRaw.includes(cleanToken)) return true;
-    if (token.length >= 3) {
-      if (isSubsequence(token, title) || isSubsequence(token, slug) || isSubsequence(token, category)) return true;
-      for (const tag of tags) {
-        if (isSubsequence(token, tag)) return true;
-      }
-      if (isSubsequence(token, description)) return true;
+  return tokens.every(tok => {
+    if (rawText.includes(tok)) return true;
+    const ct = tok.replace(/[^\w]/g, ''), cr = rawText.replace(/[^\w\s]/g, '');
+    if (ct && cr.includes(ct)) return true;
+    if (tok.length >= 3) {
+      if (isSubsequence(tok, title) || isSubsequence(tok, slug) || isSubsequence(tok, category)) return true;
+      for (const tag of tags) if (isSubsequence(tok, tag)) return true;
+      if (isSubsequence(tok, description)) return true;
     }
     return false;
   });
@@ -58,63 +63,117 @@ function matchProject(cardData, rawQuery) {
 function updateCounters(visible, total) {
   const countEl = document.getElementById('search-count');
   if (countEl) countEl.textContent = String(visible);
-
   const totalEl = document.getElementById('total-count');
   if (totalEl) totalEl.textContent = String(total);
-
   const statusEl = document.getElementById('search-status');
   if (statusEl) {
     const label = total === 1 ? 'project' : 'projects';
     statusEl.innerHTML = `Showing <span id="search-count">${visible}</span> of <span id="total-count">${total}</span> ${label}`;
   }
-
   const telEl = document.getElementById('telemetry-count');
   if (telEl) telEl.textContent = String(total);
 }
 
-function updateEmptyState(visibleCount, query) {
+function updateEmptyState(visibleCount, query, category) {
   const grid = document.getElementById('project-grid');
   if (!grid) return;
-
-  let emptyState = document.getElementById('empty-state');
+  let el = document.getElementById('empty-state');
   if (visibleCount === 0) {
-    if (!emptyState) {
-      emptyState = document.createElement('div');
-      emptyState.id = 'empty-state';
-      emptyState.className = 'empty-state';
-      emptyState.setAttribute('role', 'status');
-      grid.appendChild(emptyState);
+    if (!el) {
+      el = document.createElement('div');
+      el.id = 'empty-state';
+      el.className = 'empty-state';
+      el.setAttribute('role', 'status');
+      grid.appendChild(el);
     }
-    const clean = query ? escapeHtml(query.trim()) : '';
-    const title = clean ? `No riffs match &ldquo;${clean}&rdquo;` : 'No riffs match the active filter';
-
-    emptyState.innerHTML = `
-      <div class="empty-icon" aria-hidden="true">🔍</div>
-      <h3 class="empty-title">${title}</h3>
-      <p class="empty-desc">Try searching for a different keyword or tech stack tag, or reset your filters.</p>
-      <button type="button" class="btn btn-secondary btn-reset-filters" id="btn-reset-filters">Reset Filters</button>
-    `;
-    emptyState.style.display = 'flex';
-  } else if (emptyState) {
-    emptyState.style.display = 'none';
+    const q = query ? escapeHtml(query.trim()) : '';
+    const normCat = normalizeCategory(category);
+    const title = q && normCat !== 'all' ? `No riffs match &ldquo;${q}&rdquo; in ${escapeHtml(category)}`
+      : q ? `No riffs match &ldquo;${q}&rdquo;`
+      : normCat !== 'all' ? `No riffs found in ${escapeHtml(category)}`
+      : 'No riffs match the active filter';
+    el.innerHTML = `<div class="empty-icon" aria-hidden="true">🔍</div><h3 class="empty-title">${title}</h3><p class="empty-desc">Try searching for a different keyword or tech stack tag, or reset your filters.</p><button type="button" class="btn btn-secondary btn-reset-filters" id="btn-reset-filters">Reset Filters</button>`;
+    el.style.display = 'flex';
+  } else if (el) {
+    el.style.display = 'none';
   }
 }
 
 function applyFilters() {
-  const query = state.searchQuery;
-  const cat = state.activeCategory;
+  const query = state.searchQuery, cat = state.activeCategory;
   let visibleCount = 0;
-
   for (const card of state.cards) {
-    const isVisible = matchProject(card, query) && (cat === 'all' || card.category.toLowerCase() === cat.toLowerCase());
+    const isVisible = matchProject(card, query) && matchCategory(card.category, cat);
     card.element.classList.toggle('is-hidden', !isVisible);
     card.element.style.display = isVisible ? '' : 'none';
     if (isVisible) visibleCount++;
   }
-
   state.visibleCount = visibleCount;
   updateCounters(visibleCount, state.totalCount);
-  updateEmptyState(visibleCount, query);
+  updateEmptyState(visibleCount, query, cat);
+}
+
+function setCategory(cat, focus = false) {
+  state.activeCategory = cat || 'all';
+  const norm = normalizeCategory(state.activeCategory);
+  let matched = null;
+  document.querySelectorAll('#category-filters .filter-pill').forEach(pill => {
+    const isMatch = normalizeCategory(pill.dataset.category || pill.textContent) === norm;
+    pill.classList.toggle('active', isMatch);
+    pill.setAttribute('aria-selected', String(isMatch));
+    pill.setAttribute('aria-pressed', String(isMatch));
+    pill.setAttribute('tabindex', isMatch ? '0' : '-1');
+    if (isMatch) matched = pill;
+  });
+  if (focus && matched) matched.focus();
+  applyFilters();
+}
+
+function handleTagClick(el) {
+  const tag = el.dataset.tag || el.textContent.trim();
+  if (!tag) return;
+  const input = document.getElementById('search-input');
+  if (input) {
+    input.value = tag;
+    state.searchQuery = tag;
+    applyFilters();
+    input.focus();
+    try {
+      const r = input.getBoundingClientRect();
+      if ((r.top < 0 || r.bottom > (window.innerHeight || document.documentElement.clientHeight)) && input.scrollIntoView) {
+        input.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      }
+    } catch (_) {}
+  } else {
+    state.searchQuery = tag;
+    applyFilters();
+  }
+}
+
+function initCategoryTabs() {
+  const tablist = document.querySelector('#category-filters');
+  if (!tablist) return;
+  tablist.addEventListener('click', e => {
+    const btn = e.target.closest('.filter-pill');
+    if (btn) setCategory(btn.dataset.category || btn.textContent.trim());
+  });
+  tablist.addEventListener('keydown', e => {
+    const tabs = Array.from(tablist.querySelectorAll('.filter-pill'));
+    if (!tabs.length) return;
+    const cur = tabs.findIndex(t => t === document.activeElement || t.classList.contains('active'));
+    let next = -1;
+    if (['ArrowRight', 'ArrowDown'].includes(e.key)) next = (cur + 1) % tabs.length;
+    else if (['ArrowLeft', 'ArrowUp'].includes(e.key)) next = (cur - 1 + tabs.length) % tabs.length;
+    else if (e.key === 'Home') next = 0;
+    else if (e.key === 'End') next = tabs.length - 1;
+    else if (['Enter', ' '].includes(e.key) && document.activeElement && tabs.includes(document.activeElement)) {
+      e.preventDefault();
+      setCategory(document.activeElement.dataset.category || document.activeElement.textContent.trim(), true);
+      return;
+    } else return;
+    e.preventDefault();
+    if (next >= 0 && tabs[next]) setCategory(tabs[next].dataset.category || tabs[next].textContent.trim(), true);
+  });
 }
 
 function initApp() {
@@ -123,11 +182,10 @@ function initApp() {
     const slug = card.dataset.slug || '';
     const category = card.dataset.category || card.querySelector('.card-category-badge')?.textContent.trim() || 'Clone';
     const rawTags = card.dataset.tags || '';
-    const tags = rawTags ? rawTags.split(',').map(t => t.trim()).filter(Boolean) : Array.from(card.querySelectorAll('.tag')).map(t => t.textContent.trim());
+    const tags = rawTags ? rawTags.split(',').map(t => t.trim()).filter(Boolean) : Array.from(card.querySelectorAll('.tag, .badge-tag, .card-tag')).map(t => t.textContent.trim());
     const title = card.querySelector('.card-title')?.textContent.trim() || '';
     const description = card.querySelector('.card-desc')?.textContent.trim() || '';
     const rawText = normalizeText(`${title} ${description} ${category} ${tags.join(' ')} ${slug}`);
-
     return { element: card, slug, category, tags, title, description, rawText };
   });
 
@@ -137,56 +195,29 @@ function initApp() {
 
   const searchInput = document.getElementById('search-input');
   if (searchInput) {
-    const onSearch = (e) => { state.searchQuery = e.target.value; applyFilters(); };
+    const onSearch = e => { state.searchQuery = e.target.value; applyFilters(); };
     searchInput.addEventListener('input', onSearch);
     searchInput.addEventListener('search', onSearch);
   }
 
-  const categoryFilters = document.getElementById('category-filters');
-  if (categoryFilters) {
-    categoryFilters.addEventListener('click', (e) => {
-      const btn = e.target.closest('.filter-pill');
-      if (!btn) return;
-      state.activeCategory = btn.dataset.category || 'all';
-      categoryFilters.querySelectorAll('.filter-pill').forEach(pill => {
-        const active = pill === btn;
-        pill.classList.toggle('active', active);
-        pill.setAttribute('aria-pressed', String(active));
-      });
-      applyFilters();
-    });
-  }
+  initCategoryTabs();
 
-  document.addEventListener('click', (e) => {
+  document.addEventListener('click', e => {
     const resetBtn = e.target.closest('#btn-reset-filters, .btn-reset-filters');
     if (resetBtn) {
       const input = document.getElementById('search-input');
       if (input) { input.value = ''; input.focus(); }
       state.searchQuery = '';
-      state.activeCategory = 'all';
-      const pills = document.querySelectorAll('#category-filters .filter-pill');
-      pills.forEach(p => {
-        const isAll = p.dataset.category === 'all';
-        p.classList.toggle('active', isAll);
-        p.setAttribute('aria-pressed', String(isAll));
-      });
-      applyFilters();
+      setCategory('all');
       return;
     }
-
-    const tag = e.target.closest('.tag, .card-tag');
-    if (tag) {
-      const text = tag.dataset.tag || tag.textContent.trim();
-      if (text) {
-        const input = document.getElementById('search-input');
-        if (input) { input.value = text; input.focus(); }
-        state.searchQuery = text;
-        applyFilters();
-      }
+    const tag = e.target.closest('.badge-tag, .tag, .card-tag, [data-tag]');
+    if (tag && !tag.closest('.filter-pills, [role="tablist"]')) {
+      handleTagClick(tag);
     }
   });
 
-  document.addEventListener('keydown', (e) => {
+  document.addEventListener('keydown', e => {
     const input = document.getElementById('search-input');
     if (e.key === '/' && document.activeElement !== input && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) {
       e.preventDefault();
@@ -197,15 +228,9 @@ function initApp() {
     }
   });
 
-  fetch('/projects.json')
-    .then(r => r.ok ? r.json() : null)
-    .then(data => {
-      if (Array.isArray(data)) {
-        state.projects = data;
-        window.__RIFF_PROJECTS__ = data;
-      }
-    })
-    .catch(() => {});
+  fetch('/projects.json').then(r => r.ok ? r.json() : null).then(data => {
+    if (Array.isArray(data)) { state.projects = data; window.__RIFF_PROJECTS__ = data; }
+  }).catch(() => {});
 }
 
 window.openPreview = function(title, route) {
@@ -213,25 +238,18 @@ window.openPreview = function(title, route) {
 };
 
 window.riffApp = {
-  state,
-  applyFilters,
-  matchProject,
-  setSearchQuery: (q) => {
+  state, applyFilters, matchProject, matchCategory, normalizeCategory, setCategory, handleTagClick,
+  setSearchQuery: q => {
     const input = document.getElementById('search-input');
     if (input) input.value = q;
     state.searchQuery = q;
-    applyFilters();
-  },
-  setCategory: (cat) => {
-    state.activeCategory = cat;
     applyFilters();
   },
   resetFilters: () => {
     const input = document.getElementById('search-input');
     if (input) input.value = '';
     state.searchQuery = '';
-    state.activeCategory = 'all';
-    applyFilters();
+    setCategory('all');
   }
 };
 

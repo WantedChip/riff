@@ -508,7 +508,7 @@ function renderProjectCardsHtml(projects) {
       ? `<img src="${p.thumbnail}" alt="${escapeHtml(title)}" loading="lazy" width="640" height="360">`
       : `<div class="card-preview-placeholder"><span>✨</span><span>Interactive Demo</span></div>`;
 
-    const tagsHtml = tags.map(t => `<span class="tag" data-tag="${escapeHtml(t)}">${escapeHtml(t)}</span>`).join('\n              ');
+    const tagsHtml = tags.map(t => `<span class="tag badge-tag card-tag" data-tag="${escapeHtml(t)}">${escapeHtml(t)}</span>`).join('\n              ');
 
     return `        <article class="card" data-slug="${escapeHtml(p.slug)}" data-category="${escapeHtml(category)}" data-tags="${escapeHtml(tags.join(','))}">
           <div class="card-media card-preview">

@@ -57,11 +57,11 @@
     </div>
   </header>
   <main id="main-content" role="main" class="site-main">
-    <section class="hero hero-section" aria-labelledby="hero-title">
+    <section class="hero" aria-labelledby="hero-title">
       <div class="hero-container">
         <div class="hero-badge">⚡ Interface Laboratory &amp; Design Riffs</div>
         <h1 id="hero-title" class="hero-title">Front-End Riffs &amp; <span class="hero-title-accent">Design Crafts</span></h1>
-        <p class="hero-desc hero-manifesto">&ldquo;A collection of front-end design riffs — practice builds and reimaginings of interfaces I find interesting. Each one is my own code and assets: names, images, and design all changed, nothing copied wholesale.&rdquo;</p>
+        <p class="hero-desc">&ldquo;A collection of front-end design riffs — practice builds and reimaginings of interfaces I find interesting. Each one is my own code and assets: names, images, and design all changed, nothing copied wholesale.&rdquo;</p>
         <div class="hero-telemetry" aria-label="Showcase telemetry status">
           <div class="telemetry-pill"><span class="telemetry-icon" aria-hidden="true">📦</span><span class="telemetry-value"><span id="telemetry-count">1</span> Projects Online</span></div>
           <div class="telemetry-pill"><span class="telemetry-icon" aria-hidden="true">⚡</span><span class="telemetry-value">100% Static HTML/CSS/JS</span></div>
@@ -77,18 +77,18 @@
           <kbd class="shortcut-key" aria-hidden="true">/</kbd>
         </div>
         <div class="controls-status-bar">
-          <nav class="filter-pills" id="category-filters" aria-label="Category filters">
-            <button type="button" class="filter-pill active" data-category="all" aria-pressed="true">All Riffs</button>
-            <button type="button" class="filter-pill" data-category="Clone" aria-pressed="false">Clones</button>
-            <button type="button" class="filter-pill" data-category="Design Riff" aria-pressed="false">Design Riffs</button>
-            <button type="button" class="filter-pill" data-category="Animation" aria-pressed="false">Animations</button>
-            <button type="button" class="filter-pill" data-category="Lab" aria-pressed="false">Component Labs</button>
+          <nav class="filter-pills" id="category-filters" role="tablist" aria-label="Category filters">
+            <button type="button" class="filter-pill active" role="tab" data-category="all" aria-selected="true" aria-pressed="true" tabindex="0">All Riffs</button>
+            <button type="button" class="filter-pill" role="tab" data-category="Clone" aria-selected="false" aria-pressed="false" tabindex="-1">Clones</button>
+            <button type="button" class="filter-pill" role="tab" data-category="Design Riff" aria-selected="false" aria-pressed="false" tabindex="-1">Design Riffs</button>
+            <button type="button" class="filter-pill" role="tab" data-category="Animation" aria-selected="false" aria-pressed="false" tabindex="-1">Animations</button>
+            <button type="button" class="filter-pill" role="tab" data-category="Lab" aria-selected="false" aria-pressed="false" tabindex="-1">Component Labs</button>
           </nav>
           <div class="search-status" id="search-status" aria-live="polite">Showing <span id="search-count">1</span> of <span id="total-count">1</span> projects</div>
         </div>
       </div>
     </section>
-    <section class="showcase showcase-section" aria-label="Project showcase matrix">
+    <section class="showcase" aria-label="Project showcase matrix">
       <div class="showcase-container">
         <div class="grid project-grid" id="project-grid" aria-live="polite">
           <!-- Pre-rendered project cards injected at build time -->
