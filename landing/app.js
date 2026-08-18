@@ -189,12 +189,21 @@ function getFocusableElements(container) {
 
 function showIframeLoader() {
   const loader = document.getElementById('iframe-loader');
-  if (loader) { loader.classList.remove('is-hidden'); loader.removeAttribute('hidden'); }
+  if (loader) {
+    loader.classList.remove('is-hidden');
+    loader.removeAttribute('hidden');
+    loader.style.opacity = '1';
+    loader.style.visibility = 'visible';
+  }
 }
 
 function hideIframeLoader() {
   const loader = document.getElementById('iframe-loader');
-  if (loader) { loader.classList.add('is-hidden'); }
+  if (loader) {
+    loader.classList.add('is-hidden');
+    loader.style.opacity = '0';
+    loader.style.visibility = 'hidden';
+  }
 }
 
 function setPreviewViewport(viewport) {
@@ -395,25 +404,20 @@ function handleGlobalKeydown(e) {
     if (isSearchFocused || hasSearchVal || hasStateQuery) {
       if (e.preventDefault) e.preventDefault();
       if (e.stopPropagation) e.stopPropagation();
-      if (searchInput && isSearchFocused) {
-        if (hasSearchVal || hasStateQuery) {
-          searchInput.value = '';
-          state.searchQuery = '';
-          applyFilters();
-        } else {
+      if (searchInput) {
+        searchInput.value = '';
+        if (isSearchFocused) {
           searchInput.blur();
         }
-      } else if (searchInput) {
-        searchInput.value = '';
-        state.searchQuery = '';
-        applyFilters();
-        searchInput.focus();
       }
+      state.searchQuery = '';
+      applyFilters();
       return;
     }
   }
 
   if (e.key === '/' || e.code === 'Slash') {
+    if (e.ctrlKey || e.metaKey || e.altKey) return;
     const active = document.activeElement;
     const tag = active ? active.tagName.toLowerCase() : '';
     const isInputActive = ['input', 'textarea', 'select'].includes(tag) || active?.isContentEditable;
@@ -425,11 +429,13 @@ function handleGlobalKeydown(e) {
 }
 
 function initApp() {
-  document.querySelectorAll('.card, article.card').forEach(el => {
+  document.querySelectorAll('.card').forEach(el => {
     const titleEl = el.querySelector('.card-title');
     const descEl = el.querySelector('.card-desc');
     const catBadge = el.querySelector('.card-category-badge') || el.querySelector('.badge-category');
-    const tags = Array.from(el.querySelectorAll('.card-tag, .tag')).map(t => t.textContent.trim().toLowerCase());
+    const tagElements = Array.from(el.querySelectorAll('.card-tag, .tag')).map(t => t.textContent.trim().toLowerCase());
+    const datasetTags = el.dataset.tags ? el.dataset.tags.split(',').map(t => t.trim().toLowerCase()).filter(Boolean) : [];
+    const tags = Array.from(new Set([...tagElements, ...datasetTags]));
     const slug = el.dataset.slug || el.id.replace(/^project-/, '');
     const title = titleEl ? titleEl.textContent.trim() : slug;
     const description = descEl ? descEl.textContent.trim() : '';
@@ -533,6 +539,10 @@ if (document.readyState === 'loading') {
   initApp();
 }
 
+function getLastFocusedElement() {
+  return lastFocusedElement || modalState.triggerElement || modalState.lastFocusedElement;
+}
+
 window.riffApp = {
   state,
   modalState,
@@ -545,9 +555,19 @@ window.riffApp = {
   resetFilters,
   handleTagClick,
   focusSearchInput,
+  focusSearch: focusSearchInput,
   handleGlobalKeydown,
   handleModalKeydown,
-  handleModalFocusTrap
+  handleModalFocusTrap,
+  getLastFocusedElement,
+  modal: {
+    open: openModal,
+    close: closeModal,
+    reload: reloadModalIframe,
+    setViewport: setPreviewViewport,
+    getViewport: () => modalState.viewportMode,
+    isOpen: () => modalState.isOpen
+  }
 };
 
 window.focusSearch = focusSearchInput;

@@ -598,6 +598,26 @@ function get404Html() {
   <meta name="theme-color" content="#07080B">
   <title>404: Riff Not Found — riff</title>
   <meta name="description" content="The requested project route does not exist or has been relocated. Return to the riff interface laboratory portal.">
+  <meta name="author" content="sohamlabs">
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://riff.sohamlabs.workers.dev/404.html">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/brandmark.svg">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://riff.sohamlabs.workers.dev/404.html">
+  <meta property="og:title" content="404: Riff Not Found — riff">
+  <meta property="og:description" content="The requested project route does not exist or has been relocated. Return to the riff interface laboratory portal.">
+  <meta property="og:image" content="https://riff.sohamlabs.workers.dev/assets/images/og-cover.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="riff — 404 Riff Not Found">
+  <meta property="og:site_name" content="riff">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://riff.sohamlabs.workers.dev/404.html">
+  <meta name="twitter:title" content="404: Riff Not Found — riff">
+  <meta name="twitter:description" content="The requested project route does not exist or has been relocated.">
+  <meta name="twitter:image" content="https://riff.sohamlabs.workers.dev/assets/images/og-cover.png">
+  <meta name="twitter:image:alt" content="riff — 404 Riff Not Found">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
@@ -693,8 +713,29 @@ function getDefaultLandingHtml(projects) {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>riff — Front-End Reimaginations & Design Labs</title>
+  <meta name="theme-color" content="#07080B">
+  <title>riff — Front-End Reimaginations &amp; Design Labs</title>
   <meta name="description" content="A curated collection of front-end design riffs, practice builds, and interactive interface reimaginings by sohamlabs.">
+  <meta name="author" content="sohamlabs">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://riff.sohamlabs.workers.dev/">
+  <link rel="icon" type="image/svg+xml" href="assets/icons/brandmark.svg">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://riff.sohamlabs.workers.dev/">
+  <meta property="og:title" content="riff — Front-End Reimaginations &amp; Design Labs">
+  <meta property="og:description" content="A curated collection of front-end design riffs, practice builds, and interactive interface reimaginings by sohamlabs.">
+  <meta property="og:image" content="https://riff.sohamlabs.workers.dev/assets/images/og-cover.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="riff — Tactile Interface Laboratory &amp; Design Riffs">
+  <meta property="og:site_name" content="riff">
+  <meta property="og:locale" content="en_US">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://riff.sohamlabs.workers.dev/">
+  <meta name="twitter:title" content="riff — Front-End Reimaginations &amp; Design Labs">
+  <meta name="twitter:description" content="A curated collection of front-end design riffs, practice builds, and interactive interface reimaginings by sohamlabs.">
+  <meta name="twitter:image" content="https://riff.sohamlabs.workers.dev/assets/images/og-cover.png">
+  <meta name="twitter:image:alt" content="riff — Tactile Interface Laboratory &amp; Design Riffs">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
@@ -1145,24 +1186,24 @@ function getDefaultLandingHtml(projects) {
 <body>
 
   <!-- Top Navigation -->
-  <header>
+  <header role="banner">
     <div class="header-inner">
-      <a href="/" class="brand">
-        <div class="brand-icon">r</div>
+      <a href="/" class="brand" aria-label="riff showcase homepage">
+        <div class="brand-icon" aria-hidden="true">r</div>
         <span class="brand-title">riff</span>
         <span class="brand-badge">sohamlabs</span>
       </a>
       <div class="nav-links">
-        <a href="https://riff.sohamlabs.workers.dev" class="nav-link">Live Edge</a>
-        <a href="https://github.com" target="_blank" class="nav-link">GitHub</a>
+        <a href="https://riff.sohamlabs.workers.dev" class="nav-link" aria-label="Edge status: Active">Live Edge</a>
+        <a href="https://github.com/sohamlabs/riff" target="_blank" rel="noopener noreferrer" class="nav-link" aria-label="View source on GitHub">GitHub</a>
       </div>
     </div>
   </header>
 
   <!-- Hero Section -->
-  <section class="hero">
-    <div class="hero-badge">⚡ Interface Laboratory</div>
-    <h1 class="hero-title">Front-End Riffs & <span>Design Crafts</span></h1>
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero-badge">⚡ Interface Laboratory &amp; Design Riffs</div>
+    <h1 id="hero-title" class="hero-title">Front-End Riffs &amp; <span>Design Crafts</span></h1>
     <p class="hero-desc">
       A collection of front-end design riffs — practice builds and reimaginings of interfaces I find interesting.
       Each one is my own code and assets: names, images, and design all changed, nothing copied wholesale.
@@ -1172,20 +1213,21 @@ function getDefaultLandingHtml(projects) {
   <!-- Controls -->
   <div class="controls-wrapper">
     <div class="search-box">
-      <span class="search-icon">🔍</span>
-      <input type="text" id="searchInput" placeholder="Search riffs by name, stack, or tag..." oninput="handleSearch()">
+      <span class="search-icon" aria-hidden="true">🔍</span>
+      <input type="search" id="searchInput" placeholder="Search riffs by name, stack, or tag..." oninput="handleSearch()" aria-label="Search riffs" autocomplete="off" spellcheck="false">
     </div>
-    <div class="filter-pills" id="categoryFilters">
-      <button class="filter-pill active" onclick="setFilter('all', this)">All Riffs</button>
-      <button class="filter-pill" onclick="setFilter('Clone', this)">Clones</button>
-      <button class="filter-pill" onclick="setFilter('Design Riff', this)">Design Riffs</button>
-      <button class="filter-pill" onclick="setFilter('Animation', this)">Animations</button>
-    </div>
+    <nav class="filter-pills" id="categoryFilters" role="tablist" aria-label="Category filters" aria-orientation="horizontal">
+      <button class="filter-pill active" onclick="setFilter('all', this)" role="tab" aria-selected="true" aria-pressed="true">All Riffs</button>
+      <button class="filter-pill" onclick="setFilter('Clone', this)" role="tab" aria-selected="false" aria-pressed="false">Clones</button>
+      <button class="filter-pill" onclick="setFilter('Design Riff', this)" role="tab" aria-selected="false" aria-pressed="false">Design Riffs</button>
+      <button class="filter-pill" onclick="setFilter('Animation', this)" role="tab" aria-selected="false" aria-pressed="false">Animations</button>
+    </nav>
   </div>
 
   <!-- Projects Grid (Pre-rendered for 0ms initial paint) -->
-  <main>
-    <div class="grid" id="project-grid">
+  <main id="main-content" role="main">
+    <h2 class="sr-only">Project Showcase Matrix</h2>
+    <div class="grid" id="project-grid" aria-live="polite">
 ${cardsHtml}
     </div>
   </main>
