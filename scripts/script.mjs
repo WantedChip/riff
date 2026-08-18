@@ -504,37 +504,65 @@ async function compileProject(projectFolder) {
  */
 function renderProjectCardsHtml(projects) {
   if (!projects || projects.length === 0) {
-    return `        <div class="empty-state">
-          <div class="empty-icon" aria-hidden="true">🔍</div>
-          <h3 class="empty-title">No riffs found</h3>
-          <p class="empty-desc">No projects match the current filter or search query.</p>
+    return `        <div class="empty-state-rig">
+          <div class="empty-oscilloscope" aria-hidden="true">~~~ [ NO_SIGNAL_DETECTED ] ~~~</div>
+          <h3 class="empty-title">NO MATCHING HARDWARE MODULES</h3>
+          <p class="empty-desc">No active cartridges found in the system registry.</p>
         </div>`;
   }
 
-  return projects.map(p => {
+  return projects.map((p, idx) => {
     const title = p.title || p.name || p.slug;
     const category = p.category || 'Clone';
     const tags = Array.isArray(p.tags) ? p.tags : [];
+    const moduleNumber = String(idx + 1).padStart(3, '0');
     const previewHtml = p.thumbnail
       ? `<img src="${p.thumbnail}" alt="${escapeHtml(title)}" loading="lazy" width="640" height="360">`
-      : `<div class="card-preview-placeholder"><span>✨</span><span>Interactive Demo</span></div>`;
+      : `<div class="card-preview-placeholder"><span>⚡</span><span>HARDWARE_TEST_UNIT</span></div>`;
 
-    const tagsHtml = tags.map(t => `<span class="tag badge-tag card-tag" data-tag="${escapeHtml(t)}">${escapeHtml(t)}</span>`).join('\n              ');
+    const tagsHtml = tags.map(t => `<span class="tag card-tag" data-tag="${escapeHtml(t)}">${escapeHtml(t)}</span>`).join('\n              ');
 
-    return `        <article class="card" data-slug="${escapeHtml(p.slug)}" data-category="${escapeHtml(category)}" data-tags="${escapeHtml(tags.join(','))}">
-          <div class="card-media card-preview">
+    return `        <article class="card cartridge-module" data-slug="${escapeHtml(p.slug)}" data-category="${escapeHtml(category)}" data-tags="${escapeHtml(tags.join(','))}">
+          <div class="cartridge-header">
+            <div class="module-serial">
+              <span class="serial-indicator" aria-hidden="true"></span>
+              <span class="serial-id">MOD-${moduleNumber}</span>
+              <span class="serial-divider" aria-hidden="true">//</span>
+              <span class="serial-type">${escapeHtml(category)}</span>
+            </div>
+            <div class="cartridge-pins" aria-hidden="true">
+              <span></span><span></span><span></span><span></span>
+            </div>
+          </div>
+          <div class="card-media cartridge-screen">
+            <div class="screen-reticle screen-reticle-tl" aria-hidden="true"></div>
+            <div class="screen-reticle screen-reticle-tr" aria-hidden="true"></div>
+            <div class="screen-reticle screen-reticle-bl" aria-hidden="true"></div>
+            <div class="screen-reticle screen-reticle-br" aria-hidden="true"></div>
             ${previewHtml}
-            <div class="card-category-badge badge-category" data-category="${escapeHtml(category)}">${escapeHtml(category)}</div>
+            <div class="screen-overlay-badge badge-category" data-category="${escapeHtml(category)}">${escapeHtml(category)}</div>
           </div>
           <div class="card-body">
-            <h3 class="card-title">${escapeHtml(title)}</h3>
+            <div class="cartridge-title-row">
+              <h3 class="card-title">${escapeHtml(title)}</h3>
+              <span class="module-status-chip">ARMED</span>
+            </div>
             <p class="card-desc">${escapeHtml(p.description || '')}</p>
             <div class="card-tags">
               ${tagsHtml}
             </div>
             <div class="card-actions">
-              <a href="${p.route}" class="btn btn-primary btn-launch" aria-label="Launch ${escapeHtml(title)} project">Launch Riff &rarr;</a>
-              <button type="button" class="btn btn-secondary btn-quick-view btn-preview" data-slug="${escapeHtml(p.slug)}" data-route="${p.route}" onclick="openPreview('${escapeJs(title)}', '${p.route}')" aria-label="Quick view ${escapeHtml(title)}">&#x2B13; Quick View</button>
+              <a href="${p.route}" class="btn btn-hardware btn-engage" aria-label="Engage ${escapeHtml(title)} module">
+                <span class="btn-led" aria-hidden="true"></span>
+                <span>ENGAGE RIFF &rarr;</span>
+              </a>
+              <button type="button" class="btn btn-hardware btn-schematic btn-preview" data-slug="${escapeHtml(p.slug)}" data-route="${p.route}" onclick="openPreview('${escapeJs(title)}', '${p.route}')" aria-label="Inspect schematic for ${escapeHtml(title)}">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <rect x="3" y="3" width="18" height="18" rx="2"/>
+                  <path d="M9 3v18M15 3v18M3 9h18M3 15h18"/>
+                </svg>
+                <span>SCHEMATIC</span>
+              </button>
             </div>
           </div>
         </article>`;

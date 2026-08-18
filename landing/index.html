@@ -1,175 +1,330 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-crt="true" data-sound="true" data-density="rack">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="theme-color" content="#07080B">
-  <title>riff — Front-End Reimaginations &amp; Design Labs</title>
-  <meta name="description" content="A curated collection of front-end design riffs, practice builds, and interactive interface reimaginings by WantedChip.">
+  <meta name="theme-color" content="#090A0F">
+  <title>riff — Tactile Hardware Lab &amp; Front-End Riffs</title>
+  <meta name="description" content="An industrial front-end engineering laboratory and tactile interface showcase by WantedChip. Experimental riffs, practice builds, and bespoke interfaces.">
   <meta name="author" content="WantedChip">
   <meta name="robots" content="index, follow">
   <link rel="canonical" href="https://riff.WantedChip.workers.dev/">
   <link rel="icon" type="image/svg+xml" href="assets/icons/brandmark.svg">
   <meta property="og:type" content="website">
   <meta property="og:url" content="https://riff.WantedChip.workers.dev/">
-  <meta property="og:title" content="riff — Front-End Reimaginations &amp; Design Labs">
-  <meta property="og:description" content="A curated collection of front-end design riffs, practice builds, and interactive interface reimaginings by WantedChip.">
+  <meta property="og:title" content="riff — Tactile Hardware Lab &amp; Front-End Riffs">
+  <meta property="og:description" content="An industrial front-end engineering laboratory and tactile interface showcase by WantedChip.">
   <meta property="og:image" content="https://riff.WantedChip.workers.dev/assets/images/og-cover.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="riff — Tactile Interface Laboratory &amp; Design Riffs">
+  <meta property="og:image:alt" content="riff — Hardware Interface Laboratory">
   <meta property="og:site_name" content="riff">
   <meta property="og:locale" content="en_US">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:url" content="https://riff.WantedChip.workers.dev/">
-  <meta name="twitter:title" content="riff — Front-End Reimaginations &amp; Design Labs">
-  <meta name="twitter:description" content="A curated collection of front-end design riffs, practice builds, and interactive interface reimaginings by WantedChip.">
+  <meta name="twitter:title" content="riff — Tactile Hardware Lab &amp; Front-End Riffs">
+  <meta name="twitter:description" content="An industrial front-end engineering laboratory and tactile interface showcase by WantedChip.">
   <meta name="twitter:image" content="https://riff.WantedChip.workers.dev/assets/images/og-cover.png">
-  <meta name="twitter:image:alt" content="riff — Tactile Interface Laboratory &amp; Design Riffs">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,600;0,700;0,800;1,400&family=Space+Grotesk:wght@500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
   <script type="module" src="app.js" defer></script>
 </head>
-<body>
-  <a href="#main-content" class="skip-link">Skip to main content</a>
-  <header role="banner" class="site-header">
-    <div class="header-container">
-      <a href="/" class="brand" aria-label="riff showcase homepage">
-        <div class="brand-icon" aria-hidden="true">r</div>
-        <span class="brand-title">riff</span>
-        <span class="brand-badge">WantedChip</span>
-      </a>
-      <nav class="nav-links" aria-label="Primary Navigation">
-        <a href="https://riff.WantedChip.workers.dev" class="nav-link edge-status" aria-label="Edge status: Active">
-          <span class="edge-pulse" aria-hidden="true">
-            <span class="edge-dot"></span>
-            <span class="edge-ring"></span>
-          </span>
-          <span class="edge-label">Edge Active</span>
+<body class="hardware-chassis">
+  <div id="crt-overlay" class="crt-scanlines-layer" aria-hidden="true"></div>
+  <a href="#main-content" class="skip-link">[ SKIP_TO_MAIN_CHASSIS ]</a>
+
+  <!-- TOP HARDWARE MASTHEAD -->
+  <header role="banner" class="hardware-masthead">
+    <div class="masthead-container">
+      <div class="masthead-brand-group">
+        <a href="/" class="brand" aria-label="riff hardware lab homepage">
+          <div class="brand-knob" aria-hidden="true">
+            <span class="knob-core"></span>
+            <span class="knob-notch"></span>
+          </div>
+          <div class="brand-text">
+            <span class="brand-title">RIFF</span>
+            <span class="brand-sub">LAB//01</span>
+          </div>
+          <span class="hardware-serial-tag" title="Hardware Revision">REV.4-TE</span>
         </a>
-        <a href="https://github.com/WantedChip/riff" target="_blank" rel="noopener noreferrer" class="nav-link github-link" aria-label="View source on GitHub">
-          <svg class="github-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      </div>
+
+      <!-- HARDWARE RACK TOGGLES -->
+      <div class="masthead-rack-controls" role="toolbar" aria-label="Hardware Control Rack">
+        <!-- CRT TOGGLE -->
+        <button type="button" id="btn-toggle-crt" class="rack-switch active" aria-pressed="true" aria-label="Toggle CRT phosphor scanlines filter (Shortcut: C)" title="Toggle CRT scanlines (Shortcut: C)">
+          <span class="switch-led switch-led-amber"></span>
+          <span class="switch-label">CRT</span>
+          <kbd class="switch-key">C</kbd>
+        </button>
+
+        <!-- SFX TOGGLE -->
+        <button type="button" id="btn-toggle-sfx" class="rack-switch active" aria-pressed="true" aria-label="Toggle tactile audio synthesizer feedback (Shortcut: M)" title="Toggle tactile sound effects (Shortcut: M)">
+          <span class="switch-led switch-led-green"></span>
+          <span class="switch-label">SFX</span>
+          <kbd class="switch-key">M</kbd>
+        </button>
+
+        <!-- DENSITY TOGGLE -->
+        <div class="density-group" role="group" aria-label="Display density mode">
+          <button type="button" id="btn-density-rack" class="density-btn active" data-density="rack" aria-pressed="true" aria-label="Cartridge Rack View" title="Cartridge Rack View">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <rect x="3" y="3" width="7" height="7"/>
+              <rect x="14" y="3" width="7" height="7"/>
+              <rect x="14" y="14" width="7" height="7"/>
+              <rect x="3" y="14" width="7" height="7"/>
+            </svg>
+          </button>
+          <button type="button" id="btn-density-compact" class="density-btn" data-density="compact" aria-pressed="false" aria-label="Compact List View" title="Compact List View">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+              <line x1="3" y1="6" x2="21" y2="6"/>
+              <line x1="3" y1="12" x2="21" y2="12"/>
+              <line x1="3" y1="18" x2="21" y2="18"/>
+            </svg>
+          </button>
+        </div>
+
+        <!-- GITHUB SOURCE LINK -->
+        <a href="https://github.com/WantedChip/riff" target="_blank" rel="noopener noreferrer" class="rack-btn-github" aria-label="Open GitHub Repository in new tab">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
           </svg>
-          <span>GitHub</span>
+          <span>SRC</span>
         </a>
-      </nav>
+      </div>
     </div>
   </header>
-  <main id="main-content" role="main" class="site-main">
-    <section class="hero" aria-labelledby="hero-title">
-      <div class="hero-container">
-        <div class="hero-badge">⚡ Interface Laboratory &amp; Design Riffs</div>
-        <h1 id="hero-title" class="hero-title">Front-End Riffs &amp; <span class="hero-title-accent">Design Crafts</span></h1>
-        <p class="hero-desc">&ldquo;A collection of front-end design riffs — practice builds and reimaginings of interfaces I find interesting. Each one is my own code and assets: names, images, and design all changed, nothing copied wholesale.&rdquo;</p>
-        <div class="hero-telemetry" aria-label="Showcase telemetry status">
-          <div class="telemetry-pill"><span class="telemetry-icon" aria-hidden="true">📦</span><span class="telemetry-value"><span id="telemetry-count">1</span> Projects Online</span></div>
-          <div class="telemetry-pill"><span class="telemetry-icon" aria-hidden="true">⚡</span><span class="telemetry-value">100% Static HTML/CSS/JS</span></div>
-          <div class="telemetry-pill"><span class="telemetry-icon" aria-hidden="true">🌐</span><span class="telemetry-value">Cloudflare Edge Hosted</span></div>
+
+  <!-- MAIN HARDWARE WORKBENCH -->
+  <main id="main-content" role="main" class="workbench-main">
+    <div class="workbench-chassis">
+      
+      <!-- HERO / LABORATORY CONTROL DECK -->
+      <section class="lab-deck" aria-labelledby="lab-title">
+        <div class="deck-screws" aria-hidden="true">
+          <span class="screw screw-tl">✛</span>
+          <span class="screw screw-tr">✛</span>
+          <span class="screw screw-bl">✛</span>
+          <span class="screw screw-br">✛</span>
         </div>
-      </div>
-    </section>
-    <section class="controls-section" aria-label="Search and filter riffs">
-      <div class="controls-container">
-        <div class="search-box">
-          <span class="search-icon" aria-hidden="true">🔍</span>
-          <input type="search" id="search-input" placeholder="Search riffs by name, stack, or tag... (Press '/' to focus)" aria-label="Search riffs" autocomplete="off" spellcheck="false">
-          <kbd class="keycap" aria-hidden="true">/</kbd>
-        </div>
-        <div class="controls-status-bar">
-          <nav class="filter-pills" id="category-filters" role="tablist" aria-label="Category filters" aria-orientation="horizontal">
-            <button type="button" class="filter-pill active" role="tab" data-category="all" aria-selected="true" aria-pressed="true" tabindex="0">All Riffs</button>
-            <button type="button" class="filter-pill" role="tab" data-category="Clone" aria-selected="false" aria-pressed="false" tabindex="-1">Clones</button>
-            <button type="button" class="filter-pill" role="tab" data-category="Design Riff" aria-selected="false" aria-pressed="false" tabindex="-1">Design Riffs</button>
-            <button type="button" class="filter-pill" role="tab" data-category="Animation" aria-selected="false" aria-pressed="false" tabindex="-1">Animations</button>
-            <button type="button" class="filter-pill" role="tab" data-category="Lab" aria-selected="false" aria-pressed="false" tabindex="-1">Component Labs</button>
-          </nav>
-          <div class="search-status" id="search-status" aria-live="polite">Showing <span id="search-count">1</span> of <span id="total-count">1</span> projects</div>
-        </div>
-      </div>
-    </section>
-    <section class="showcase" aria-label="Project showcase matrix">
-      <div class="showcase-container">
-        <h2 class="sr-only">Project Showcase Matrix</h2>
-        <div class="grid project-grid" id="project-grid" aria-live="polite">
-          <!-- Pre-rendered project cards injected at build time -->
-        </div>
-        <div id="empty-state" class="empty-state" style="display: none;">
-          <div class="empty-icon" aria-hidden="true">
-            <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="empty-icon-svg" aria-hidden="true">
-              <circle cx="11" cy="11" r="8"></circle>
-              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-              <line x1="8" y1="11" x2="14" y2="11"></line>
-            </svg>
+
+        <div class="deck-header-strip">
+          <div class="strip-item">
+            <span class="strip-label">RIG_ID:</span>
+            <span class="strip-val">WK-0982-FX</span>
           </div>
-          <h3 class="empty-title">No matching design riffs found</h3>
-          <p class="empty-desc">No projects match your current query or category filter. Try refining your keywords.</p>
-          <button type="button" id="btn-reset-filters" class="btn btn-primary btn-reset-filters" aria-label="Reset all search and category filters">Reset All Filters</button>
+          <div class="strip-divider">//</div>
+          <div class="strip-item">
+            <span class="strip-label">STATION:</span>
+            <span class="strip-val">INTERFACE_LAB</span>
+          </div>
+          <div class="strip-divider">//</div>
+          <div class="strip-item">
+            <span class="strip-label">ARCH:</span>
+            <span class="strip-val">PURE_STATIC_HTML5</span>
+          </div>
         </div>
+
+        <div class="deck-main-hero">
+          <div class="hero-headline-wrap">
+            <h1 id="lab-title" class="deck-title">
+              <span class="title-pre">[SYSTEM::EXPLORE]</span>
+              <span class="title-main">TACTILE FRONT-END RIFFS</span>
+            </h1>
+            <p class="deck-manifesto">
+              A bespoke engineering sandbox of interaction physics, practice builds, and interface reimaginations. Each module built with bare-metal HTML, CSS, and JavaScript.
+            </p>
+          </div>
+
+          <!-- LIVE TELEMETRY HUD -->
+          <div class="telemetry-hud" aria-label="Hardware telemetry status">
+            <div class="hud-cell">
+              <span class="hud-label">SYS_TIME</span>
+              <span class="hud-value hud-mono" id="telemetry-clock">00:00:00.000</span>
+            </div>
+            <div class="hud-cell">
+              <span class="hud-label">CLOCK_RATE</span>
+              <span class="hud-value hud-mono" id="telemetry-fps">60.0 FPS</span>
+            </div>
+            <div class="hud-cell">
+              <span class="hud-label">ONLINE_UNITS</span>
+              <span class="hud-value hud-mono hud-accent"><span id="telemetry-count">1</span> MODULES</span>
+            </div>
+            <div class="hud-cell">
+              <span class="hud-label">ENGINE</span>
+              <span class="hud-value hud-mono">VANILLA_ES6</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HARDWARE BUS / COMMAND & ROCKER CONTROLS -->
+      <section class="command-bus" aria-label="Search and cartridge category selection">
+        <div class="bus-container">
+          
+          <!-- TERMINAL COMMAND INPUT -->
+          <div class="terminal-input-wrap">
+            <div class="terminal-prompt" aria-hidden="true">
+              <span class="prompt-sym">&gt;</span>
+              <span class="prompt-text">SYS://QUERY</span>
+            </div>
+            <input type="search" id="search-input" class="hardware-input" placeholder="filter by name, tag, or stack... (press '/' to focus)" aria-label="Filter modules by name or tags" autocomplete="off" spellcheck="false">
+            <div class="terminal-endcaps" aria-hidden="true">
+              <kbd class="keycap">/</kbd>
+            </div>
+          </div>
+
+          <!-- HARDWARE ROCKER FILTER SWITCHES -->
+          <div class="rocker-rack-strip">
+            <nav class="rocker-filters" id="category-filters" role="tablist" aria-label="Module category filter rack">
+              <button type="button" class="rocker-btn active" role="tab" data-category="all" aria-selected="true" aria-pressed="true" tabindex="0">
+                <span class="rocker-pin"></span>
+                <span class="rocker-label">ALL_UNITS</span>
+              </button>
+              <button type="button" class="rocker-btn" role="tab" data-category="Clone" aria-selected="false" aria-pressed="false" tabindex="-1">
+                <span class="rocker-pin"></span>
+                <span class="rocker-label">CLONES</span>
+              </button>
+              <button type="button" class="rocker-btn" role="tab" data-category="Design Riff" aria-selected="false" aria-pressed="false" tabindex="-1">
+                <span class="rocker-pin"></span>
+                <span class="rocker-label">DESIGN_RIFFS</span>
+              </button>
+              <button type="button" class="rocker-btn" role="tab" data-category="Animation" aria-selected="false" aria-pressed="false" tabindex="-1">
+                <span class="rocker-pin"></span>
+                <span class="rocker-label">ANIMATIONS</span>
+              </button>
+              <button type="button" class="rocker-btn" role="tab" data-category="Lab" aria-selected="false" aria-pressed="false" tabindex="-1">
+                <span class="rocker-pin"></span>
+                <span class="rocker-label">COMPONENT_LABS</span>
+              </button>
+            </nav>
+
+            <div class="bus-status-readout" id="search-status" aria-live="polite">
+              [INDEX: <span id="search-count" class="readout-active">1</span> / <span id="total-count">1</span> ARMED]
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- CARTRIDGE RACK / PROJECT GRID -->
+      <section class="cartridge-rack" aria-label="Cartridge Module Matrix">
+        <h2 class="sr-only">Project Cartridges</h2>
+        
+        <div class="grid project-grid" id="project-grid" aria-live="polite">
+          <!-- Pre-rendered cartridge cards injected at build time -->
+        </div>
+
+        <!-- EMPTY SIGNAL STATE -->
+        <div id="empty-state" class="empty-state-rig" style="display: none;">
+          <div class="empty-oscilloscope" aria-hidden="true">
+            <span class="empty-wave">~~~ [ NO_SIGNAL_DETECTED ] ~~~</span>
+          </div>
+          <h3 class="empty-title">NO MATCHING HARDWARE MODULES</h3>
+          <p class="empty-desc">The query bus returned zero active cartridges. Verify filter parameters or flush query buffer.</p>
+          <button type="button" id="btn-reset-filters" class="btn btn-hardware btn-reset" aria-label="Reset all search queries and category filters">
+            <span class="btn-led"></span>
+            <span>FLUSH_FILTERS // RESET</span>
+          </button>
+        </div>
+
         <div id="a11y-filter-announcer" class="sr-only" aria-live="polite" aria-atomic="true"></div>
-      </div>
-    </section>
+      </section>
+
+    </div>
   </main>
-  <footer role="contentinfo" class="site-footer">
-    <div class="footer-container">
-      <div class="footer-primary-row">
-        <div class="footer-legal">
-          <span class="footer-brand-copy">&copy; 2026 Riff by <a href="https://github.com/WantedChip" target="_blank" rel="noopener noreferrer" class="footer-link" aria-label="WantedChip on GitHub">WantedChip</a></span>
-          <span class="footer-divider" aria-hidden="true">&bull;</span>
-          <a href="./LICENSE" class="footer-link footer-license-link" aria-label="View MIT License">MIT License</a>
+
+  <!-- INDUSTRIAL FOOTER -->
+  <footer role="contentinfo" class="hardware-footer">
+    <div class="footer-chassis">
+      <div class="footer-row-specs">
+        <div class="spec-block">
+          <span class="spec-key">STATION:</span>
+          <span class="spec-val">RIFF//LAB</span>
         </div>
-        <div class="footer-hosting-badge" aria-label="Edge hosting platform">
-          <span class="footer-badge-dot" aria-hidden="true"></span>
-          <span class="footer-badge-text">Hosted on Cloudflare Workers Static Assets</span>
+        <div class="spec-block">
+          <span class="spec-key">AUTHOR:</span>
+          <a href="https://github.com/WantedChip" target="_blank" rel="noopener noreferrer" class="spec-link">WANTEDCHIP</a>
+        </div>
+        <div class="spec-block">
+          <span class="spec-key">LICENSE:</span>
+          <a href="./LICENSE" class="spec-link">MIT_PLATE</a>
+        </div>
+        <div class="spec-block">
+          <span class="spec-key">DEPLOY_TARGET:</span>
+          <span class="spec-val">CLOUDFLARE_WORKERS_EDGE</span>
         </div>
       </div>
-      <p class="footer-disclaimer">No attribution implied or given. All trademarks and original designs belong to their respective owners.</p>
+      <p class="footer-fineprint">
+        HARDWARE BENCHMARK: All front-end reimaginations are independent practice builds. All original trademarks and product identities belong to their respective creators.
+      </p>
     </div>
   </footer>
+
+  <!-- HARDWARE TEST RIG CHAMBER MODAL (QUICK-VIEW) -->
   <div id="preview-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-project-title" hidden>
-    <div class="modal-shell">
-      <div class="modal-header">
-        <div class="modal-header-info">
-          <h3 id="modal-project-title" class="modal-project-title">Project Title</h3>
-          <span id="modal-project-route" class="modal-project-route">/route/</span>
-        </div>
-        <div class="modal-toolbar" id="modal-viewport-toolbar" role="toolbar" aria-label="Viewport controls">
-          <div class="viewport-switcher" id="viewport-switcher" role="group" aria-label="Device Viewport Switcher">
-            <button type="button" class="btn-viewport active" data-viewport="desktop" aria-pressed="true" aria-label="Switch preview to Desktop viewport (100% width)">🖥️ Desktop</button>
-            <button type="button" class="btn-viewport" data-viewport="tablet" aria-pressed="false" aria-label="Switch preview to Tablet viewport (768px width)">📱 Tablet</button>
-            <button type="button" class="btn-viewport" data-viewport="mobile" aria-pressed="false" aria-label="Switch preview to Mobile viewport (375px width)">📱 Mobile</button>
+    <div class="modal-test-chamber">
+      
+      <!-- TEST CHAMBER TOP MAST -->
+      <div class="chamber-header">
+        <div class="chamber-info">
+          <div class="chamber-led"></div>
+          <div class="chamber-title-group">
+            <h3 id="modal-project-title" class="chamber-title">MODULE_PREVIEW</h3>
+            <span id="modal-project-route" class="chamber-route">/route/</span>
           </div>
         </div>
-        <div class="modal-actions">
-          <button type="button" id="btn-modal-reload" class="modal-action-btn modal-btn-reload" aria-label="Reload project preview" title="Reload project preview">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+
+        <!-- VIEWPORT SWITCHER -->
+        <div class="chamber-viewport-controls" id="modal-viewport-toolbar" role="toolbar" aria-label="Test Viewport Mode">
+          <div class="viewport-switch-rack" id="viewport-switcher" role="group" aria-label="Device Viewport Switcher">
+            <button type="button" class="btn-vp active" data-viewport="desktop" aria-pressed="true" aria-label="Switch preview to Desktop viewport (100% width)">
+              <span>🖥️</span> <span>DESKTOP</span>
+            </button>
+            <button type="button" class="btn-vp" data-viewport="tablet" aria-pressed="false" aria-label="Switch preview to Tablet viewport (768px width)">
+              <span>📱</span> <span>TABLET_768</span>
+            </button>
+            <button type="button" class="btn-vp" data-viewport="mobile" aria-pressed="false" aria-label="Switch preview to Mobile viewport (375px width)">
+              <span>📱</span> <span>MOBILE_375</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- CHAMBER ACTIONS -->
+        <div class="chamber-actions">
+          <button type="button" id="btn-modal-reload" class="chamber-action-btn" aria-label="Reload project preview" title="Reload preview">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M21.5 2v6h-6M21.34 15.57a10 10 0 1 1-.57-8.38l5.67-5.67"></path>
             </svg>
           </button>
-          <a id="link-modal-external" class="modal-action-btn modal-btn-external" href="#" target="_blank" rel="noopener noreferrer" aria-label="Open project in new tab" title="Open project in new tab">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <a id="link-modal-external" class="chamber-action-btn" href="#" target="_blank" rel="noopener noreferrer" aria-label="Engage module in full tab" title="Open full screen">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
               <polyline points="15 3 21 3 21 9"></polyline>
               <line x1="10" y1="14" x2="21" y2="3"></line>
             </svg>
           </a>
-          <button type="button" id="btn-modal-close" class="modal-action-btn" data-id="modal-close-btn" aria-label="Close preview dialog" title="Close preview dialog">
-            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <button type="button" id="btn-modal-close" class="chamber-action-btn chamber-btn-close" data-id="modal-close-btn" aria-label="Disengage test chamber (Shortcut: ESC)" title="Close (ESC)">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
             </svg>
           </button>
         </div>
       </div>
-      <div class="modal-body" id="modal-viewport-container">
-        <div id="iframe-loader" class="iframe-spinner" aria-hidden="true">
-          <div class="spinner-ring"></div>
-          <span class="spinner-text">Loading preview...</span>
+
+      <!-- TEST CHAMBER SCREEN / IFRAME -->
+      <div class="chamber-viewport-stage" id="modal-viewport-container">
+        <div id="iframe-loader" class="chamber-loader" aria-hidden="true">
+          <div class="loader-signal-ring"></div>
+          <span class="loader-label">SYNCING_BUS_SIGNAL...</span>
         </div>
-        <iframe id="modal-iframe" class="modal-iframe" title="Project Live Preview" loading="eager" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" src="about:blank" tabindex="0"></iframe>
+        <iframe id="modal-iframe" class="chamber-iframe" title="Module Diagnostic Viewport" loading="eager" sandbox="allow-scripts allow-same-origin allow-popups allow-forms" src="about:blank" tabindex="0"></iframe>
       </div>
+
     </div>
   </div>
 </body>
