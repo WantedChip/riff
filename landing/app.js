@@ -74,28 +74,24 @@ function updateCounters(visible, total) {
   if (telEl) telEl.textContent = String(total);
 }
 
+function announceFilter(count) {
+  const announcer = document.getElementById('a11y-filter-announcer');
+  if (!announcer) return;
+  if (count === 0) {
+    announcer.textContent = 'No projects found matching current filter';
+  } else {
+    announcer.textContent = `Found ${count} matching project${count === 1 ? '' : 's'}`;
+  }
+}
+
 function updateEmptyState(visibleCount, query, category) {
   const grid = document.getElementById('project-grid');
-  if (!grid) return;
-  let el = document.getElementById('empty-state');
-  if (visibleCount === 0) {
-    if (!el) {
-      el = document.createElement('div');
-      el.id = 'empty-state';
-      el.className = 'empty-state';
-      el.setAttribute('role', 'status');
-      grid.appendChild(el);
-    }
-    const q = query ? escapeHtml(query.trim()) : '';
-    const normCat = normalizeCategory(category);
-    const title = q && normCat !== 'all' ? `No riffs match &ldquo;${q}&rdquo; in ${escapeHtml(category)}`
-      : q ? `No riffs match &ldquo;${q}&rdquo;`
-      : normCat !== 'all' ? `No riffs found in ${escapeHtml(category)}`
-      : 'No riffs match the active filter';
-    el.innerHTML = `<div class="empty-icon" aria-hidden="true">🔍</div><h3 class="empty-title">${title}</h3><p class="empty-desc">Try searching for a different keyword or tech stack tag, or reset your filters.</p><button type="button" class="btn btn-secondary btn-reset-filters" id="btn-reset-filters">Reset Filters</button>`;
-    el.style.display = 'flex';
-  } else if (el) {
-    el.style.display = 'none';
+  const emptyState = document.getElementById('empty-state');
+  if (grid) {
+    grid.style.display = visibleCount === 0 ? 'none' : '';
+  }
+  if (emptyState) {
+    emptyState.style.display = visibleCount === 0 ? 'flex' : 'none';
   }
 }
 
@@ -111,6 +107,7 @@ function applyFilters() {
   state.visibleCount = visibleCount;
   updateCounters(visibleCount, state.totalCount);
   updateEmptyState(visibleCount, query, cat);
+  announceFilter(visibleCount);
 }
 
 function setCategory(cat, focus = false) {
@@ -147,6 +144,19 @@ function handleTagClick(el) {
   } else {
     state.searchQuery = tag;
     applyFilters();
+  }
+}
+
+function resetFilters() {
+  const input = document.getElementById('search-input');
+  if (input) {
+    input.value = '';
+    input.focus();
+  }
+  state.searchQuery = '';
+  setCategory('all');
+  if (input) {
+    input.focus();
   }
 }
 
@@ -192,6 +202,8 @@ function initApp() {
   state.totalCount = state.cards.length;
   state.visibleCount = state.cards.length;
   updateCounters(state.visibleCount, state.totalCount);
+  updateEmptyState(state.visibleCount, state.searchQuery, state.activeCategory);
+  announceFilter(state.visibleCount);
 
   const searchInput = document.getElementById('search-input');
   if (searchInput) {
@@ -200,15 +212,17 @@ function initApp() {
     searchInput.addEventListener('search', onSearch);
   }
 
+  const resetBtn = document.getElementById('btn-reset-filters');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', resetFilters);
+  }
+
   initCategoryTabs();
 
   document.addEventListener('click', e => {
-    const resetBtn = e.target.closest('#btn-reset-filters, .btn-reset-filters');
-    if (resetBtn) {
-      const input = document.getElementById('search-input');
-      if (input) { input.value = ''; input.focus(); }
-      state.searchQuery = '';
-      setCategory('all');
+    const rBtn = e.target.closest('#btn-reset-filters, .btn-reset-filters');
+    if (rBtn) {
+      resetFilters();
       return;
     }
     const tag = e.target.closest('.badge-tag, .tag, .card-tag, [data-tag]');
@@ -238,18 +252,12 @@ window.openPreview = function(title, route) {
 };
 
 window.riffApp = {
-  state, applyFilters, matchProject, matchCategory, normalizeCategory, setCategory, handleTagClick,
+  state, applyFilters, matchProject, matchCategory, normalizeCategory, setCategory, handleTagClick, resetFilters, announceFilter,
   setSearchQuery: q => {
     const input = document.getElementById('search-input');
     if (input) input.value = q;
     state.searchQuery = q;
     applyFilters();
-  },
-  resetFilters: () => {
-    const input = document.getElementById('search-input');
-    if (input) input.value = '';
-    state.searchQuery = '';
-    setCategory('all');
   }
 };
 
