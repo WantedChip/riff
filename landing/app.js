@@ -194,7 +194,8 @@ const modalState = {
   isOpen: false,
   triggerElement: null,
   activeRoute: '',
-  activeTitle: ''
+  activeTitle: '',
+  viewportMode: 'desktop'
 };
 
 const FOCUSABLE_ELEMENTS_SELECTOR = [
@@ -235,6 +236,28 @@ function hideIframeLoader() {
   }
 }
 
+function setPreviewViewport(viewport) {
+  const validModes = ['desktop', 'tablet', 'mobile'];
+  const mode = validModes.includes(viewport) ? viewport : 'desktop';
+  modalState.viewportMode = mode;
+
+  const container = document.getElementById('modal-viewport-container');
+  if (container) {
+    container.classList.remove('viewport-desktop', 'viewport-tablet', 'viewport-mobile');
+    container.classList.add(`viewport-${mode}`);
+    container.dataset.viewport = mode;
+  }
+
+  const buttons = document.querySelectorAll('.btn-viewport, #viewport-switcher button, [data-viewport]');
+  buttons.forEach(btn => {
+    if (btn.dataset && btn.dataset.viewport) {
+      const isMatch = btn.dataset.viewport === mode;
+      btn.classList.toggle('active', isMatch);
+      btn.setAttribute('aria-pressed', String(isMatch));
+    }
+  });
+}
+
 function reloadModalIframe() {
   if (!modalState.isOpen) return;
   const iframe = document.getElementById('modal-iframe');
@@ -266,6 +289,9 @@ function openModal(title, route, triggerEl = null) {
   // Save triggering element for focus restoration
   modalState.triggerElement = triggerEl || document.activeElement;
   modalState.activeTitle = title || 'Project Preview';
+
+  // Reset viewport to desktop on new preview open
+  setPreviewViewport('desktop');
 
   // Normalize route with trailing slash
   let formattedRoute = route || '/';
@@ -428,6 +454,14 @@ function initApp() {
   initCategoryTabs();
 
   document.addEventListener('click', e => {
+    // Viewport switcher button trigger
+    const viewportBtn = e.target.closest('.btn-viewport, [data-viewport]');
+    if (viewportBtn && viewportBtn.dataset && viewportBtn.dataset.viewport) {
+      e.preventDefault();
+      setPreviewViewport(viewportBtn.dataset.viewport);
+      return;
+    }
+
     // Reload button trigger
     const reloadBtn = e.target.closest('#btn-modal-reload, .modal-btn-reload, [data-action="reload-modal"], [data-action="reload-iframe"]');
     if (reloadBtn) {
@@ -523,6 +557,10 @@ window.reloadPreview = function() {
   reloadModalIframe();
 };
 
+window.setPreviewViewport = function(viewport) {
+  setPreviewViewport(viewport);
+};
+
 window.riffApp = {
   state,
   modalState,
@@ -537,11 +575,14 @@ window.riffApp = {
   openModal,
   closeModal,
   reloadModalIframe,
+  setPreviewViewport,
   modal: {
     open: openModal,
     close: closeModal,
     reload: reloadModalIframe,
-    isOpen: () => modalState.isOpen
+    setViewport: setPreviewViewport,
+    isOpen: () => modalState.isOpen,
+    getViewport: () => modalState.viewportMode
   },
   setSearchQuery: q => {
     const input = document.getElementById('search-input');

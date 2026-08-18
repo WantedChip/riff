@@ -123,7 +123,11 @@
           <span id="modal-project-route" class="modal-project-route">/route/</span>
         </div>
         <div class="modal-toolbar" id="modal-viewport-toolbar" role="toolbar" aria-label="Viewport controls">
-          <!-- Viewport switcher buttons to be expanded in v0.5.2 -->
+          <div class="viewport-switcher" id="viewport-switcher" role="group" aria-label="Device Viewport Switcher">
+            <button type="button" class="btn-viewport active" data-viewport="desktop" aria-pressed="true">🖥️ Desktop</button>
+            <button type="button" class="btn-viewport" data-viewport="tablet" aria-pressed="false">📱 Tablet</button>
+            <button type="button" class="btn-viewport" data-viewport="mobile" aria-pressed="false">📱 Mobile</button>
+          </div>
         </div>
         <div class="modal-actions">
           <button type="button" id="btn-modal-reload" class="modal-action-btn modal-btn-reload" aria-label="Reload project preview" title="Reload project preview">
