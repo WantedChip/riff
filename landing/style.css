@@ -315,7 +315,349 @@ kbd,
 }
 
 /* ==========================================================================
-   6. Motion Suppression & Accessibility
+   6. Sticky Glassmorphic Header Navigation
+   ========================================================================== */
+
+.site-header {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+  height: 64px;
+  background-color: rgba(7, 8, 11, 0.80);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border-subtle);
+  transition: border-color var(--duration-fast) var(--ease-spring),
+              background-color var(--duration-fast) var(--ease-spring);
+}
+
+.header-container {
+  max-width: 1280px;
+  height: 100%;
+  margin: 0 auto;
+  padding: 0 var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+}
+
+/* Brandmark Component */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  text-decoration: none;
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+  user-select: none;
+  transition: opacity var(--duration-fast) var(--ease-spring);
+}
+
+.brand:hover {
+  opacity: 0.92;
+}
+
+.brand-icon {
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, var(--accent-flame), #7928CA);
+  border-radius: var(--radius-md);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 1.0625rem;
+  line-height: 1;
+  color: #FFFFFF;
+  box-shadow: 0 0 16px var(--accent-glow);
+}
+
+.brand-title {
+  font-family: var(--font-display);
+  font-size: 1.125rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text-primary);
+}
+
+.brand-badge {
+  font-family: var(--font-mono);
+  font-size: 0.6875rem;
+  font-weight: 600;
+  background: var(--bg-badge);
+  border: 1px solid var(--border-subtle);
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* Header Navigation Links & Actions */
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.nav-link {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--text-secondary);
+  text-decoration: none;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  border-radius: var(--radius-md);
+  transition: color var(--duration-fast) var(--ease-spring),
+              border-color var(--duration-fast) var(--ease-spring),
+              background-color var(--duration-fast) var(--ease-spring);
+}
+
+/* Live Edge Status Pill */
+.edge-status {
+  background: rgba(16, 185, 129, 0.08);
+  border: 1px solid rgba(16, 185, 129, 0.25);
+  padding: 5px 12px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+
+.edge-status:hover {
+  background: rgba(16, 185, 129, 0.14);
+  border-color: rgba(16, 185, 129, 0.40);
+  color: #FFFFFF;
+}
+
+/* Live Edge Pulse Animation (2400ms infinite cubic-bezier) */
+.edge-pulse {
+  position: relative;
+  width: 8px;
+  height: 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.edge-dot {
+  width: 8px;
+  height: 8px;
+  background-color: var(--accent-emerald);
+  border-radius: var(--radius-full);
+  display: block;
+}
+
+.edge-ring {
+  position: absolute;
+  inset: -3px;
+  border: 1.5px solid var(--accent-emerald);
+  border-radius: var(--radius-full);
+  animation: edge-pulse-ring 2400ms cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  pointer-events: none;
+}
+
+@keyframes edge-pulse-ring {
+  0% {
+    transform: scale(0.6);
+    opacity: 0.85;
+  }
+  50% {
+    transform: scale(1.4);
+    opacity: 0.35;
+  }
+  100% {
+    transform: scale(2.2);
+    opacity: 0;
+  }
+}
+
+/* GitHub Repository Link */
+.github-link {
+  background: var(--bg-badge);
+  border: 1px solid var(--border-subtle);
+  padding: 5px 12px;
+  border-radius: var(--radius-md);
+  color: var(--text-secondary);
+}
+
+.github-link:hover {
+  color: var(--text-primary);
+  border-color: var(--border-hover);
+  background-color: rgba(255, 255, 255, 0.08);
+}
+
+.github-icon {
+  width: 15px;
+  height: 15px;
+  flex-shrink: 0;
+}
+
+/* ==========================================================================
+   7. Editorial Hero Component
+   ========================================================================== */
+
+.hero,
+.hero-section {
+  position: relative;
+  width: 100%;
+  padding: var(--space-16) var(--space-6) var(--space-12);
+  display: flex;
+  justify-content: center;
+  text-align: center;
+}
+
+.hero-container {
+  max-width: 860px;
+  width: 100%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--space-6);
+}
+
+/* Hero Badge */
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: rgba(255, 94, 58, 0.08);
+  border: 1px solid rgba(255, 94, 58, 0.25);
+  color: var(--accent-flame);
+  padding: 6px 16px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  box-shadow: 0 0 16px rgba(255, 94, 58, 0.12);
+  user-select: none;
+  transition: border-color var(--duration-fast) var(--ease-spring),
+              box-shadow var(--duration-fast) var(--ease-spring);
+}
+
+.hero-badge:hover {
+  border-color: rgba(255, 94, 58, 0.45);
+  box-shadow: 0 0 20px rgba(255, 94, 58, 0.20);
+}
+
+/* Hero Title with Glowing Gradient Accent */
+.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(2rem, 5vw, 3.75rem);
+  font-weight: 800;
+  line-height: 1.08;
+  letter-spacing: -0.035em;
+  color: var(--text-primary);
+  margin: 0;
+}
+
+.hero-title-accent,
+.hero-title span {
+  background: linear-gradient(135deg, #FFFFFF 20%, var(--accent-flame) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  filter: drop-shadow(0 0 24px var(--accent-glow));
+}
+
+/* Editorial Manifesto Quote */
+.hero-manifesto,
+.hero-desc {
+  font-family: var(--font-sans);
+  font-size: 1.0625rem;
+  font-weight: 400;
+  line-height: 1.65;
+  letter-spacing: -0.005em;
+  color: var(--text-secondary);
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+/* Telemetry Counter Strip */
+.hero-telemetry {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: var(--space-3);
+  margin-top: var(--space-2);
+}
+
+.telemetry-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+  user-select: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4);
+  transition: border-color var(--duration-fast) var(--ease-spring),
+              color var(--duration-fast) var(--ease-spring),
+              transform var(--duration-fast) var(--ease-spring);
+}
+
+.telemetry-pill:hover {
+  border-color: var(--border-hover);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.telemetry-icon {
+  font-size: 0.8125rem;
+  line-height: 1;
+}
+
+.telemetry-value {
+  font-family: var(--font-mono);
+}
+
+/* Responsive Breakpoints for Header & Hero */
+@media (max-width: 640px) {
+  .header-container {
+    padding: 0 var(--space-4);
+  }
+
+  .brand-badge {
+    display: none;
+  }
+
+  .hero,
+  .hero-section {
+    padding: var(--space-12) var(--space-4) var(--space-8);
+  }
+
+  .hero-container {
+    gap: var(--space-5);
+  }
+
+  .hero-telemetry {
+    flex-direction: column;
+    gap: var(--space-2);
+    width: 100%;
+  }
+
+  .telemetry-pill {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
+/* ==========================================================================
+   8. Motion Suppression & Accessibility
    ========================================================================== */
 
 @media (prefers-reduced-motion: reduce) {
