@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 550" width="400" height="550">
+  <rect width="400" height="550" fill="#2B3036"/>
+  <polygon points="200,40 230,300 170,300" fill="#FF862C" opacity="0.3"/>
+  <rect x="20" y="20" width="360" height="510" fill="none" stroke="#FF862C" stroke-width="2"/>
+  <text x="200" y="380" font-family="DIN, sans-serif" font-weight="bold" font-size="36" fill="#FFFFFF" text-anchor="middle" letter-spacing="2">HALF-LIFE 2</text>
+  <text x="200" y="415" font-family="DIN, sans-serif" font-size="16" fill="#FF862C" text-anchor="middle" letter-spacing="1">SOURCE ENGINE PHYSICS</text>
+</svg>

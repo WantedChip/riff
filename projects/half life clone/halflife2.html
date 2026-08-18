@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Half-Life 2 | The Benchmark of Action Gaming</title>
+  <meta name="description" content="Half-Life 2 delivers the legendary story of Gordon Freeman in dystopian City 17, powered by revolutionary Source engine physics and the iconic Gravity Gun.">
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <!-- Brand Navigation Header -->
+  <header class="hl-header site-header">
+    <div class="hl-container hl-header-inner site-header-inner">
+      <a href="index.html" class="hl-brand brand-logo" aria-label="Half-Life Homepage">
+        <span class="hl-brand-icon brand-icon lambda-logo" alt="Lambda logo">λ</span>
+        <span class="hl-brand-title brand-title logo-text">HALF-LIFE</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="desktop-nav" aria-label="Main Navigation">
+        <ul class="hl-nav-menu">
+          <li class="hl-nav-item"><a href="index.html" class="hl-nav-link nav-link" data-i18n="nav.home">Home</a></li>
+          <li class="hl-nav-item"><a href="alyx.html" class="hl-nav-link nav-link" data-i18n="nav.alyx">Half-Life: Alyx</a></li>
+          <li class="hl-nav-item"><a href="halflife.html" class="hl-nav-link nav-link" data-i18n="nav.halflife">Half-Life</a></li>
+          <li class="hl-nav-item"><a href="halflife2.html" class="hl-nav-link nav-link active" data-i18n="nav.halflife2">Half-Life 2</a></li>
+          <li class="hl-nav-item"><a href="episode1.html" class="hl-nav-link nav-link" data-i18n="nav.episode1">Episode One</a></li>
+          <li class="hl-nav-item"><a href="episode2.html" class="hl-nav-link nav-link" data-i18n="nav.episode2">Episode Two</a></li>
+        </ul>
+      </nav>
+
+      <!-- Language Selector -->
+      <div class="hl-flex hl-flex-center hl-gap-4">
+        <select id="lang-select" class="lang-select" aria-label="Language Selector" onchange="if(window.HL_i18n) window.HL_i18n.setLanguage(this.value)">
+          <option value="en" selected>English</option>
+          <option value="fr">Français</option>
+          <option value="de">Deutsch</option>
+          <option value="es">Español</option>
+          <option value="ja">日本語</option>
+          <option value="zh">中文</option>
+        </select>
+
+        <div class="hl-lang-selector lang-selector">
+          <button type="button" class="hl-lang-btn lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Select Interface Language">
+            <span class="current-lang-label js-current-lang-code">EN</span>
+            <span class="hl-lang-btn-arrow lang-btn-arrow">▼</span>
+          </button>
+          <ul class="hl-lang-dropdown lang-dropdown lang-menu" aria-hidden="true">
+            <li><button type="button" class="hl-lang-option lang-option is-active" data-lang="en"><span>English</span> <small>EN</small></button></li>
+            <li><button type="button" class="hl-lang-option lang-option" data-lang="fr"><span>Français</span> <small>FR</small></button></li>
+            <li><button type="button" class="hl-lang-option lang-option" data-lang="de"><span>Deutsch</span> <small>DE</small></button></li>
+            <li><button type="button" class="hl-lang-option lang-option" data-lang="es"><span>Español</span> <small>ES</small></button></li>
+            <li><button type="button" class="hl-lang-option lang-option" data-lang="ja"><span>日本語</span> <small>JA</small></button></li>
+            <li><button type="button" class="hl-lang-option lang-option" data-lang="zh"><span>中文</span> <small>ZH</small></button></li>
+          </ul>
+        </div>
+
+        <button type="button" class="hl-nav-toggle mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-nav-drawer" aria-hidden="true">
+    <a href="index.html" class="hl-nav-link mobile-nav-link" data-i18n="nav.home">Home</a>
+    <a href="alyx.html" class="hl-nav-link mobile-nav-link" data-i18n="nav.alyx">Half-Life: Alyx</a>
+    <a href="halflife.html" class="hl-nav-link mobile-nav-link" data-i18n="nav.halflife">Half-Life</a>
+    <a href="halflife2.html" class="hl-nav-link mobile-nav-link active" data-i18n="nav.halflife2">Half-Life 2</a>
+    <a href="episode1.html" class="hl-nav-link mobile-nav-link" data-i18n="nav.episode1">Episode One</a>
+    <a href="episode2.html" class="hl-nav-link mobile-nav-link" data-i18n="nav.episode2">Episode Two</a>
+  </div>
+  <div class="nav-backdrop"></div>
+
+  <main>
+    <!-- Back Navigation -->
+    <div class="hl-container" style="padding-top: var(--space-6); padding-bottom: var(--space-2);">
+      <a href="index.html" class="hl-card-link back-link" data-i18n="ui.back">&larr; Back to Home</a>
+    </div>
+
+    <!-- Hero Header -->
+    <section class="hl-hero hero-section">
+      <div class="hl-container">
+        <div class="hl-hero-grid hero-grid">
+          <div class="hl-hero-content hero-content">
+            <span class="hl-eyebrow hl-text-accent">2004 Source Engine Revolution</span>
+            <h1 class="hl-heading-hero hero-title">Half-Life 2</h1>
+            <div class="hl-flex hl-gap-2 hero-badges" style="margin-bottom: var(--space-4);">
+              <span class="hl-badge hl-badge-accent">SOURCE ENGINE</span>
+              <span class="hl-badge">GRAVITY GUN PHYSICS</span>
+            </div>
+            <p class="hl-hero-desc hero-desc">
+              By taking the suspense, challenge and visceral charge of the original, and adding startling realism and responsiveness, Half-Life 2 opens the door to a world where the player's presence affects everything around him.
+            </p>
+            <div class="hl-hero-actions hero-actions">
+              <a href="https://store.steampowered.com/app/220/HalfLife_2/" target="_blank" rel="noopener noreferrer" class="hl-btn hl-btn-primary btn-primary">Buy on Steam</a>
+              <a href="#specs" class="hl-btn hl-btn-outline btn-outline">System Requirements</a>
+            </div>
+          </div>
+          <div class="hl-hero-media hero-media">
+            <img src="assets/images/hl2-cover.jpg" alt="Half-Life 2 Box Cover Art" class="hl-hero-img hero-img" width="600" height="800">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- City 17 & Combine Resistance Storyline -->
+    <section class="hl-section">
+      <div class="hl-container">
+        <span class="hl-eyebrow">Dystopian Setting</span>
+        <h2 class="hl-heading-1" style="margin-bottom: var(--space-6);">City 17 & The Citadel Occupation</h2>
+        
+        <div class="hl-grid-2" style="gap: var(--space-8); align-items: center;">
+          <div>
+            <p class="hl-body-lead" style="margin-bottom: var(--space-4);">
+              Awakened from stasis by the enigmatic G-Man, Gordon Freeman arrives by train in City 17, an Eastern European metropolis transformed into the totalitarian hub of the Combine's planetary occupation.
+            </p>
+            <p class="hl-body" style="margin-bottom: var(--space-4);">
+              Looming over the cityscape is the monolithic Combine Citadel, where Administrator Dr. Wallace Breen negotiates humanity's compliance. Freeman links up with the underground Resistance, including Barney Calhoun, Dr. Eli Vance, Dr. Isaac Kleiner, and Eli's daughter Alyx Vance.
+            </p>
+            <p class="hl-body">
+              From the zombie-infested alleys of Ravenholm to the fortified coastal highway and the perilous assault on Nova Prospekt, Gordon leads an all-out uprising to bring down the Citadel from the inside.
+            </p>
+          </div>
+
+          <div style="background: var(--color-surface-card); padding: var(--space-6); border-left: 4px solid var(--color-accent-orange);">
+            <h3 class="hl-heading-3" style="margin-bottom: var(--space-2);">The Gravity Gun Innovation</h3>
+            <p class="hl-body">
+              The <strong>Zero Point Energy Field Manipulator</strong> (Gravity Gun) allows players to grab, hold, manipulate, and launch heavy physical objects as deadly projectiles. From hurling circular saw blades in Ravenholm to constructing barricades against Combine assault gunships, physics became an organic weapon and puzzle tool.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Source Engine Architecture -->
+    <section class="hl-section" style="background-color: #DFDEDF; border-top: 1px solid #D0CFD0; border-bottom: 1px solid #D0CFD0;">
+      <div class="hl-container">
+        <span class="hl-eyebrow">Technological Mastery</span>
+        <h2 class="hl-heading-2" style="margin-bottom: var(--space-6);">Source Engine Physics, AI & Facial Animation</h2>
+        <div class="hl-grid-3">
+          <div style="background: var(--color-surface-card); padding: var(--space-6);">
+            <h3 class="hl-heading-3" style="margin-bottom: var(--space-2);">Havok Physics Simulation</h3>
+            <p class="hl-body">
+              Real-time rigid-body dynamics, buoyant fluid displacement, structural balance, and kinematic ragdoll reactions bring every crate, barrel, and vehicle to life.
+            </p>
+          </div>
+          <div style="background: var(--color-surface-card); padding: var(--space-6);">
+            <h3 class="hl-heading-3" style="margin-bottom: var(--space-2);">Facial Expression System</h3>
+            <p class="hl-body">
+              40 independent muscle facial flex controllers synthesize nuanced emotional expressions, lip sync, and eye gaze tracking across all story characters.
+            </p>
+          </div>
+          <div style="background: var(--color-surface-card); padding: var(--space-6);">
+            <h3 class="hl-heading-3" style="margin-bottom: var(--space-2);">Advanced Shaders & Lighting</h3>
+            <p class="hl-body">
+              Radiosity normal mapping, dynamic high dynamic range (HDR) exposure simulation, and anisotropic water surface reflections set new visual standards in 2004.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screenshot Gallery -->
+    <section class="hl-section">
+      <div class="hl-container">
+        <span class="hl-eyebrow">Visual Gallery</span>
+        <h2 class="hl-heading-2" style="margin-bottom: var(--space-6);">City 17 & Citadel Gallery</h2>
+        <div class="hl-grid-3 gallery screenshots media-grid image-grid">
+          <div class="media-frame"><img src="assets/images/hl2-cover.jpg" alt="City 17 Combat Screenshot" width="600" height="400"></div>
+          <div class="media-frame"><img src="assets/images/anniversary-hl2.jpg" alt="Citadel Core Interior Screenshot" width="600" height="400"></div>
+          <div class="media-frame"><img src="assets/images/hero-alyx.jpg" alt="Combine Overwatch Battle Screenshot" width="600" height="400"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- System Requirements Table -->
+    <section id="specs" class="hl-section" style="background-color: var(--color-surface-card); border-top: 1px solid #D0CFD0;">
+      <div class="hl-container">
+        <span class="hl-eyebrow">Technical Specifications</span>
+        <h2 class="hl-heading-2" style="margin-bottom: var(--space-4);">System Requirements (20th Anniversary Edition)</h2>
+        
+        <table class="hl-specs-table specs-table system-specs">
+          <thead>
+            <tr>
+              <th>Specification</th>
+              <th>Minimum Requirement</th>
+              <th>Recommended Configuration</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Operating System</strong></td>
+              <td>Windows 7 / 8 / 10 / 11</td>
+              <td>Windows 10 / 11 (64-bit)</td>
+            </tr>
+            <tr>
+              <td><strong>Processor (CPU)</strong></td>
+              <td>1.7 GHz Intel / AMD Processor</td>
+              <td>3.0 GHz Dual-Core Intel / AMD Processor</td>
+            </tr>
+            <tr>
+              <td><strong>Memory (RAM)</strong></td>
+              <td>512 MB RAM</td>
+              <td>2 GB RAM (for 4K UI Scaling)</td>
+            </tr>
+            <tr>
+              <td><strong>Graphics (GPU)</strong></td>
+              <td>DirectX 8.1 level Graphics Card</td>
+              <td>DirectX 9.0c compliant Video Card (NVIDIA GeForce 7800 / ATI Radeon X1800)</td>
+            </tr>
+            <tr>
+              <td><strong>Storage</strong></td>
+              <td>6.5 GB available space</td>
+              <td>10 GB available space (including Workshop mods)</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="hl-footer site-footer">
+    <div class="hl-container">
+      <div class="hl-footer-grid footer-grid">
+        <div class="hl-footer-brand footer-brand">
+          <a href="index.html" class="hl-footer-logo footer-logo">
+            <span class="hl-brand-icon brand-icon">λ</span>
+            <span class="hl-footer-title footer-title">HALF-LIFE</span>
+          </a>
+          <p class="hl-body" style="color: var(--color-canvas); max-width: 450px;">
+            Half-Life, the Lambda logo, Gordon Freeman, Source, and Steam are trademarks of Valve Corporation.
+          </p>
+        </div>
+        <div>
+          <h4 class="hl-footer-heading footer-heading">Franchise Games</h4>
+          <ul class="hl-footer-links footer-links">
+            <li><a href="alyx.html">Half-Life: Alyx</a></li>
+            <li><a href="halflife.html">Half-Life (1998)</a></li>
+            <li><a href="halflife2.html">Half-Life 2</a></li>
+            <li><a href="episode1.html">Episode One</a></li>
+            <li><a href="episode2.html">Episode Two</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="hl-footer-heading footer-heading">Steam & Valve</h4>
+          <ul class="hl-footer-links footer-links">
+            <li><a href="https://store.steampowered.com/app/220/HalfLife_2/" target="_blank" rel="noopener noreferrer">Buy on Steam</a></li>
+            <li><a href="https://www.valvesoftware.com/" target="_blank" rel="noopener noreferrer">Valve Corporation</a></li>
+            <li><a href="index.html" class="back-link">Back to Franchise Portal</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="hl-footer-bottom footer-bottom">
+        <span>© Valve Corporation. All rights reserved.</span>
+        <a href="#top" style="color: var(--color-accent-orange);">Back to Top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

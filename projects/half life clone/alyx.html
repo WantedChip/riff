@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Half-Life: Alyx | Official VR Product Page</title>
+  <meta name="description" content="Half-Life: Alyx is Valve's VR return to the Half-Life series. Set between the events of Half-Life and Half-Life 2, it is the story of an impossible fight against a vicious alien race known as the Combine.">
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <!-- Brand Navigation Header -->
+  <header class="hl-header site-header">
+    <div class="hl-container hl-header-inner site-header-inner">
+      <a href="index.html" class="hl-brand brand-logo" aria-label="Half-Life Homepage">
+        <span class="hl-brand-icon brand-icon lambda-logo" alt="Lambda logo">λ</span>
+        <span class="hl-brand-title brand-title logo-text">HALF-LIFE</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="desktop-nav" aria-label="Main Navigation">
+        <ul class="hl-nav-menu">
+          <li class="hl-nav-item"><a href="index.html" class="hl-nav-link nav-link" data-i18n="nav.home">Home</a></li>
+          <li class="hl-nav-item"><a href="alyx.html" class="hl-nav-link nav-link active" data-i18n="nav.alyx">Half-Life: Alyx</a></li>
+          <li class="hl-nav-item"><a href="halflife.html" class="hl-nav-link nav-link" data-i18n="nav.halflife">Half-Life</a></li>
+          <li class="hl-nav-item"><a href="halflife2.html" class="hl-nav-link nav-link" data-i18n="nav.halflife2">Half-Life 2</a></li>
+          <li class="hl-nav-item"><a href="episode1.html" class="hl-nav-link nav-link" data-i18n="nav.episode1">Episode One</a></li>
+          <li class="hl-nav-item"><a href="episode2.html" class="hl-nav-link nav-link" data-i18n="nav.episode2">Episode Two</a></li>
+        </ul>
+      </nav>
+
+      <!-- Language Selector -->
+      <div class="hl-flex hl-flex-center hl-gap-4">
+        <select id="lang-select" class="lang-select" aria-label="Language Selector" onchange="if(window.HL_i18n) window.HL_i18n.setLanguage(this.value)">
+          <option value="en" selected>English</option>
+          <option value="fr">Français</option>
+          <option value="de">Deutsch</option>
+          <option value="es">Español</option>
+          <option value="ja">日本語</option>
+          <option value="zh">中文</option>
+        </select>
+
+        <div class="hl-lang-selector lang-selector">
+          <button type="button" class="hl-lang-btn lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Select Interface Language">
+            <span class="current-lang-label js-current-lang-code">EN</span>
+            <span class="hl-lang-btn-arrow lang-btn-arrow">▼</span>
+          </button>
+          <ul class="hl-lang-dropdown lang-dropdown lang-menu" aria-hidden="true">
+            <li><button type="button" class="hl-lang-option lang-option is-active" data-lang="en"><span>English</span> <small>EN</small></button></li>
+            <li><button type="button" class="hl-lang-option lang-option" data-lang="fr"><span>Français</span> <small>FR</small></button></li>
+            <li><button type="button" class="hl-lang-option lang-option" data-lang="de"><span>Deutsch</span> <small>DE</small></button></li>
+            <li><button type="button" class="hl-lang-option lang-option" data-lang="es"><span>Español</span> <small>ES</small></button></li>
+            <li><button type="button" class="hl-lang-option lang-option" data-lang="ja"><span>日本語</span> <small>JA</small></button></li>
+            <li><button type="button" class="hl-lang-option lang-option" data-lang="zh"><span>中文</span> <small>ZH</small></button></li>
+          </ul>
+        </div>
+
+        <button type="button" class="hl-nav-toggle mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-nav-drawer" aria-hidden="true">
+    <a href="index.html" class="hl-nav-link mobile-nav-link" data-i18n="nav.home">Home</a>
+    <a href="alyx.html" class="hl-nav-link mobile-nav-link active" data-i18n="nav.alyx">Half-Life: Alyx</a>
+    <a href="halflife.html" class="hl-nav-link mobile-nav-link" data-i18n="nav.halflife">Half-Life</a>
+    <a href="halflife2.html" class="hl-nav-link mobile-nav-link" data-i18n="nav.halflife2">Half-Life 2</a>
+    <a href="episode1.html" class="hl-nav-link mobile-nav-link" data-i18n="nav.episode1">Episode One</a>
+    <a href="episode2.html" class="hl-nav-link mobile-nav-link" data-i18n="nav.episode2">Episode Two</a>
+  </div>
+  <div class="nav-backdrop"></div>
+
+  <main>
+    <!-- Back Navigation & Breadcrumb -->
+    <div class="hl-container" style="padding-top: var(--space-6); padding-bottom: var(--space-2);">
+      <a href="index.html" class="hl-card-link back-link" data-i18n="ui.back">&larr; Back to Home</a>
+    </div>
+
+    <!-- Hero Header -->
+    <section class="hl-hero hero-section">
+      <div class="hl-container">
+        <div class="hl-hero-grid hero-grid">
+          <div class="hl-hero-content hero-content">
+            <span class="hl-eyebrow hl-text-accent">Full-Length VR Entry • Valve Source 2</span>
+            <h1 class="hl-heading-hero hero-title">Half-Life: Alyx</h1>
+            <div class="hl-flex hl-gap-2 hero-badges" style="margin-bottom: var(--space-4);">
+              <span class="hl-badge hl-badge-accent">VR EXCLUSIVE</span>
+              <span class="hl-badge">STEAMVR</span>
+              <span class="hl-badge hl-badge-outline">VALVE INDEX</span>
+            </div>
+            <p class="hl-hero-desc hero-desc">
+              Playing as Alyx Vance, you are humanity’s only chance for survival. The Combine’s control of the planet since the Black Mesa incident has only strengthened as they corral the remaining population in cities. Among them are some of Earth’s greatest scientists: you and your father, Dr. Eli Vance.
+            </p>
+            <div class="hl-hero-actions hero-actions">
+              <a href="https://store.steampowered.com/app/546560/HalfLife_Alyx/" target="_blank" rel="noopener noreferrer" class="hl-btn hl-btn-primary btn-primary">Buy on Steam</a>
+              <a href="#specs" class="hl-btn hl-btn-outline btn-outline">System Requirements</a>
+            </div>
+          </div>
+          <div class="hl-hero-media hero-media">
+            <img src="assets/images/hero-alyx.jpg" alt="Half-Life: Alyx Promoted Gameplay Key Art" class="hl-hero-img hero-img" width="1280" height="720">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- VR Features & Mechanics Section -->
+    <section class="hl-section">
+      <div class="hl-container">
+        <span class="hl-eyebrow">Virtual Reality Innovation</span>
+        <h2 class="hl-heading-1" style="margin-bottom: var(--space-8);">Built Exclusively for Virtual Reality Mechanics & Physics</h2>
+        
+        <div class="hl-grid-3">
+          <div style="background: var(--color-surface-card); padding: var(--space-6); border-top: 4px solid var(--color-accent-orange);">
+            <h3 class="hl-heading-3" style="margin-bottom: var(--space-2);">Room-Scale Interaction</h3>
+            <p class="hl-body">
+              Lean around a broken wall and under a Barnacle to make an impossible shot. Scour shelves to find a syringe and some shotgun shells. Manipulate tools to hack alien interfaces.
+            </p>
+          </div>
+          <div style="background: var(--color-surface-card); padding: var(--space-6); border-top: 4px solid var(--color-brand-rust);">
+            <h3 class="hl-heading-3" style="margin-bottom: var(--space-2);">Tactile Combat & Reloading</h3>
+            <p class="hl-body">
+              Tear a Headcrab off your face and throw it out the window. Manually eject spent magazines, load fresh cartridges, and rack your slide in intense fire fights against Combine soldiers.
+            </p>
+          </div>
+          <div style="background: var(--color-surface-card); padding: var(--space-6); border-top: 4px solid var(--color-brand-rust);">
+            <h3 class="hl-heading-3" style="margin-bottom: var(--space-2);">Full Physics Simulation</h3>
+            <p class="hl-body">
+              Powered by Valve's next-generation Source 2 engine, every object in the world has physical mass, momentum, collision friction, and tactile responsiveness.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gravity Gloves Mechanics Spotlight -->
+    <section class="hl-section" style="background-color: #DFDEDF; border-top: 1px solid #D0CFD0; border-bottom: 1px solid #D0CFD0;">
+      <div class="hl-container">
+        <div class="hl-grid-2" style="align-items: center;">
+          <div>
+            <span class="hl-eyebrow">Signature Weaponry</span>
+            <h2 class="hl-heading-2" style="margin-bottom: var(--space-4);">The Gravity Gloves (The Russells)</h2>
+            <p class="hl-body" style="margin-bottom: var(--space-4);">
+              Invented by eccentric resistance scientist Russell, the Gravity Gloves allow Alyx to magnetically target, lock onto, and flick distant objects and ammo directly into her hands with precision.
+            </p>
+            <p class="hl-body">
+              They serve as Alyx's essential survival tool, health status monitor, ammo counter, and resin accumulator throughout the Quarantine Zone.
+            </p>
+          </div>
+          <div class="media-frame">
+            <img src="assets/images/alyx-cover.jpg" alt="Alyx Vance with Gravity Gloves" width="600" height="400">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Media Screenshot Gallery -->
+    <section class="hl-section">
+      <div class="hl-container">
+        <span class="hl-eyebrow">Visual Gallery</span>
+        <h2 class="hl-heading-2" style="margin-bottom: var(--space-6);">Screenshots & Concept Imagery</h2>
+        <div class="hl-grid-3 gallery screenshots media-grid image-grid">
+          <div class="media-frame"><img src="assets/images/hero-alyx.jpg" alt="City 17 Citadel Screenshot" width="600" height="400"></div>
+          <div class="media-frame"><img src="assets/images/anniversary-hl2.jpg" alt="Quarantine Zone Encounter Screenshot" width="600" height="400"></div>
+          <div class="media-frame"><img src="assets/images/cover-halflife2.jpg" alt="Combine Overwatch Strider Screenshot" width="600" height="400"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- System Requirements Table -->
+    <section id="specs" class="hl-section" style="background-color: var(--color-surface-card); border-top: 1px solid #D0CFD0;">
+      <div class="hl-container">
+        <span class="hl-eyebrow">Technical Specifications</span>
+        <h2 class="hl-heading-2" style="margin-bottom: var(--space-4);">System Requirements</h2>
+        
+        <table class="hl-specs-table specs-table system-specs">
+          <thead>
+            <tr>
+              <th>Specification</th>
+              <th>Minimum Requirement</th>
+              <th>Recommended Configuration</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Operating System</strong></td>
+              <td>Windows 10 (64-bit)</td>
+              <td>Windows 10 / 11 (64-bit)</td>
+            </tr>
+            <tr>
+              <td><strong>Processor (CPU)</strong></td>
+              <td>Intel Core i5-7500 / AMD Ryzen 5 1600</td>
+              <td>Intel Core i7-9700K / AMD Ryzen 7 3700X</td>
+            </tr>
+            <tr>
+              <td><strong>Memory (RAM)</strong></td>
+              <td>12 GB RAM</td>
+              <td>16 GB RAM</td>
+            </tr>
+            <tr>
+              <td><strong>Graphics (GPU)</strong></td>
+              <td>NVIDIA GTX 1060 / AMD RX 580 (6GB VRAM)</td>
+              <td>NVIDIA RTX 2070 / AMD Radeon RX 5700 XT (8GB VRAM)</td>
+            </tr>
+            <tr>
+              <td><strong>VR Headsets Supported</strong></td>
+              <td>Valve Index, HTC Vive, Oculus Rift / Quest + Link, Windows Mixed Reality</td>
+              <td>Valve Index with 144Hz Refresh Rate & Finger Tracking Controllers</td>
+            </tr>
+            <tr>
+              <td><strong>Storage</strong></td>
+              <td>67 GB available space (SSD strongly recommended)</td>
+              <td>High-speed NVMe SSD</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="hl-footer site-footer">
+    <div class="hl-container">
+      <div class="hl-footer-grid footer-grid">
+        <div class="hl-footer-brand footer-brand">
+          <a href="index.html" class="hl-footer-logo footer-logo">
+            <span class="hl-brand-icon brand-icon">λ</span>
+            <span class="hl-footer-title footer-title">HALF-LIFE</span>
+          </a>
+          <p class="hl-body" style="color: var(--color-canvas); max-width: 450px;">
+            Half-Life, the Lambda logo, Alyx Vance, Gordon Freeman, the Source Engine, and Steam are trademarks and/or registered trademarks of Valve Corporation.
+          </p>
+        </div>
+        <div>
+          <h4 class="hl-footer-heading footer-heading">Franchise Games</h4>
+          <ul class="hl-footer-links footer-links">
+            <li><a href="alyx.html">Half-Life: Alyx</a></li>
+            <li><a href="halflife.html">Half-Life (1998)</a></li>
+            <li><a href="halflife2.html">Half-Life 2</a></li>
+            <li><a href="episode1.html">Episode One</a></li>
+            <li><a href="episode2.html">Episode Two</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="hl-footer-heading footer-heading">Steam & Valve</h4>
+          <ul class="hl-footer-links footer-links">
+            <li><a href="https://store.steampowered.com/app/546560/HalfLife_Alyx/" target="_blank" rel="noopener noreferrer">Buy on Steam</a></li>
+            <li><a href="https://www.valvesoftware.com/" target="_blank" rel="noopener noreferrer">Valve Corporation</a></li>
+            <li><a href="index.html" class="back-link">Back to Franchise Portal</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="hl-footer-bottom footer-bottom">
+        <span>© Valve Corporation. All rights reserved.</span>
+        <a href="#top" style="color: var(--color-accent-orange);">Back to Top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

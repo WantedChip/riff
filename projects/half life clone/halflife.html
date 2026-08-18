@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Half-Life (1998) | The Original Classic</title>
+  <meta name="description" content="Half-Life is the legendary 1998 debut from Valve that defined the story-driven first-person shooter genre at the Black Mesa Research Facility.">
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <!-- Brand Navigation Header -->
+  <header class="hl-header site-header">
+    <div class="hl-container hl-header-inner site-header-inner">
+      <a href="index.html" class="hl-brand brand-logo" aria-label="Half-Life Homepage">
+        <span class="hl-brand-icon brand-icon lambda-logo" alt="Lambda logo">λ</span>
+        <span class="hl-brand-title brand-title logo-text">HALF-LIFE</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="desktop-nav" aria-label="Main Navigation">
+        <ul class="hl-nav-menu">
+          <li class="hl-nav-item"><a href="index.html" class="hl-nav-link nav-link" data-i18n="nav.home">Home</a></li>
+          <li class="hl-nav-item"><a href="alyx.html" class="hl-nav-link nav-link" data-i18n="nav.alyx">Half-Life: Alyx</a></li>
+          <li class="hl-nav-item"><a href="halflife.html" class="hl-nav-link nav-link active" data-i18n="nav.halflife">Half-Life</a></li>
+          <li class="hl-nav-item"><a href="halflife2.html" class="hl-nav-link nav-link" data-i18n="nav.halflife2">Half-Life 2</a></li>
+          <li class="hl-nav-item"><a href="episode1.html" class="hl-nav-link nav-link" data-i18n="nav.episode1">Episode One</a></li>
+          <li class="hl-nav-item"><a href="episode2.html" class="hl-nav-link nav-link" data-i18n="nav.episode2">Episode Two</a></li>
+        </ul>
+      </nav>
+
+      <!-- Language Selector -->
+      <div class="hl-flex hl-flex-center hl-gap-4">
+        <select id="lang-select" class="lang-select" aria-label="Language Selector" onchange="if(window.HL_i18n) window.HL_i18n.setLanguage(this.value)">
+          <option value="en" selected>English</option>
+          <option value="fr">Français</option>
+          <option value="de">Deutsch</option>
+          <option value="es">Español</option>
+          <option value="ja">日本語</option>
+          <option value="zh">中文</option>
+        </select>
+
+        <div class="hl-lang-selector lang-selector">
+          <button type="button" class="hl-lang-btn lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Select Interface Language">
+            <span class="current-lang-label js-current-lang-code">EN</span>
+            <span class="hl-lang-btn-arrow lang-btn-arrow">▼</span>
+          </button>
+          <ul class="hl-lang-dropdown lang-dropdown lang-menu" aria-hidden="true">
+            <li><button type="button" class="hl-lang-option lang-option is-active" data-lang="en"><span>English</span> <small>EN</small></button></li>
+            <li><button type="button" class="hl-lang-option lang-option" data-lang="fr"><span>Français</span> <small>FR</small></button></li>
+            <li><button type="button" class="hl-lang-option lang-option" data-lang="de"><span>Deutsch</span> <small>DE</small></button></li>
+            <li><button type="button" class="hl-lang-option lang-option" data-lang="es"><span>Español</span> <small>ES</small></button></li>
+            <li><button type="button" class="hl-lang-option lang-option" data-lang="ja"><span>日本語</span> <small>JA</small></button></li>
+            <li><button type="button" class="hl-lang-option lang-option" data-lang="zh"><span>中文</span> <small>ZH</small></button></li>
+          </ul>
+        </div>
+
+        <button type="button" class="hl-nav-toggle mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-nav-drawer" aria-hidden="true">
+    <a href="index.html" class="hl-nav-link mobile-nav-link" data-i18n="nav.home">Home</a>
+    <a href="alyx.html" class="hl-nav-link mobile-nav-link" data-i18n="nav.alyx">Half-Life: Alyx</a>
+    <a href="halflife.html" class="hl-nav-link mobile-nav-link active" data-i18n="nav.halflife">Half-Life</a>
+    <a href="halflife2.html" class="hl-nav-link mobile-nav-link" data-i18n="nav.halflife2">Half-Life 2</a>
+    <a href="episode1.html" class="hl-nav-link mobile-nav-link" data-i18n="nav.episode1">Episode One</a>
+    <a href="episode2.html" class="hl-nav-link mobile-nav-link" data-i18n="nav.episode2">Episode Two</a>
+  </div>
+  <div class="nav-backdrop"></div>
+
+  <main>
+    <!-- Back Navigation -->
+    <div class="hl-container" style="padding-top: var(--space-6); padding-bottom: var(--space-2);">
+      <a href="index.html" class="hl-card-link back-link" data-i18n="ui.back">&larr; Back to Home</a>
+    </div>
+
+    <!-- Hero Header -->
+    <section class="hl-hero hero-section">
+      <div class="hl-container">
+        <div class="hl-hero-grid hero-grid">
+          <div class="hl-hero-content hero-content">
+            <span class="hl-eyebrow hl-text-accent">1998 Original Classic • GoldSrc Engine</span>
+            <h1 class="hl-heading-hero hero-title">Half-Life (1998)</h1>
+            <div class="hl-flex hl-gap-2 hero-badges" style="margin-bottom: var(--space-4);">
+              <span class="hl-badge hl-badge-accent">OVER 50 GAME OF THE YEAR AWARDS</span>
+              <span class="hl-badge">GOLDSRC ENGINE</span>
+            </div>
+            <p class="hl-hero-desc hero-desc">
+              Named Game of the Year by over 50 publications, Valve's debut title blends action and adventure with award-winning technology to create a frighteningly realistic world where players must think to survive.
+            </p>
+            <div class="hl-hero-actions hero-actions">
+              <a href="https://store.steampowered.com/app/70/HalfLife/" target="_blank" rel="noopener noreferrer" class="hl-btn hl-btn-primary btn-primary">Buy on Steam</a>
+              <a href="#specs" class="hl-btn hl-btn-outline btn-outline">System Requirements</a>
+            </div>
+          </div>
+          <div class="hl-hero-media hero-media">
+            <img src="assets/images/hl1-cover.jpg" alt="Half-Life 1998 Box Cover Art" class="hl-hero-img hero-img" width="600" height="800">
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Black Mesa Incident Synopsis -->
+    <section class="hl-section">
+      <div class="hl-container">
+        <span class="hl-eyebrow">The Black Mesa Incident</span>
+        <h2 class="hl-heading-1" style="margin-bottom: var(--space-6);">Resonance Cascade at Anomalous Materials</h2>
+        
+        <div class="hl-grid-2" style="gap: var(--space-8); align-items: center;">
+          <div>
+            <p class="hl-body-lead" style="margin-bottom: var(--space-4);">
+              You are Dr. Gordon Freeman, a 27-year-old research associate in the Anomalous Materials Laboratory at the top-secret Black Mesa Research Facility in the New Mexico desert.
+            </p>
+            <p class="hl-body" style="margin-bottom: var(--space-4);">
+              During an experiment on a hyper-pure crystalline sample, the Anti-Mass Spectrometer overloads, triggering a catastrophic dimensional rupture known as the Resonance Cascade. Voracious alien organisms from the borderworld Xen flood into the facility.
+            </p>
+            <p class="hl-body">
+              Trapped deep underground, Freeman must don the Mark IV HEV Hazard Suit, grab a steel crowbar, and fight past hostile extraterrestrials and ruthless military cleanup operatives from the Hazardous Environment Combat Unit (HECU).
+            </p>
+          </div>
+
+          <div style="background: var(--color-surface-card); padding: var(--space-6); border-left: 4px solid var(--color-accent-orange);">
+            <h3 class="hl-heading-3" style="margin-bottom: var(--space-2);">Legacy & Historical Impact</h3>
+            <p class="hl-body" style="margin-bottom: var(--space-2);">
+              • Won over 50 Game of the Year awards from PC Gamer, Computer Gaming World, and IGN.<br>
+              • Pioneered seamless scripted in-game sequences without breaking first-person player control.<br>
+              • Spawned landmark multiplayer modifications including <em>Counter-Strike</em>, <em>Team Fortress Classic</em>, and <em>Day of Defeat</em>.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- GoldSrc Engine Innovation -->
+    <section class="hl-section" style="background-color: #DFDEDF; border-top: 1px solid #D0CFD0; border-bottom: 1px solid #D0CFD0;">
+      <div class="hl-container">
+        <span class="hl-eyebrow">Engine Technology</span>
+        <h2 class="hl-heading-2" style="margin-bottom: var(--space-6);">GoldSrc (GoldSource) Engine Architecture</h2>
+        <div class="hl-grid-3">
+          <div style="background: var(--color-surface-card); padding: var(--space-6);">
+            <h3 class="hl-heading-3" style="margin-bottom: var(--space-2);">Skeletal Animation</h3>
+            <p class="hl-body">
+              First commercial FPS engine to utilize skeletal bone animation hierarchies, enabling natural transitions, blending, and head-tracking for non-player characters.
+            </p>
+          </div>
+          <div style="background: var(--color-surface-card); padding: var(--space-6);">
+            <h3 class="hl-heading-3" style="margin-bottom: var(--space-2);">Flocking & Sensory AI</h3>
+            <p class="hl-body">
+              Enemies hear player footsteps, spot flashlight beams, and coordinate squad suppression tactics with grenade flanking maneuvers.
+            </p>
+          </div>
+          <div style="background: var(--color-surface-card); padding: var(--space-6);">
+            <h3 class="hl-heading-3" style="margin-bottom: var(--space-2);">Environmental Audio</h3>
+            <p class="hl-body">
+              DirectSound 3D and A3D spatial sound processing delivered dynamic acoustic reverberation, occlusion, and Doppler effects inside metal ventilation shafts.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screenshot Gallery -->
+    <section class="hl-section">
+      <div class="hl-container">
+        <span class="hl-eyebrow">Visual Archive</span>
+        <h2 class="hl-heading-2" style="margin-bottom: var(--space-6);">Black Mesa Research Facility Gallery</h2>
+        <div class="hl-grid-3 gallery screenshots media-grid image-grid">
+          <div class="media-frame"><img src="assets/images/hl1-cover.jpg" alt="Gordon Freeman in Black Mesa" width="600" height="400"></div>
+          <div class="media-frame"><img src="assets/images/anniversary-hl2.jpg" alt="Anomalous Materials Lab" width="600" height="400"></div>
+          <div class="media-frame"><img src="assets/images/cover-halflife.jpg" alt="Resonance Cascade Chamber" width="600" height="400"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- System Requirements Table -->
+    <section id="specs" class="hl-section" style="background-color: var(--color-surface-card); border-top: 1px solid #D0CFD0;">
+      <div class="hl-container">
+        <span class="hl-eyebrow">Technical Specifications</span>
+        <h2 class="hl-heading-2" style="margin-bottom: var(--space-4);">System Requirements (Historical & Steam Modern)</h2>
+        
+        <table class="hl-specs-table specs-table system-specs game-metadata">
+          <thead>
+            <tr>
+              <th>Specification</th>
+              <th>1998 Original Release</th>
+              <th>Steam Modern PC Configuration</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Operating System</strong></td>
+              <td>Windows 95 / Windows 98 / Windows NT 4.0</td>
+              <td>Windows 7 / 8 / 10 / 11 / Linux / macOS</td>
+            </tr>
+            <tr>
+              <td><strong>Processor (CPU)</strong></td>
+              <td>Intel Pentium 133 MHz (Pentium 166 MHz recommended)</td>
+              <td>500 MHz Intel / AMD Processor</td>
+            </tr>
+            <tr>
+              <td><strong>Memory (RAM)</strong></td>
+              <td>24 MB RAM (32 MB RAM recommended)</td>
+              <td>96 MB RAM (512 MB recommended)</td>
+            </tr>
+            <tr>
+              <td><strong>Graphics (GPU)</strong></td>
+              <td>SVGA 16-bit high color display (3Dfx Voodoo / OpenGL recommended)</td>
+              <td>DirectX 9 / OpenGL 2.0 compatible 3D accelerator</td>
+            </tr>
+            <tr>
+              <td><strong>Audio</strong></td>
+              <td>Sound Blaster 16 or 100% Windows compatible sound card</td>
+              <td>Standard DirectSound audio device</td>
+            </tr>
+            <tr>
+              <td><strong>Storage</strong></td>
+              <td>400 MB available hard drive space, 2X CD-ROM drive</td>
+              <td>500 MB hard drive space</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="hl-footer site-footer">
+    <div class="hl-container">
+      <div class="hl-footer-grid footer-grid">
+        <div class="hl-footer-brand footer-brand">
+          <a href="index.html" class="hl-footer-logo footer-logo">
+            <span class="hl-brand-icon brand-icon">λ</span>
+            <span class="hl-footer-title footer-title">HALF-LIFE</span>
+          </a>
+          <p class="hl-body" style="color: var(--color-canvas); max-width: 450px;">
+            Half-Life, the Lambda logo, Gordon Freeman, GoldSrc, and Steam are trademarks of Valve Corporation.
+          </p>
+        </div>
+        <div>
+          <h4 class="hl-footer-heading footer-heading">Franchise Games</h4>
+          <ul class="hl-footer-links footer-links">
+            <li><a href="alyx.html">Half-Life: Alyx</a></li>
+            <li><a href="halflife.html">Half-Life (1998)</a></li>
+            <li><a href="halflife2.html">Half-Life 2</a></li>
+            <li><a href="episode1.html">Episode One</a></li>
+            <li><a href="episode2.html">Episode Two</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4 class="hl-footer-heading footer-heading">Steam & Valve</h4>
+          <ul class="hl-footer-links footer-links">
+            <li><a href="https://store.steampowered.com/app/70/HalfLife/" target="_blank" rel="noopener noreferrer">Buy on Steam</a></li>
+            <li><a href="https://www.valvesoftware.com/" target="_blank" rel="noopener noreferrer">Valve Corporation</a></li>
+            <li><a href="index.html" class="back-link">Back to Franchise Portal</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="hl-footer-bottom footer-bottom">
+        <span>© Valve Corporation. All rights reserved.</span>
+        <a href="#top" style="color: var(--color-accent-orange);">Back to Top ↑</a>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>

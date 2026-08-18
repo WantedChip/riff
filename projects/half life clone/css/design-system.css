@@ -1,0 +1,345 @@
+/* ==========================================================================
+   HALF-LIFE DESIGN SYSTEM — CORE TOKENS & RESETS
+   File: css/design-system.css
+   Specification: half-life-com-design.md
+   ========================================================================== */
+
+:root {
+  /* ------------------------------------------------------------------------
+     1. Color Palette Tokens
+     ------------------------------------------------------------------------ */
+  /* Canvas & Surface */
+  --color-canvas: #E9E8E9;          /* Steam Gray - Main page background */
+  --color-surface: #E9E8E9;         /* Neutral content surface */
+  --color-surface-card: #FFFFFF;    /* Clean white for card backgrounds */
+  --color-surface-dark: #1E1B18;    /* Dark industrial surface */
+
+  /* Text Colors */
+  --color-text-primary: #000000;    /* Ink Black - Headings & body text */
+  --color-text-muted: #555555;      /* Secondary descriptive text */
+  --color-text-inverse: #FFFFFF;    /* Text on dark surfaces */
+
+  /* Accent & Interactive Colors */
+  --color-accent-orange: #FF862C;   /* Heat Orange - Primary interactive & link accent */
+  --color-accent-orange-hover: #E0711F; /* Darker orange hover state */
+  --color-brand-rust: #4B423C;      /* Rust Brown - Brand anchor tone */
+  --color-brand-rust-dark: #322B27; /* Darker rust brown */
+  --color-border-pink: #F0A2A3;     /* Soft Pink - Secondary accent highlight */
+  --color-overlay-dark: rgba(0, 0, 0, 0.75);
+
+  /* ------------------------------------------------------------------------
+     2. Typography Tokens (DIN Font Stack)
+     ------------------------------------------------------------------------ */
+  --font-family-din: 'DIN', 'DIN Alternate', 'DIN Next', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-family-mono: 'Consolas', 'Courier New', monospace;
+
+  /* Font Sizes */
+  --font-size-hero: 40px;
+  --font-size-h1: 36px;
+  --font-size-h2: 28px;
+  --font-size-h3: 22px;
+  --font-size-body-lead: 20px;
+  --font-size-body: 18px;
+  --font-size-small: 14px;
+  --font-size-caption: 12px;
+
+  /* Font Weights */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-bold: 700;
+  --font-weight-heavy: 800;
+
+  /* Letter Spacing */
+  --letter-spacing-tight: -0.02em;
+  --letter-spacing-normal: 0em;
+  --letter-spacing-wide: 0.05em;
+  --letter-spacing-uppercase: 0.1em;
+
+  /* Line Heights */
+  --line-height-hero: 1.1;
+  --line-height-heading: 1.2;
+  --line-height-body: 1.5;
+
+  /* ------------------------------------------------------------------------
+     3. Spacing System (4px Base Multiplier Grid)
+     ------------------------------------------------------------------------ */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+
+  /* ------------------------------------------------------------------------
+     4. Geometry & Elevation Constraints
+     ------------------------------------------------------------------------ */
+  --border-radius-strict: 0px;      /* STRICT 0px border-radius rule across ALL elements */
+  --container-max-width: 1280px;
+  --transition-fast: 0.15s ease-in-out;
+  --transition-normal: 0.25s ease-in-out;
+}
+
+/* ==========================================================================
+   GLOBAL RESET & MANDATORY STRICT 0PX BORDER RADIUS RULE
+   ========================================================================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-radius: 0 !important;      /* MANDATORY 0px rule - no rounded corners anywhere */
+  box-shadow: none !important;       /* Flat aesthetic - zero elevation box shadows */
+}
+
+*::before,
+*::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+
+html {
+  font-size: 16px;
+  scroll-behavior: smooth;
+  background-color: var(--color-canvas);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-din);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+body {
+  background-color: var(--color-canvas);
+  color: var(--color-text-primary);
+  font-family: var(--font-family-din);
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
+/* Link Resets & Styles */
+a {
+  color: var(--color-accent-orange);
+  text-decoration: none;
+  transition: color var(--transition-fast);
+}
+
+a:hover {
+  color: var(--color-accent-orange-hover);
+  text-decoration: underline;
+}
+
+button {
+  font-family: var(--font-family-din);
+  cursor: pointer;
+  border: none;
+  background: none;
+}
+
+img, video, svg, iframe {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* Focus Accessibility Outline */
+:focus-visible {
+  outline: 2px solid var(--color-accent-orange) !important;
+  outline-offset: 2px !important;
+}
+
+/* ==========================================================================
+   TYPOGRAPHY PRIMITIVES & UTILITIES
+   ========================================================================== */
+.hl-heading-hero {
+  font-size: var(--font-size-hero);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  line-height: var(--line-height-hero);
+  color: var(--color-text-primary);
+}
+
+@media (max-width: 767px) {
+  .hl-heading-hero {
+    font-size: 32px;
+  }
+}
+
+.hl-heading-1 {
+  font-size: var(--font-size-h1);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  line-height: var(--line-height-heading);
+}
+
+.hl-heading-2 {
+  font-size: var(--font-size-h2);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-wide);
+  line-height: var(--line-height-heading);
+}
+
+.hl-heading-3 {
+  font-size: var(--font-size-h3);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-normal);
+  line-height: var(--line-height-heading);
+}
+
+.hl-eyebrow {
+  font-size: var(--font-size-caption);
+  font-weight: var(--font-weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-uppercase);
+  color: var(--color-brand-rust);
+  margin-bottom: var(--space-2);
+  display: block;
+}
+
+.hl-body {
+  font-size: var(--font-size-body);
+  line-height: var(--line-height-body);
+  color: var(--color-text-primary);
+}
+
+.hl-body-lead {
+  font-size: var(--font-size-body-lead);
+  line-height: 1.6;
+  color: var(--color-text-primary);
+}
+
+.hl-caption {
+  font-size: var(--font-size-caption);
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: var(--letter-spacing-uppercase);
+}
+
+/* Highlighting Utility */
+.hl-text-accent {
+  color: var(--color-accent-orange) !important;
+}
+
+.hl-text-rust {
+  color: var(--color-brand-rust) !important;
+}
+
+.hl-text-uppercase {
+  text-transform: uppercase;
+}
+
+/* ==========================================================================
+   LAYOUT GRID & CONTAINER PRIMITIVES
+   ========================================================================== */
+.hl-container {
+  width: 100%;
+  max-width: var(--container-max-width);
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: var(--space-4);
+  padding-right: var(--space-4);
+}
+
+@media (min-width: 768px) {
+  .hl-container {
+    padding-left: var(--space-8);
+    padding-right: var(--space-8);
+  }
+}
+
+.hl-section {
+  padding-top: var(--space-12);
+  padding-bottom: var(--space-12);
+}
+
+@media (min-width: 768px) {
+  .hl-section {
+    padding-top: var(--space-16);
+    padding-bottom: var(--space-16);
+  }
+}
+
+/* Grid Layout Systems */
+.hl-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .hl-grid-2 {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-8);
+  }
+}
+
+.hl-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+}
+
+@media (min-width: 768px) {
+  .hl-grid-3 {
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--space-6);
+  }
+}
+
+.hl-grid-4 {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-6);
+}
+
+@media (min-width: 640px) {
+  .hl-grid-4 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 1024px) {
+  .hl-grid-4 {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--space-6);
+  }
+}
+
+/* Flex Utilities */
+.hl-flex {
+  display: flex;
+}
+
+.hl-flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.hl-flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.hl-gap-2 { gap: var(--space-2); }
+.hl-gap-4 { gap: var(--space-4); }
+.hl-gap-6 { gap: var(--space-6); }
+.hl-gap-8 { gap: var(--space-8); }

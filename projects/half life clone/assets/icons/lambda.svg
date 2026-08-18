@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40" width="40" height="40" aria-label="Half-Life Lambda Logo">
+  <rect width="40" height="40" fill="#4B423C"/>
+  <circle cx="20" cy="20" r="16" fill="none" stroke="#FF862C" stroke-width="3"/>
+  <path d="M 13 28 L 20 14 L 27 28 M 20 14 L 24 28" fill="none" stroke="#FF862C" stroke-width="3.5" stroke-linecap="square" stroke-linejoin="miter"/>
+</svg>

@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HALF-LIFE | Official Franchise Portal</title>
+  <meta name="description" content="Official home of the Half-Life franchise. Explore Half-Life: Alyx, the Half-Life 2 20th Anniversary Update, and the complete Gordon Freeman saga.">
+  <link rel="stylesheet" href="css/design-system.css">
+  <link rel="stylesheet" href="css/components.css">
+</head>
+<body>
+
+  <!-- ========================================================================
+       1. BRAND NAVIGATION HEADER
+       ======================================================================== -->
+  <header class="hl-header site-header">
+    <div class="hl-container hl-header-inner site-header-inner">
+      <a href="index.html" class="hl-brand brand-logo" aria-label="Half-Life Homepage">
+        <span class="hl-brand-icon brand-icon lambda-logo" alt="Lambda logo">λ</span>
+        <span class="hl-brand-title brand-title logo-text">HALF-LIFE</span>
+      </a>
+
+      <!-- Desktop Navigation -->
+      <nav class="desktop-nav" aria-label="Main Navigation">
+        <ul class="hl-nav-menu">
+          <li class="hl-nav-item"><a href="index.html" class="hl-nav-link nav-link active" data-i18n="nav.home">Home</a></li>
+          <li class="hl-nav-item"><a href="alyx.html" class="hl-nav-link nav-link" data-i18n="nav.alyx">Half-Life: Alyx</a></li>
+          <li class="hl-nav-item"><a href="halflife.html" class="hl-nav-link nav-link" data-i18n="nav.halflife">Half-Life</a></li>
+          <li class="hl-nav-item"><a href="halflife2.html" class="hl-nav-link nav-link" data-i18n="nav.halflife2">Half-Life 2</a></li>
+          <li class="hl-nav-item"><a href="episode1.html" class="hl-nav-link nav-link" data-i18n="nav.episode1">Episode One</a></li>
+          <li class="hl-nav-item"><a href="episode2.html" class="hl-nav-link nav-link" data-i18n="nav.episode2">Episode Two</a></li>
+        </ul>
+      </nav>
+
+      <!-- Language Selector & Controls -->
+      <div class="hl-flex hl-flex-center hl-gap-4">
+        <!-- Interactive Select Dropdown -->
+        <select id="lang-select" class="lang-select" aria-label="Language Selector" onchange="if(window.HL_i18n) window.HL_i18n.setLanguage(this.value)">
+          <option value="en" selected>English</option>
+          <option value="fr">Français</option>
+          <option value="de">Deutsch</option>
+          <option value="es">Español</option>
+          <option value="ja">日本語</option>
+          <option value="zh">中文</option>
+        </select>
+
+        <!-- Custom Styled Dropdown Component -->
+        <div class="hl-lang-selector lang-selector">
+          <button type="button" class="hl-lang-btn lang-btn" aria-haspopup="true" aria-expanded="false" aria-label="Select Interface Language">
+            <span class="current-lang-label js-current-lang-code">EN</span>
+            <span class="hl-lang-btn-arrow lang-btn-arrow">▼</span>
+          </button>
+          <ul class="hl-lang-dropdown lang-dropdown lang-menu" aria-hidden="true">
+            <li><button type="button" class="hl-lang-option lang-option is-active" data-lang="en"><span>English</span> <small>EN</small></button></li>
+            <li><button type="button" class="hl-lang-option lang-option" data-lang="fr"><span>Français</span> <small>FR</small></button></li>
+            <li><button type="button" class="hl-lang-option lang-option" data-lang="de"><span>Deutsch</span> <small>DE</small></button></li>
+            <li><button type="button" class="hl-lang-option lang-option" data-lang="es"><span>Español</span> <small>ES</small></button></li>
+            <li><button type="button" class="hl-lang-option lang-option" data-lang="ja"><span>日本語</span> <small>JA</small></button></li>
+            <li><button type="button" class="hl-lang-option lang-option" data-lang="zh"><span>中文</span> <small>ZH</small></button></li>
+          </ul>
+        </div>
+
+        <!-- Mobile Menu Toggle Button -->
+        <button type="button" class="hl-nav-toggle mobile-nav-toggle" aria-label="Toggle navigation menu" aria-expanded="false">
+          <span></span>
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Mobile Drawer Menu -->
+  <div class="mobile-nav-drawer" aria-hidden="true">
+    <a href="index.html" class="hl-nav-link mobile-nav-link active" data-i18n="nav.home">Home</a>
+    <a href="alyx.html" class="hl-nav-link mobile-nav-link" data-i18n="nav.alyx">Half-Life: Alyx</a>
+    <a href="halflife.html" class="hl-nav-link mobile-nav-link" data-i18n="nav.halflife">Half-Life</a>
+    <a href="halflife2.html" class="hl-nav-link mobile-nav-link" data-i18n="nav.halflife2">Half-Life 2</a>
+    <a href="episode1.html" class="hl-nav-link mobile-nav-link" data-i18n="nav.episode1">Episode One</a>
+    <a href="episode2.html" class="hl-nav-link mobile-nav-link" data-i18n="nav.episode2">Episode Two</a>
+  </div>
+  <div class="nav-backdrop"></div>
+
+  <main>
+    <!-- ======================================================================
+         2. HALF-LIFE: ALYX HERO SECTION
+         ====================================================================== -->
+    <div id="hero" class="hl-hero hero-section hero hero-alyx">
+      <div class="hl-container">
+        <div class="hl-hero-grid hero-grid">
+          <div class="hl-hero-content hero-content">
+            <span class="hl-eyebrow hl-text-accent" data-i18n="hero.tagline">The VR Flagship Entry • Valve Index & SteamVR</span>
+            <h1 class="hl-heading-hero hero-title hero-headline" data-i18n="hero.headline">HALF-LIFE: ALYX</h1>
+            
+            <div class="hl-flex hl-gap-2 hero-badges" style="margin-bottom: var(--space-4); flex-wrap: wrap;">
+              <span class="hl-badge hl-badge-accent">VR EXCLUSIVE</span>
+              <span class="hl-badge">STEAMVR</span>
+              <span class="hl-badge hl-badge-outline">VALVE INDEX</span>
+            </div>
+
+            <p class="hl-hero-desc hero-desc hero-description synopsis" data-i18n="hero.synopsis">
+              Set between the events of Half-Life and Half-Life 2, Alyx Vance fights an impossible battle against an alien race known as the Combine. Built from the ground up for Virtual Reality with revolutionary physics and interaction.
+            </p>
+
+            <div class="hl-hero-actions hero-actions">
+              <a href="alyx.html" class="hl-btn hl-btn-primary btn-primary cta cta-primary btn-orange" data-i18n="hero.cta_primary">Explore Half-Life: Alyx</a>
+              <a href="https://store.steampowered.com/app/546560/HalfLife_Alyx/" target="_blank" rel="noopener noreferrer" class="hl-btn hl-btn-outline btn-outline" data-i18n="hero.cta_steam">Wishlist on Steam</a>
+            </div>
+          </div>
+
+          <div class="hl-hero-media hero-media">
+            <img src="assets/images/hero-alyx.jpg" alt="Half-Life: Alyx Key Art in City 17" class="hl-hero-img hero-img hero-art" width="1280" height="720">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ======================================================================
+         3. HL2 20TH ANNIVERSARY FEATURE BLOCK
+         ====================================================================== -->
+    <section id="anniversary" class="hl-section anniversary-block anniversary editorial">
+      <div class="hl-container">
+        <div class="hl-editorial-block">
+          <div class="hl-editorial-header editorial-header">
+            <span class="hl-eyebrow" data-i18n="anniversary.eyebrow">20th Anniversary Update</span>
+            <h2 class="hl-heading-2 editorial-title" data-i18n="anniversary.headline">Celebrating Two Decades of Half-Life 2 (2004–2024)</h2>
+            <p class="hl-body-lead" data-i18n="anniversary.description">
+              We've reunited the original team to create an in-depth documentary, integrated developer commentary, added Workshop support, and refined visual and physics fidelity.
+            </p>
+          </div>
+
+          <blockquote class="commentary-quote quote">
+            "Half-Life 2 pushed the boundaries of what was possible in 2004, building upon the legendary 1998 Black Mesa Research Facility origin of Gordon Freeman to deliver unmatched physics and world-building." — Valve Development Team
+          </blockquote>
+
+          <div class="hl-grid-2 editorial-grid grid grid-2col" style="margin-bottom: var(--space-8);">
+            <div style="background: var(--color-canvas); padding: var(--space-6); border-left: 4px solid var(--color-brand-rust);">
+              <h3 class="hl-heading-3" style="margin-bottom: var(--space-2);" data-i18n="anniversary.feature_commentary">Developer Commentary</h3>
+              <p class="hl-body">
+                Listen to over 3.5 hours of brand new in-game Developer Commentary from the original Valve development team, sharing candid stories and technical hurdles from City 17, Ravenholm, and the Black Mesa legacy.
+              </p>
+            </div>
+
+            <div style="background: var(--color-canvas); padding: var(--space-6); border-left: 4px solid var(--color-brand-rust);">
+              <h3 class="hl-heading-3" style="margin-bottom: var(--space-2);" data-i18n="anniversary.feature_workshop">Steam Workshop Integration</h3>
+              <p class="hl-body">
+                Discover, subscribe to, and play community campaigns, custom levels, weapon re-skins, and full total conversions directly from the updated in-game Steam Workshop integration browser.
+              </p>
+            </div>
+
+            <div style="background: var(--color-canvas); padding: var(--space-6); border-left: 4px solid var(--color-brand-rust);">
+              <h3 class="hl-heading-3" style="margin-bottom: var(--space-2);" data-i18n="anniversary.feature_visuals">Enhanced Visual Fidelity</h3>
+              <p class="hl-body">
+                Visual enhancements & graphics upgrades include remastered high-resolution lightmaps, 4K display UI scaling, enhanced blood and fire particle shaders, and restored lighting effects.
+              </p>
+            </div>
+
+            <div style="background: var(--color-canvas); padding: var(--space-6); border-left: 4px solid var(--color-accent-orange);">
+              <h3 class="hl-heading-3" style="margin-bottom: var(--space-2);" data-i18n="anniversary.feature_doc">Secret Tape Documentary</h3>
+              <p class="hl-body">
+                Watch the complete two-hour making-of documentary film by Secret Tape, detailing the historic development saga, cyber-attacks, lawsuits, and creative breakthroughs behind Half-Life 2.
+              </p>
+            </div>
+          </div>
+
+          <!-- Documentary Feature Banner & Trailer Container -->
+          <div class="media-frame" style="margin-bottom: var(--space-6);">
+            <img src="assets/images/anniversary-hl2.jpg" alt="Half-Life 2 20th Anniversary Making-Of Documentary Exhibit" class="anniversary-banner" width="1280" height="720">
+          </div>
+
+          <div class="hl-video-container video-container modal-trigger" data-video="4_R_4oJj178">
+            <iframe src="https://www.youtube-nocookie.com/embed/4_R_4oJj178" title="Half-Life 2: 20th Anniversary Documentary" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         4. FRANCHISE OVERVIEW NARRATIVE
+         ====================================================================== -->
+    <section id="overview" class="hl-section franchise-overview overview narrative" style="background-color: #DFDEDF; border-top: 1px solid #D0CFD0; border-bottom: 1px solid #D0CFD0;">
+      <div class="hl-container">
+        <div style="max-width: 900px; margin: 0 auto; text-align: left;">
+          <span class="hl-eyebrow">Franchise History & Lore</span>
+          <h2 class="hl-heading-1" style="margin-bottom: var(--space-6);">The Half-Life Saga: From Black Mesa to the Resistance</h2>
+          
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            <p class="hl-body-lead">
+              In 1998, Half-Life revolutionized interactive storytelling and the first-person shooter genre at the subterranean Black Mesa Research Facility in New Mexico. When theoretical physicist Gordon Freeman pushed an anomalous crystal into the anti-mass spectrometer, the catastrophic Resonance Cascade tore a rift between dimensions, unleashing hostile alien species from Xen.
+            </p>
+            <p class="hl-body">
+              Following Earth's swift defeat in the devastating Seven-Hour War, the multidimensional Combine empire occupied the planet. Earth became a dystopian police state centered around City 17, dominated by the colossal Citadel tower and the oppressive Combine Overwatch surveillance network under Administrator Dr. Wallace Breen.
+            </p>
+            <p class="hl-body">
+              Emerging from stasis twenty years later, Gordon Freeman joins forces with resistance fighter Alyx Vance and her loyal robotic protector Dog. Together, armed with the iconic HEV Suit, the legendary crowbar, and the Zero Point Energy Field Manipulator (Gravity Gun), they spark the human resistance rebellion to reclaim humanity's future from alien subjugation.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ======================================================================
+         5. GAME CATALOG CARDS GRID
+         ====================================================================== -->
+    <section id="catalog" class="hl-section game-catalog catalog">
+      <div class="hl-container">
+        <div style="text-align: center; margin-bottom: var(--space-10);">
+          <span class="hl-eyebrow">The Complete Story</span>
+          <h2 class="hl-heading-1" data-i18n="catalog.title">Franchise Catalog</h2>
+          <p class="hl-body" style="max-width: 700px; margin: var(--space-2) auto 0;" data-i18n="catalog.subtitle">
+            Experience the complete saga of Gordon Freeman and Alyx Vance across four groundbreaking PC masterpieces.
+          </p>
+        </div>
+
+        <div class="hl-grid-4 catalog-grid">
+          <!-- Card 1: Half-Life (1998) -->
+          <article class="hl-card game-card card catalog-card">
+            <div class="hl-card-media card-media">
+              <img src="assets/images/hl1-cover.jpg" alt="Half-Life (1998) Original Box Cover Art" class="hl-card-img card-img" width="600" height="800" loading="lazy">
+            </div>
+            <div class="hl-card-body card-body">
+              <span class="hl-card-tag card-tag" data-i18n="catalog.hl1_tag">1998 • Original Classic</span>
+              <h3 class="hl-card-title card-title" data-i18n="catalog.hl1_title">Half-Life</h3>
+              <p class="hl-card-desc card-desc" data-i18n="catalog.hl1_desc">
+                The award-winning 1998 debut that blended seamless first-person action and narrative in the subterranean Black Mesa Research Facility.
+              </p>
+              <a href="halflife.html" class="hl-card-link card-link">Explore Half-Life &rarr;</a>
+            </div>
+          </article>
+
+          <!-- Card 2: Half-Life 2 (2004) -->
+          <article class="hl-card game-card card catalog-card">
+            <div class="hl-card-media card-media">
+              <img src="assets/images/hl2-cover.jpg" alt="Half-Life 2 (2004) Box Cover Art" class="hl-card-img card-img" width="600" height="800" loading="lazy">
+            </div>
+            <div class="hl-card-body card-body">
+              <span class="hl-card-tag card-tag" data-i18n="catalog.hl2_tag">2004 • Source Engine Era</span>
+              <h3 class="hl-card-title card-title" data-i18n="catalog.hl2_title">Half-Life 2</h3>
+              <p class="hl-card-desc card-desc" data-i18n="catalog.hl2_desc">
+                Pick up the crowbar of Gordon Freeman in 2004 in a dystopian world overrun by the Combine, powered by revolutionary Source engine physics.
+              </p>
+              <a href="halflife2.html" class="hl-card-link card-link">Explore Half-Life 2 &rarr;</a>
+            </div>
+          </article>
+
+          <!-- Card 3: Half-Life 2: Episode One (2006) -->
+          <article class="hl-card game-card card catalog-card">
+            <div class="hl-card-media card-media">
+              <img src="assets/images/ep1-cover.jpg" alt="Half-Life 2: Episode One (2006) Cover Art" class="hl-card-img card-img" width="600" height="800" loading="lazy">
+            </div>
+            <div class="hl-card-body card-body">
+              <span class="hl-card-tag card-tag" data-i18n="catalog.ep1_tag">2006 • The Aftermath</span>
+              <h3 class="hl-card-title card-title" data-i18n="catalog.ep1_title">Half-Life 2: Episode One</h3>
+              <p class="hl-card-desc card-desc" data-i18n="catalog.ep1_desc">
+                Escape City 17 in 2006 alongside Alyx Vance before the dark energy Citadel reactor core reaches catastrophic critical meltdown.
+              </p>
+              <a href="episode1.html" class="hl-card-link card-link">Explore Episode One &rarr;</a>
+            </div>
+          </article>
+
+          <!-- Card 4: Half-Life 2: Episode Two (2007) -->
+          <article class="hl-card game-card card catalog-card">
+            <div class="hl-card-media card-media">
+              <img src="assets/images/ep2-cover.jpg" alt="Half-Life 2: Episode Two (2007) Cover Art" class="hl-card-img card-img" width="600" height="800" loading="lazy">
+            </div>
+            <div class="hl-card-body card-body">
+              <span class="hl-card-tag card-tag" data-i18n="catalog.ep2_tag">2007 • Outlands Campaign</span>
+              <h3 class="hl-card-title card-title" data-i18n="catalog.ep2_title">Half-Life 2: Episode Two</h3>
+              <p class="hl-card-desc card-desc" data-i18n="catalog.ep2_desc">
+                Race into the White Forest countryside in 2007 to deliver superweapon codes and face off against towering Combine Striders.
+              </p>
+              <a href="episode2.html" class="hl-card-link card-link">Explore Episode Two &rarr;</a>
+            </div>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ========================================================================
+       6. FOOTER
+       ======================================================================== -->
+  <footer class="hl-footer site-footer">
+    <div class="hl-container">
+      <div class="hl-footer-grid footer-grid">
+        <div class="hl-footer-brand footer-brand">
+          <a href="index.html" class="hl-footer-logo footer-logo">
+            <span class="hl-brand-icon brand-icon">λ</span>
+            <span class="hl-footer-title footer-title">HALF-LIFE</span>
+          </a>
+          <p class="hl-body" style="color: var(--color-canvas); max-width: 450px;" data-i18n="footer.rights">
+            Half-Life, the Lambda logo, Alyx Vance, Gordon Freeman, the Source Engine, and Steam are trademarks and/or registered trademarks of Valve Corporation.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="hl-footer-heading footer-heading">Franchise Games</h4>
+          <ul class="hl-footer-links footer-links">
+            <li><a href="alyx.html">Half-Life: Alyx</a></li>
+            <li><a href="halflife.html">Half-Life (1998)</a></li>
+            <li><a href="halflife2.html">Half-Life 2</a></li>
+            <li><a href="episode1.html">Episode One</a></li>
+            <li><a href="episode2.html">Episode Two</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="hl-footer-heading footer-heading">Steam & Valve</h4>
+          <ul class="hl-footer-links footer-links">
+            <li><a href="https://store.steampowered.com/" target="_blank" rel="noopener noreferrer">Steam Store</a></li>
+            <li><a href="https://www.valvesoftware.com/" target="_blank" rel="noopener noreferrer">Valve Corporation</a></li>
+            <li><a href="https://steamcommunity.com/app/546560" target="_blank" rel="noopener noreferrer">Community Hub</a></li>
+            <li><a href="https://store.steampowered.com/news/app/220" target="_blank" rel="noopener noreferrer">20th Anniversary News</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="hl-footer-bottom footer-bottom">
+        <span data-i18n="footer.copyright">© Valve Corporation. All rights reserved.</span>
+        <div class="hl-flex hl-gap-4">
+          <a href="https://store.steampowered.com/privacy_agreement/" target="_blank" rel="noopener noreferrer" style="color: var(--color-canvas);" data-i18n="footer.privacy">Privacy Policy</a>
+          <a href="https://store.steampowered.com/legal/" target="_blank" rel="noopener noreferrer" style="color: var(--color-canvas);" data-i18n="footer.terms">Legal Terms</a>
+          <a href="#top" style="color: var(--color-accent-orange);" data-i18n="footer.back_to_top">Back to Top ↑</a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/i18n.js"></script>
+  <script src="js/main.js"></script>
+</body>
+</html>
