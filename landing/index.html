@@ -115,5 +115,29 @@
       <p class="footer-disclaimer">No attribution implied or given. All trademarks and original designs belong to their respective owners.</p>
     </div>
   </footer>
+  <div id="preview-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="modal-project-title" hidden>
+    <div class="modal-shell">
+      <div class="modal-header">
+        <div class="modal-header-info">
+          <h3 id="modal-project-title" class="modal-project-title">Project Title</h3>
+          <span id="modal-project-route" class="modal-project-route">/route/</span>
+        </div>
+        <div class="modal-toolbar" id="modal-viewport-toolbar" role="toolbar" aria-label="Viewport controls">
+          <!-- Viewport buttons and actions to be expanded in v0.5.1 and v0.5.2 -->
+        </div>
+        <div class="modal-actions">
+          <button type="button" class="modal-close-btn" id="modal-close-btn" aria-label="Close modal preview">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+      </div>
+      <div class="modal-body" id="modal-viewport-container">
+        <iframe id="modal-iframe" class="modal-iframe" src="about:blank" title="Project Preview" tabindex="0"></iframe>
+      </div>
+    </div>
+  </div>
 </body>
 </html>

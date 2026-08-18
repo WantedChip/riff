@@ -186,6 +186,148 @@ function initCategoryTabs() {
   });
 }
 
+/* ==========================================================================
+   Modal State Machine & Focus Trapping
+   ========================================================================== */
+
+const modalState = {
+  isOpen: false,
+  triggerElement: null,
+  activeRoute: '',
+  activeTitle: ''
+};
+
+const FOCUSABLE_ELEMENTS_SELECTOR = [
+  'a[href]',
+  'button:not([disabled])',
+  'input:not([disabled])',
+  'select:not([disabled])',
+  'textarea:not([disabled])',
+  '[tabindex]:not([tabindex="-1"])',
+  'iframe'
+].join(', ');
+
+function getFocusableElements(container) {
+  if (!container) return [];
+  return Array.from(container.querySelectorAll(FOCUSABLE_ELEMENTS_SELECTOR)).filter(el => {
+    return !el.hasAttribute('disabled') &&
+           el.getAttribute('aria-hidden') !== 'true' &&
+           (el.offsetWidth > 0 || el.offsetHeight > 0 || el === document.getElementById('modal-iframe') || el.getClientRects().length > 0);
+  });
+}
+
+function openModal(title, route, triggerEl = null) {
+  const modal = document.getElementById('preview-modal');
+  if (!modal) return;
+
+  // Save triggering element for focus restoration
+  modalState.triggerElement = triggerEl || document.activeElement;
+  modalState.activeTitle = title || 'Project Preview';
+  modalState.activeRoute = route || '';
+  modalState.isOpen = true;
+
+  // Update modal title and route
+  const titleEl = document.getElementById('modal-project-title');
+  if (titleEl) titleEl.textContent = modalState.activeTitle;
+
+  const routeEl = document.getElementById('modal-project-route');
+  if (routeEl) routeEl.textContent = modalState.activeRoute;
+
+  // Set iframe source
+  const iframe = document.getElementById('modal-iframe');
+  if (iframe && route) {
+    iframe.src = route;
+    iframe.title = `${modalState.activeTitle} Preview Sandbox`;
+  }
+
+  // Lock background body scroll
+  document.body.style.overflow = 'hidden';
+
+  // Reveal modal overlay
+  modal.removeAttribute('hidden');
+
+  // Trigger slide-up spring animation
+  requestAnimationFrame(() => {
+    modal.classList.add('is-open', 'active');
+    modal.classList.remove('is-closing');
+
+    // Focus the first interactive element or close button inside modal
+    const closeBtn = document.getElementById('modal-close-btn');
+    if (closeBtn) {
+      closeBtn.focus();
+    } else {
+      const focusables = getFocusableElements(modal);
+      if (focusables.length > 0) focusables[0].focus();
+    }
+  });
+}
+
+function closeModal() {
+  const modal = document.getElementById('preview-modal');
+  if (!modal || !modalState.isOpen) return;
+
+  modalState.isOpen = false;
+
+  // Start exit transition
+  modal.classList.remove('is-open', 'active');
+  modal.classList.add('is-closing');
+
+  // Unlock background body scroll
+  document.body.style.overflow = '';
+
+  // Clean up iframe and hide modal after exit transition (200ms)
+  setTimeout(() => {
+    if (!modalState.isOpen) {
+      modal.setAttribute('hidden', '');
+      modal.classList.remove('is-closing');
+
+      const iframe = document.getElementById('modal-iframe');
+      if (iframe) {
+        iframe.src = 'about:blank';
+      }
+    }
+  }, 200);
+
+  // Restore keyboard focus to saved trigger element
+  const trigger = modalState.triggerElement;
+  if (trigger && typeof trigger.focus === 'function') {
+    try {
+      trigger.focus();
+    } catch (_) {}
+  }
+  modalState.triggerElement = null;
+}
+
+function handleModalFocusTrap(e) {
+  if (!modalState.isOpen || e.key !== 'Tab') return;
+
+  const modal = document.getElementById('preview-modal');
+  if (!modal) return;
+
+  const focusables = getFocusableElements(modal);
+  if (focusables.length === 0) {
+    e.preventDefault();
+    return;
+  }
+
+  const firstEl = focusables[0];
+  const lastEl = focusables[focusables.length - 1];
+
+  if (e.shiftKey) {
+    // Shift + Tab (Backwards)
+    if (document.activeElement === firstEl || !modal.contains(document.activeElement)) {
+      e.preventDefault();
+      lastEl.focus();
+    }
+  } else {
+    // Tab (Forwards)
+    if (document.activeElement === lastEl || !modal.contains(document.activeElement)) {
+      e.preventDefault();
+      firstEl.focus();
+    }
+  }
+}
+
 function initApp() {
   const cards = document.querySelectorAll('#project-grid .card, #project-grid article');
   state.cards = Array.from(cards).map(card => {
@@ -220,11 +362,41 @@ function initApp() {
   initCategoryTabs();
 
   document.addEventListener('click', e => {
+    // Modal close button trigger
+    const closeBtn = e.target.closest('#modal-close-btn, .modal-close-btn, .modal-close, [data-action="close-modal"]');
+    if (closeBtn) {
+      e.preventDefault();
+      closeModal();
+      return;
+    }
+
+    // Modal backdrop click dismissal
+    const modalOverlay = document.getElementById('preview-modal');
+    if (modalState.isOpen && e.target === modalOverlay) {
+      e.preventDefault();
+      closeModal();
+      return;
+    }
+
+    // Quick view button trigger
+    const quickViewBtn = e.target.closest('.btn-quick-view, .btn-preview, [data-action="quick-view"]');
+    if (quickViewBtn && !quickViewBtn.hasAttribute('onclick')) {
+      e.preventDefault();
+      const card = quickViewBtn.closest('.card, article');
+      const title = quickViewBtn.dataset.title || card?.querySelector('.card-title')?.textContent.trim() || 'Project Preview';
+      const route = quickViewBtn.dataset.route || card?.dataset.route || (card?.dataset.slug ? `/${card.dataset.slug}/` : '/');
+      openModal(title, route, quickViewBtn);
+      return;
+    }
+
+    // Reset filters trigger
     const rBtn = e.target.closest('#btn-reset-filters, .btn-reset-filters');
     if (rBtn) {
       resetFilters();
       return;
     }
+
+    // Tag filter trigger
     const tag = e.target.closest('.badge-tag, .tag, .card-tag, [data-tag]');
     if (tag && !tag.closest('.filter-pills, [role="tablist"]')) {
       handleTagClick(tag);
@@ -232,6 +404,19 @@ function initApp() {
   });
 
   document.addEventListener('keydown', e => {
+    // Modal focus trap & Escape handling
+    if (modalState.isOpen) {
+      if (e.key === 'Escape') {
+        e.preventDefault();
+        closeModal();
+        return;
+      }
+      if (e.key === 'Tab') {
+        handleModalFocusTrap(e);
+        return;
+      }
+    }
+
     const input = document.getElementById('search-input');
     if (e.key === '/' && document.activeElement !== input && !['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName)) {
       e.preventDefault();
@@ -248,11 +433,36 @@ function initApp() {
 }
 
 window.openPreview = function(title, route) {
-  console.log(`[riff] Quick View requested for: ${title} (${route})`);
+  let trigger = document.activeElement;
+  if (!trigger || trigger === document.body) {
+    trigger = document.querySelector(`.btn-quick-view[data-route="${route}"]`) ||
+              document.querySelector(`.card[data-slug] .btn-quick-view`);
+  }
+  openModal(title, route, trigger);
+};
+
+window.closePreview = function() {
+  closeModal();
 };
 
 window.riffApp = {
-  state, applyFilters, matchProject, matchCategory, normalizeCategory, setCategory, handleTagClick, resetFilters, announceFilter,
+  state,
+  modalState,
+  applyFilters,
+  matchProject,
+  matchCategory,
+  normalizeCategory,
+  setCategory,
+  handleTagClick,
+  resetFilters,
+  announceFilter,
+  openModal,
+  closeModal,
+  modal: {
+    open: openModal,
+    close: closeModal,
+    isOpen: () => modalState.isOpen
+  },
   setSearchQuery: q => {
     const input = document.getElementById('search-input');
     if (input) input.value = q;
@@ -268,3 +478,4 @@ if (document.readyState === 'loading') {
 }
 
 console.log('[riff] Landing portal initialized');
+
