@@ -584,81 +584,78 @@ function get404Html() {
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>404 — Not Found | riff</title>
-  <style>
-    :root {
-      --bg: #07080B;
-      --card: rgba(18, 21, 30, 0.75);
-      --border: rgba(255, 255, 255, 0.08);
-      --text: #F4F6FB;
-      --muted: #949EB2;
-      --accent: #FF5E3A;
-      --accent-glow: rgba(255, 94, 58, 0.35);
-    }
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background-color: var(--bg);
-      color: var(--text);
-      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-    }
-    .card {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 48px 36px;
-      max-width: 480px;
-      width: 100%;
-      text-align: center;
-      backdrop-filter: blur(12px);
-      box-shadow: 0 20px 40px rgba(0,0,0,0.5);
-    }
-    .badge {
-      display: inline-block;
-      font-size: 12px;
-      font-family: 'JetBrains Mono', monospace;
-      text-transform: uppercase;
-      letter-spacing: 0.1em;
-      font-weight: 700;
-      color: var(--accent);
-      background: rgba(255, 94, 58, 0.12);
-      border: 1px solid rgba(255, 94, 58, 0.25);
-      padding: 4px 12px;
-      border-radius: 999px;
-      margin-bottom: 20px;
-    }
-    h1 { font-size: 64px; font-weight: 800; line-height: 1; margin-bottom: 12px; }
-    p { color: var(--muted); font-size: 15px; line-height: 1.6; margin-bottom: 28px; }
-    .btn {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      background: var(--accent);
-      color: #fff;
-      text-decoration: none;
-      font-weight: 600;
-      font-size: 14px;
-      padding: 12px 24px;
-      border-radius: 10px;
-      transition: transform 0.2s, box-shadow 0.2s;
-    }
-    .btn:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px var(--accent-glow);
-    }
-  </style>
+  <meta name="theme-color" content="#07080B">
+  <title>404: Riff Not Found — riff</title>
+  <meta name="description" content="The requested project route does not exist or has been relocated. Return to the riff interface laboratory portal.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
 </head>
-<body>
-  <div class="card">
-    <div class="badge">Error 404</div>
-    <h1>404</h1>
-    <p>The requested riff or page could not be found. It may have moved or doesn't exist.</p>
-    <a href="/" class="btn">← Back to Riff Showcase</a>
-  </div>
+<body class="error-body">
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+  <header role="banner" class="site-header">
+    <div class="header-container">
+      <a href="/" class="brand" aria-label="riff showcase homepage">
+        <div class="brand-icon" aria-hidden="true">r</div>
+        <span class="brand-title">riff</span>
+        <span class="brand-badge">sohamlabs</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary Navigation">
+        <a href="https://riff.sohamlabs.workers.dev" class="nav-link edge-status" aria-label="Edge status: Active">
+          <span class="edge-pulse" aria-hidden="true">
+            <span class="edge-dot"></span>
+            <span class="edge-ring"></span>
+          </span>
+          <span class="edge-label">Edge Active</span>
+        </a>
+        <a href="https://github.com/sohamlabs/riff" target="_blank" rel="noopener noreferrer" class="nav-link github-link" aria-label="View source on GitHub">
+          <svg class="github-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+          </svg>
+          <span>GitHub</span>
+        </a>
+      </nav>
+    </div>
+  </header>
+  <main id="main-content" role="main" class="site-main error-page-main">
+    <div class="error-container">
+      <div class="terminal-error-card">
+        <div class="terminal-header" aria-hidden="true">
+          <div class="terminal-controls">
+            <span class="terminal-dot terminal-dot-red"></span>
+            <span class="terminal-dot terminal-dot-yellow"></span>
+            <span class="terminal-dot terminal-dot-green"></span>
+          </div>
+          <div class="terminal-title">riff-edge-router &mdash; 404_diagnostics.sh</div>
+          <div class="terminal-spacer"></div>
+        </div>
+        <div class="terminal-body">
+          <div class="error-badge-wrapper">
+            <span class="badge-status-error badge-error">ERROR 404 // ROUTE_NOT_FOUND</span>
+          </div>
+          <h1 class="error-title">404: Riff Not Found</h1>
+          <p class="error-diagnostic">The requested project route does not exist or has been relocated.</p>
+          <div class="terminal-console" aria-label="Terminal Error Diagnostics">
+            <div class="console-line"><span class="console-prompt">$</span> <span class="console-cmd">riff route --resolve</span> <span class="console-arg">/unknown-route/</span></div>
+            <div class="console-line console-error"><span class="console-tag">[ERR_NOT_FOUND]</span> Target route unmapped in project registry.</div>
+            <div class="console-line console-muted"><span class="console-tag">[DIAGNOSTIC]</span> Verified dual routing: /&lt;slug&gt;/ and /projects/&lt;slug&gt;/.</div>
+            <div class="console-line console-success"><span class="console-tag">[ACTION]</span> Re-routing recommended to primary showcase matrix.</div>
+          </div>
+          <div class="error-actions">
+            <a href="/" class="btn btn-primary btn-launch">&larr; Return to Riff Portal</a>
+            <a href="https://github.com/sohamlabs/riff" target="_blank" rel="noopener noreferrer" class="btn btn-secondary">&nearr; View Source Code</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+  <footer role="contentinfo" class="site-footer">
+    <div class="footer-container">
+      <p class="footer-copy">MIT License &copy; 2026 <strong>riff</strong> by <a href="https://github.com" target="_blank" rel="noopener noreferrer">sohamlabs</a>. Hosted on Cloudflare Workers.</p>
+      <p class="footer-disclaimer">No attribution implied or given. All trademarks and original designs belong to their respective owners.</p>
+    </div>
+  </footer>
 </body>
 </html>`;
 }
