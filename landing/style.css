@@ -1,0 +1,28 @@
+/**
+ * Riff Landing Portal Stylesheet
+ * Tactile Dark Editorial / Precision Interface Lab
+ */
+
+:root {
+  --bg-void: #07080B;
+  --bg-surface: #0E1017;
+  --bg-card: rgba(18, 21, 30, 0.75);
+  --bg-card-hover: rgba(26, 30, 44, 0.90);
+  --bg-badge: rgba(255, 255, 255, 0.05);
+  --border-subtle: rgba(255, 255, 255, 0.08);
+  --border-hover: rgba(255, 255, 255, 0.22);
+  --border-accent: rgba(255, 94, 58, 0.40);
+  --text-primary: #F4F6FB;
+  --text-secondary: #949EB2;
+  --text-muted: #68738B;
+  --accent-flame: #FF5E3A;
+  --accent-flame-hover: #FF7656;
+  --accent-glow: rgba(255, 94, 58, 0.35);
+  --accent-emerald: #10B981;
+  --accent-amber: #F59E0B;
+  --accent-violet: #8B5CF6;
+  --accent-cyan: #06B6D4;
+  --accent-crimson: #EF4444;
+  --font-display: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}

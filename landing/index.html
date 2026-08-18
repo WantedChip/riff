@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#07080B">
+  
+  <!-- Primary SEO Metadata -->
+  <title>riff — Front-End Reimaginations &amp; Design Labs</title>
+  <meta name="description" content="A curated collection of front-end design riffs, practice builds, and interactive interface reimaginings by sohamlabs.">
+  <meta name="author" content="sohamlabs">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://riff.sohamlabs.workers.dev/">
+
+  <!-- OpenGraph Metadata -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://riff.sohamlabs.workers.dev/">
+  <meta property="og:title" content="riff — Front-End Reimaginations &amp; Design Labs">
+  <meta property="og:description" content="A curated collection of front-end design riffs, practice builds, and interactive interface reimaginings by sohamlabs.">
+  <meta property="og:image" content="https://riff.sohamlabs.workers.dev/assets/images/og-cover.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="riff — Tactile Interface Laboratory &amp; Design Riffs">
+  <meta property="og:site_name" content="riff">
+
+  <!-- Twitter Card Metadata -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:url" content="https://riff.sohamlabs.workers.dev/">
+  <meta name="twitter:title" content="riff — Front-End Reimaginations &amp; Design Labs">
+  <meta name="twitter:description" content="A curated collection of front-end design riffs, practice builds, and interactive interface reimaginings by sohamlabs.">
+  <meta name="twitter:image" content="https://riff.sohamlabs.workers.dev/assets/images/og-cover.png">
+  <meta name="twitter:image:alt" content="riff — Tactile Interface Laboratory &amp; Design Riffs">
+
+  <!-- Typography Preconnect & Import -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Application Script Module -->
+  <script type="module" src="app.js" defer></script>
+</head>
+<body>
+  <!-- Accessibility Skip Link -->
+  <a href="#main-content" class="skip-link">Skip to main content</a>
+
+  <!-- Header Landmark -->
+  <header role="banner" class="site-header">
+    <div class="header-container">
+      <a href="/" class="brand" aria-label="riff showcase homepage">
+        <div class="brand-icon" aria-hidden="true">r</div>
+        <span class="brand-title">riff</span>
+        <span class="brand-badge">sohamlabs</span>
+      </a>
+      <nav class="nav-links" aria-label="Primary Navigation">
+        <a href="https://riff.sohamlabs.workers.dev" class="nav-link">
+          <span class="status-dot" aria-hidden="true"></span>
+          <span>Live Edge</span>
+        </a>
+        <a href="https://github.com" target="_blank" rel="noopener noreferrer" class="nav-link">GitHub</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Main Content Landmark -->
+  <main id="main-content" role="main" class="site-main">
+    <!-- Editorial Hero Section -->
+    <section class="hero-section" aria-labelledby="hero-title">
+      <div class="hero-container">
+        <div class="hero-badge">⚡ Interface Laboratory &amp; Design Riffs</div>
+        <h1 id="hero-title" class="hero-title">Front-End Riffs &amp; <span>Design Crafts</span></h1>
+        <p class="hero-desc">
+          A collection of front-end design riffs — practice builds and reimaginings of interfaces I find interesting.
+          Each one is my own code and assets: names, images, and design all changed, nothing copied wholesale.
+        </p>
+      </div>
+    </section>
+
+    <!-- Search & Filter Controls -->
+    <section class="controls-section" aria-label="Search and filter riffs">
+      <div class="controls-container">
+        <div class="search-box">
+          <span class="search-icon" aria-hidden="true">🔍</span>
+          <input type="search" id="search-input" placeholder="Search riffs by name, stack, or tag... (Press '/' to focus)" aria-label="Search riffs" autocomplete="off" spellcheck="false">
+          <kbd class="shortcut-key" aria-hidden="true">/</kbd>
+        </div>
+        <nav class="filter-pills" id="category-filters" aria-label="Category filters">
+          <button type="button" class="filter-pill active" data-category="all" aria-pressed="true">All Riffs</button>
+          <button type="button" class="filter-pill" data-category="Clone" aria-pressed="false">Clones</button>
+          <button type="button" class="filter-pill" data-category="Design Riff" aria-pressed="false">Design Riffs</button>
+          <button type="button" class="filter-pill" data-category="Animation" aria-pressed="false">Animations</button>
+        </nav>
+      </div>
+    </section>
+
+    <!-- Project Matrix Grid -->
+    <section class="showcase-section" aria-label="Project showcase matrix">
+      <div class="grid" id="project-grid" aria-live="polite">
+        <!-- Pre-rendered project cards are injected here at build time -->
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer Landmark -->
+  <footer role="contentinfo" class="site-footer">
+    <div class="footer-container">
+      <p class="footer-copy">
+        MIT License &copy; 2026 <strong>riff</strong> by <a href="https://github.com" target="_blank" rel="noopener noreferrer">sohamlabs</a>. Hosted on Cloudflare Workers.
+      </p>
+      <p class="footer-disclaimer">
+        No attribution implied or given. All trademarks and original designs belong to their respective owners.
+      </p>
+    </div>
+  </footer>
+</body>
+</html>
