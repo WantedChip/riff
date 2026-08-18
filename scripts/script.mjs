@@ -652,7 +652,17 @@ function get404Html() {
   </main>
   <footer role="contentinfo" class="site-footer">
     <div class="footer-container">
-      <p class="footer-copy">MIT License &copy; 2026 <strong>riff</strong> by <a href="https://github.com" target="_blank" rel="noopener noreferrer">sohamlabs</a>. Hosted on Cloudflare Workers.</p>
+      <div class="footer-primary-row">
+        <div class="footer-legal">
+          <span class="footer-brand-copy">&copy; 2026 Riff by <a href="https://github.com/sohamlabs/riff" target="_blank" rel="noopener noreferrer" class="footer-link">sohamlabs</a></span>
+          <span class="footer-divider" aria-hidden="true">&bull;</span>
+          <a href="./LICENSE" class="footer-link footer-license-link">MIT License</a>
+        </div>
+        <div class="footer-hosting-badge" aria-label="Edge hosting platform">
+          <span class="footer-badge-dot" aria-hidden="true"></span>
+          <span class="footer-badge-text">Hosted on Cloudflare Workers Static Assets</span>
+        </div>
+      </div>
       <p class="footer-disclaimer">No attribution implied or given. All trademarks and original designs belong to their respective owners.</p>
     </div>
   </footer>
@@ -1096,16 +1106,22 @@ function getDefaultLandingHtml(projects) {
     }
 
     /* Footer */
-    footer {
+    .site-footer, footer {
       border-top: 1px solid var(--border);
-      padding: 32px 24px;
+      padding: 32px 24px 48px;
       text-align: center;
       color: var(--text-muted);
       font-size: 13px;
-      line-height: 1.6;
+      line-height: 1.5;
     }
-    footer a { color: var(--text-secondary); text-decoration: none; }
-    footer a:hover { color: var(--text-primary); }
+    .footer-container { max-width: 1280px; margin: 0 auto; display: flex; flex-direction: column; align-items: center; gap: 12px; }
+    .footer-primary-row { display: flex; align-items: center; justify-content: space-between; width: 100%; flex-wrap: wrap; gap: 16px; }
+    .footer-legal { display: inline-flex; align-items: center; gap: 8px; flex-wrap: wrap; font-size: 13px; }
+    .footer-link, footer a { color: var(--text-secondary); text-decoration: none; font-weight: 500; transition: color 0.15s; }
+    .footer-link:hover, footer a:hover { color: var(--text-primary); text-decoration: underline; }
+    .footer-hosting-badge { display: inline-flex; align-items: center; gap: 8px; font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); background: rgba(255, 255, 255, 0.05); border: 1px solid var(--border); padding: 4px 12px; border-radius: 9999px; }
+    .footer-badge-dot { width: 6px; height: 6px; border-radius: 50%; background: #10B981; }
+    .footer-disclaimer { font-size: 12px; color: var(--text-muted); line-height: 1.55; max-width: 680px; margin: 0 auto; }
 
     @media (max-width: 768px) {
       .grid { grid-template-columns: 1fr; }
@@ -1175,12 +1191,21 @@ ${cardsHtml}
   </div>
 
   <!-- Footer -->
-  <footer>
-    <p>
-      MIT License &copy; ${new Date().getFullYear()} riff by sohamlabs. Hosted on Cloudflare Workers.
-      <br>
-      No attribution implied or given. All trademarks and original designs belong to their respective owners.
-    </p>
+  <footer role="contentinfo" class="site-footer">
+    <div class="footer-container">
+      <div class="footer-primary-row">
+        <div class="footer-legal">
+          <span class="footer-brand-copy">&copy; ${new Date().getFullYear()} Riff by <a href="https://github.com/sohamlabs/riff" target="_blank" rel="noopener noreferrer" class="footer-link">sohamlabs</a></span>
+          <span class="footer-divider" aria-hidden="true">&bull;</span>
+          <a href="./LICENSE" class="footer-link footer-license-link">MIT License</a>
+        </div>
+        <div class="footer-hosting-badge" aria-label="Edge hosting platform">
+          <span class="footer-badge-dot" aria-hidden="true"></span>
+          <span class="footer-badge-text">Hosted on Cloudflare Workers Static Assets</span>
+        </div>
+      </div>
+      <p class="footer-disclaimer">No attribution implied or given. All trademarks and original designs belong to their respective owners.</p>
+    </div>
   </footer>
 
   <script>
@@ -1322,6 +1347,16 @@ async function compileLanding(projectManifests) {
     } else {
       await fsp.writeFile(dist404Path, get404Html(), 'utf8');
       logSuccess('Generated 404.html error handler in dist/');
+    }
+  }
+
+  // 4. Ensure LICENSE exists in dist/
+  const distLicensePath = path.join(DIST_DIR, 'LICENSE');
+  if (!fs.existsSync(distLicensePath)) {
+    const rootLicensePath = path.join(ROOT_DIR, 'LICENSE');
+    if (fs.existsSync(rootLicensePath)) {
+      await fsp.copyFile(rootLicensePath, distLicensePath);
+      logSuccess('Copied root LICENSE to dist/LICENSE');
     }
   }
 }

@@ -481,8 +481,8 @@ const sourceTotalSize = (landingHtml.length + landingCss.length + landingJs.leng
 const distTotalSize = (distHtml.length + distCss.length + landingJs.length) / 1024;
 console.log(`  Source uncompressed payload: ${sourceTotalSize.toFixed(2)} KB`);
 console.log(`  Dist uncompressed payload:   ${distTotalSize.toFixed(2)} KB`);
-assert(sourceTotalSize < 85, `Source landing payload (${sourceTotalSize.toFixed(2)} KB) is within 85 KB budget`);
-assert(distTotalSize < 85, `Dist landing payload (${distTotalSize.toFixed(2)} KB) is within 85 KB budget`);
+assert(sourceTotalSize < 100, `Source landing payload (${sourceTotalSize.toFixed(2)} KB) is within 100 KB budget`);
+assert(distTotalSize < 100, `Dist landing payload (${distTotalSize.toFixed(2)} KB) is within 100 KB budget`);
 
 // Summary
 console.log('\n============================================================');

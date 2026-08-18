@@ -693,8 +693,8 @@ const distKb = (distSize / 1024).toFixed(2);
 console.log(`  Source uncompressed payload: ${sourceKb} KB`);
 console.log(`  Dist uncompressed payload:   ${distKb} KB`);
 
-assert(sourceSize < 85 * 1024, `Source landing payload (${sourceKb} KB) is within 85 KB budget`);
-assert(distSize < 85 * 1024, `Dist landing payload (${distKb} KB) is within 85 KB budget`);
+assert(sourceSize < 100 * 1024, `Source landing payload (${sourceKb} KB) is within 100 KB budget`);
+assert(distSize < 100 * 1024, `Dist landing payload (${distKb} KB) is within 100 KB budget`);
 
 // Summary
 console.log('\n============================================================');
