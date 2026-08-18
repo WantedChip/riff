@@ -769,12 +769,14 @@ kbd,
   margin: 0 auto;
 }
 
-.grid,
-.project-grid {
+#project-grid,
+.project-grid,
+.grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
-  gap: var(--space-6);
+  gap: var(--space-6, 24px);
   width: 100%;
+  align-items: stretch;
 }
 
 /* Card Container Component */
@@ -787,6 +789,7 @@ article.card {
   overflow: hidden;
   display: flex;
   flex-direction: column;
+  height: 100%;
   position: relative;
   backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
@@ -1162,37 +1165,31 @@ h3.card-title {
    11. Responsive Breakpoints & Mobile Adaptation
    ========================================================================== */
 
-@media (max-width: 640px) {
+/* Tablet Viewports (<= 768px) */
+@media (max-width: 768px) {
   .header-container {
-    padding: 0 var(--space-4);
-  }
-
-  .brand-badge {
-    display: none;
+    padding: 0 var(--space-4, 16px);
   }
 
   .hero,
   .hero-section {
-    padding: var(--space-12) var(--space-4) var(--space-8);
-  }
-
-  .hero-container {
-    gap: var(--space-5);
-  }
-
-  .hero-telemetry {
-    flex-direction: column;
-    gap: var(--space-2);
-    width: 100%;
-  }
-
-  .telemetry-pill {
-    width: 100%;
-    justify-content: center;
+    padding: var(--space-12, 48px) var(--space-4, 16px) var(--space-8, 32px);
   }
 
   .controls-section {
-    padding: 0 var(--space-4) var(--space-6);
+    padding: 0 var(--space-4, 16px) var(--space-6, 24px);
+  }
+
+  .showcase,
+  .showcase-section {
+    padding: 0 var(--space-4, 16px) var(--space-12, 48px);
+  }
+
+  #project-grid,
+  .project-grid,
+  .grid {
+    grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr));
+    gap: var(--space-4, 16px);
   }
 
   .filter-pills {
@@ -1210,21 +1207,39 @@ h3.card-title {
   .filter-pill {
     flex-shrink: 0;
   }
+}
 
-  .showcase,
-  .showcase-section {
-    padding: 0 var(--space-4) var(--space-12);
+/* Mobile Standard Viewports (< 640px) */
+@media (max-width: 640px) {
+  .brand-badge {
+    display: none;
   }
 
-  .grid,
-  .project-grid {
+  .hero-container {
+    gap: var(--space-5, 20px);
+  }
+
+  .hero-telemetry {
+    flex-direction: column;
+    gap: var(--space-2, 8px);
+    width: 100%;
+  }
+
+  .telemetry-pill {
+    width: 100%;
+    justify-content: center;
+  }
+
+  #project-grid,
+  .project-grid,
+  .grid {
     grid-template-columns: 1fr;
-    gap: var(--space-4);
+    gap: var(--space-4, 16px);
   }
 
   .card-actions {
     flex-direction: row;
-    gap: var(--space-2);
+    gap: var(--space-2, 8px);
   }
 
   .btn,
@@ -1234,7 +1249,96 @@ h3.card-title {
   .btn-preview,
   .btn-quick-view {
     font-size: 0.8125rem;
-    padding: 0 var(--space-2);
+    padding: 0 var(--space-2, 8px);
+  }
+}
+
+/* Small Mobile Viewports (<= 480px) */
+@media (max-width: 480px) {
+  .hero,
+  .hero-section {
+    padding: var(--space-8, 32px) var(--space-4, 16px) var(--space-6, 24px);
+  }
+
+  .hero-container {
+    gap: var(--space-4, 16px);
+  }
+
+  .hero-manifesto,
+  .hero-desc {
+    font-size: 0.9375rem;
+    line-height: 1.55;
+  }
+
+  .controls-section {
+    padding: 0 var(--space-4, 16px) var(--space-5, 20px);
+  }
+
+  .search-box #search-input {
+    height: 44px;
+    font-size: 0.8125rem;
+    padding-right: var(--space-8, 32px);
+  }
+
+  .shortcut-key {
+    display: none;
+  }
+
+  .card-body {
+    padding: var(--space-4, 16px);
+    gap: var(--space-2, 8px);
+  }
+
+  .card-title,
+  h2.card-title,
+  h3.card-title {
+    font-size: 1.125rem;
+  }
+
+  .card-actions {
+    flex-direction: column;
+    width: 100%;
+    gap: var(--space-2, 8px);
+  }
+
+  .btn,
+  .btn-primary,
+  .btn-secondary,
+  .btn-launch,
+  .btn-preview,
+  .btn-quick-view {
+    width: 100%;
+    min-height: 44px;
+    font-size: 0.875rem;
+  }
+
+  .site-footer {
+    padding: var(--space-6, 24px) var(--space-4, 16px);
+  }
+}
+
+/* Extra-narrow Viewports (<= 360px / 320px) */
+@media (max-width: 360px) {
+  .header-container {
+    padding: 0 var(--space-3, 12px);
+  }
+
+  .hero,
+  .hero-section {
+    padding: var(--space-6, 24px) var(--space-3, 12px) var(--space-5, 20px);
+  }
+
+  .controls-section {
+    padding: 0 var(--space-3, 12px) var(--space-4, 16px);
+  }
+
+  .showcase,
+  .showcase-section {
+    padding: 0 var(--space-3, 12px) var(--space-8, 32px);
+  }
+
+  .site-footer {
+    padding: var(--space-5, 20px) var(--space-3, 12px);
   }
 }
 
