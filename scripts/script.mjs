@@ -11,11 +11,12 @@
  * Capabilities:
  * - Scans and auto-discovers all projects under `projects/`.
  * - Handles both Pure Static assets and Framework-based builds (Vite, Astro, etc.).
- * - Slugifies and normalizes directory routes (e.g., "half life clone" -> "/half-life-clone").
+ * - Slugifies and normalizes directory routes (e.g., "half life clone" -> "/half-life-clone/").
  * - Establishes dual routing: primary route at `/<slug>/` and alias route at `/projects/<slug>/`.
- * - Extracts and aggregates rich metadata into `dist/projects.json`.
- * - Compiles the main `landing/` site to `dist/`.
- * - Generates fallback 404, sitemap.xml, and robots.txt.
+ * - Extracts and aggregates rich metadata into `dist/projects.json` and `dist/riffs.json`.
+ * - Compiles the main `landing/` site to `dist/`, copying CSS, JS, assets, and error handlers.
+ * - Pre-renders project cards at build time into `dist/index.html` (#project-grid) for 0ms initial render.
+ * - Generates fallback 404, sitemap.xml, and robots.txt listing active project routes.
  * - Built-in zero-dependency local preview server via `--serve`.
  * ==============================================================================
  */
@@ -92,6 +93,27 @@ function logWarn(msg) {
 
 function logError(msg) {
   console.log(`${colors.red}✖${colors.reset} ${msg}`);
+}
+
+/**
+ * Escape HTML special characters for safe markup interpolation
+ */
+function escapeHtml(str) {
+  if (!str) return '';
+  return String(str)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+/**
+ * Escape string for JavaScript inline literal
+ */
+function escapeJs(str) {
+  if (!str) return '';
+  return String(str).replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 }
 
 /**
@@ -404,7 +426,7 @@ async function extractProjectMetadata(projectDir, folderName, rawSlug) {
 }
 
 /**
- * Build or copy a single project into dist/
+ * Build or copy a single project into dist/ (dual routing)
  */
 async function compileProject(projectFolder) {
   const projectDir = path.join(PROJECTS_DIR, projectFolder);
@@ -467,6 +489,91 @@ async function compileProject(projectFolder) {
 }
 
 /**
+ * Generate semantic HTML markup for pre-baked project cards
+ */
+function renderProjectCardsHtml(projects) {
+  if (!projects || projects.length === 0) {
+    return `      <div class="empty-state" style="grid-column: 1/-1; text-align: center; padding: 60px 20px; color: var(--text-muted, #949EB2); font-size: 16px;">
+        No riffs or projects available yet.
+      </div>`;
+  }
+
+  return projects.map(p => {
+    const title = p.title || p.name || p.slug;
+    const category = p.category || 'Clone';
+    const tags = Array.isArray(p.tags) ? p.tags : [];
+    const previewHtml = p.thumbnail
+      ? `<img src="${p.thumbnail}" alt="${escapeHtml(title)}" loading="lazy">`
+      : `<div class="card-preview-placeholder"><span>✨</span><span>Interactive Demo</span></div>`;
+
+    const tagsHtml = tags.map(t => `<span class="tag" data-tag="${escapeHtml(t)}">${escapeHtml(t)}</span>`).join('\n            ');
+
+    return `      <article class="card" data-slug="${escapeHtml(p.slug)}" data-category="${escapeHtml(category)}" data-tags="${escapeHtml(tags.join(','))}">
+        <div class="card-preview">
+          ${previewHtml}
+          <div class="card-category-badge">${escapeHtml(category)}</div>
+        </div>
+        <div class="card-body">
+          <h2 class="card-title">${escapeHtml(title)}</h2>
+          <p class="card-desc">${escapeHtml(p.description || '')}</p>
+          <div class="card-tags">
+            ${tagsHtml}
+          </div>
+          <div class="card-actions">
+            <a href="${p.route}" class="btn-launch">Launch Riff →</a>
+            <button class="btn-preview" onclick="openPreview('${escapeJs(title)}', '${p.route}')" data-preview="${p.route}">Quick View</button>
+          </div>
+        </div>
+      </article>`;
+  }).join('\n');
+}
+
+/**
+ * Injects pre-rendered project cards into the grid container (#project-grid or #projectsGrid)
+ */
+function preRenderLandingHtml(htmlContent, projects) {
+  const cardsHtml = renderProjectCardsHtml(projects);
+
+  // Match container with id="project-grid", id="projectsGrid", id="projects-grid", etc.
+  const containerMatch = htmlContent.match(/<([a-zA-Z0-9]+)[^>]*\bid=["'](?:project-grid|projectsGrid|projects-grid)["'][^>]*>/i);
+  if (containerMatch) {
+    const tagName = containerMatch[1].toLowerCase();
+    const openTagIndex = containerMatch.index;
+    const contentStartIndex = openTagIndex + containerMatch[0].length;
+
+    // Search forward for the matching closing tag
+    let depth = 1;
+    const tagSearchRegex = new RegExp(`<\\/?${tagName}\\b[^>]*>`, 'gi');
+    tagSearchRegex.lastIndex = contentStartIndex;
+
+    let match;
+    let endIndex = -1;
+    while ((match = tagSearchRegex.exec(htmlContent)) !== null) {
+      if (match[0].startsWith('</')) {
+        depth--;
+        if (depth === 0) {
+          endIndex = match.index;
+          break;
+        }
+      } else if (!match[0].endsWith('/>')) {
+        depth++;
+      }
+    }
+
+    if (endIndex !== -1) {
+      return htmlContent.slice(0, contentStartIndex) + '\n' + cardsHtml + '\n      ' + htmlContent.slice(endIndex);
+    }
+  }
+
+  // Fallback: Check for explicit comment placeholder
+  if (htmlContent.includes('<!-- PROJECT_GRID -->')) {
+    return htmlContent.replace('<!-- PROJECT_GRID -->', cardsHtml);
+  }
+
+  return htmlContent;
+}
+
+/**
  * Generate standard modern 404 page
  */
 function get404Html() {
@@ -478,19 +585,19 @@ function get404Html() {
   <title>404 — Not Found | riff</title>
   <style>
     :root {
-      --bg: #090A0F;
-      --card: rgba(255, 255, 255, 0.04);
-      --border: rgba(255, 255, 255, 0.1);
-      --text: #F1F3F9;
-      --muted: #8E95A5;
+      --bg: #07080B;
+      --card: rgba(18, 21, 30, 0.75);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #F4F6FB;
+      --muted: #949EB2;
       --accent: #FF5E3A;
-      --accent-glow: rgba(255, 94, 58, 0.3);
+      --accent-glow: rgba(255, 94, 58, 0.35);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       background-color: var(--bg);
       color: var(--text);
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
       min-height: 100vh;
       display: flex;
       align-items: center;
@@ -511,6 +618,7 @@ function get404Html() {
     .badge {
       display: inline-block;
       font-size: 12px;
+      font-family: 'JetBrains Mono', monospace;
       text-transform: uppercase;
       letter-spacing: 0.1em;
       font-weight: 700;
@@ -554,10 +662,11 @@ function get404Html() {
 }
 
 /**
- * Generate default Landing Portal HTML (modern dark aesthetic with dynamic project cards)
+ * Generate default Landing Portal HTML with pre-rendered project cards
  */
 function getDefaultLandingHtml(projects) {
   const projectsJson = JSON.stringify(projects, null, 2);
+  const cardsHtml = renderProjectCardsHtml(projects);
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -774,7 +883,7 @@ function getDefaultLandingHtml(projects) {
       color: var(--text-primary);
     }
 
-    /* Projects Grid */
+    /* Projects Grid (Pre-rendered for 0ms initial paint) */
     main {
       flex: 1;
       max-width: 1280px;
@@ -1048,9 +1157,11 @@ function getDefaultLandingHtml(projects) {
     </div>
   </div>
 
-  <!-- Projects Grid -->
+  <!-- Projects Grid (Pre-rendered for 0ms initial paint) -->
   <main>
-    <div class="grid" id="projectsGrid"></div>
+    <div class="grid" id="project-grid">
+${cardsHtml}
+    </div>
   </main>
 
   <!-- Quick Preview Modal -->
@@ -1079,13 +1190,16 @@ function getDefaultLandingHtml(projects) {
     let searchQuery = '';
 
     function renderProjects() {
-      const grid = document.getElementById('projectsGrid');
+      const grid = document.getElementById('project-grid') || document.getElementById('projectsGrid');
+      if (!grid) return;
+
       const filtered = PROJECTS.filter(p => {
         const matchesCat = currentFilter === 'all' || p.category === currentFilter;
         const q = searchQuery.toLowerCase();
         const matchesSearch = !q || 
-          p.name.toLowerCase().includes(q) || 
-          p.description.toLowerCase().includes(q) || 
+          (p.name && p.name.toLowerCase().includes(q)) || 
+          (p.title && p.title.toLowerCase().includes(q)) || 
+          (p.description && p.description.toLowerCase().includes(q)) || 
           (p.tags && p.tags.some(t => t.toLowerCase().includes(q)));
         return matchesCat && matchesSearch;
       });
@@ -1097,7 +1211,7 @@ function getDefaultLandingHtml(projects) {
 
       grid.innerHTML = filtered.map(p => {
         const previewHtml = p.thumbnail 
-          ? \`<img src="\${p.thumbnail}" alt="\${p.name}" loading="lazy">\`
+          ? \`<img src="\${p.thumbnail}" alt="\${p.title || p.name}" loading="lazy">\`
           : \`<div class="card-preview-placeholder"><span>✨</span><span>Interactive Demo</span></div>\`;
 
         const tagsHtml = (p.tags || []).map(t => \`<span class="tag">\${t}</span>\`).join('');
@@ -1109,12 +1223,12 @@ function getDefaultLandingHtml(projects) {
               <div class="card-category-badge">\${p.category || 'Riff'}</div>
             </div>
             <div class="card-body">
-              <h2 class="card-title">\${p.name}</h2>
+              <h2 class="card-title">\${p.title || p.name}</h2>
               <p class="card-desc">\${p.description}</p>
               <div class="card-tags">\${tagsHtml}</div>
               <div class="card-actions">
                 <a href="\${p.route}" class="btn-launch">Launch Riff →</a>
-                <button class="btn-preview" onclick="openPreview('\${p.name}', '\${p.route}')">Quick View</button>
+                <button class="btn-preview" onclick="openPreview('\${(p.title || p.name).replace(/'/g, "\\\\'")}', '\${p.route}')">Quick View</button>
               </div>
             </div>
           </div>
@@ -1152,12 +1266,109 @@ function getDefaultLandingHtml(projects) {
       document.getElementById('previewIframe').src = 'about:blank';
       document.body.style.overflow = 'auto';
     }
-
-    // Initial render
-    renderProjects();
   </script>
 </body>
 </html>`;
+}
+
+/**
+ * Compile landing portal: copy assets, pre-render dist/index.html, and ensure 404 handler
+ */
+async function compileLanding(projectManifests) {
+  log('Compiling landing portal...');
+  
+  if (!fs.existsSync(LANDING_DIR)) {
+    await fsp.mkdir(LANDING_DIR, { recursive: true });
+  }
+
+  // 1. Copy all non-ignored assets from landing/ if available
+  const landingEntries = await fsp.readdir(LANDING_DIR, { withFileTypes: true });
+  for (const entry of landingEntries) {
+    if (shouldIgnore(entry.name) || entry.name === 'riff.md' || entry.name === 'index.html') {
+      continue;
+    }
+    const srcPath = path.join(LANDING_DIR, entry.name);
+    const destPath = path.join(DIST_DIR, entry.name);
+
+    if (entry.isDirectory()) {
+      await copyDir(srcPath, destPath);
+      logSuccess(`Copied directory: landing/${entry.name}/ -> dist/${entry.name}/`);
+    } else {
+      await fsp.copyFile(srcPath, destPath);
+      logSuccess(`Copied asset: landing/${entry.name} -> dist/${entry.name}`);
+    }
+  }
+
+  // 2. Pre-render index.html
+  const landingIndexPath = path.join(LANDING_DIR, 'index.html');
+  if (fs.existsSync(landingIndexPath)) {
+    const rawHtml = await fsp.readFile(landingIndexPath, 'utf8');
+    const preRenderedHtml = preRenderLandingHtml(rawHtml, projectManifests);
+    await fsp.writeFile(path.join(DIST_DIR, 'index.html'), preRenderedHtml, 'utf8');
+    logSuccess('Pre-rendered landing/index.html with pre-baked project cards -> dist/index.html');
+  } else {
+    // Generate default landing page with pre-baked project cards in #project-grid
+    const defaultHtml = getDefaultLandingHtml(projectManifests);
+    await fsp.writeFile(path.join(DIST_DIR, 'index.html'), defaultHtml, 'utf8');
+    logSuccess('Generated landing portal dist/index.html with pre-rendered project cards.');
+  }
+
+  // 3. Ensure 404.html exists in dist/
+  const dist404Path = path.join(DIST_DIR, '404.html');
+  if (!fs.existsSync(dist404Path)) {
+    const landing404Path = path.join(LANDING_DIR, '404.html');
+    if (fs.existsSync(landing404Path)) {
+      await fsp.copyFile(landing404Path, dist404Path);
+      logSuccess('Copied landing/404.html to dist/404.html');
+    } else {
+      await fsp.writeFile(dist404Path, get404Html(), 'utf8');
+      logSuccess('Generated 404.html error handler in dist/');
+    }
+  }
+}
+
+/**
+ * Generate robots.txt and sitemap.xml with landing and all active project dual routes
+ */
+async function generateSitemapAndRobots(projectManifests) {
+  log('Generating robots.txt and sitemap.xml...');
+
+  const robotsTxt = `User-agent: *\nAllow: /\nSitemap: https://riff.sohamlabs.workers.dev/sitemap.xml\n`;
+  await fsp.writeFile(path.join(DIST_DIR, 'robots.txt'), robotsTxt, 'utf8');
+  logSuccess('Generated dist/robots.txt');
+
+  const sitemapUrls = [
+    `  <url>
+    <loc>https://riff.sohamlabs.workers.dev/</loc>
+    <changefreq>daily</changefreq>
+    <priority>1.0</priority>
+  </url>`
+  ];
+
+  for (const p of projectManifests) {
+    if (p.route) {
+      sitemapUrls.push(`  <url>
+    <loc>https://riff.sohamlabs.workers.dev${p.route}</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>`);
+    }
+    if (p.aliasRoute && p.aliasRoute !== p.route) {
+      sitemapUrls.push(`  <url>
+    <loc>https://riff.sohamlabs.workers.dev${p.aliasRoute}</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>`);
+    }
+  }
+
+  const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${sitemapUrls.join('\n')}
+</urlset>\n`;
+
+  await fsp.writeFile(path.join(DIST_DIR, 'sitemap.xml'), sitemapXml, 'utf8');
+  logSuccess('Generated dist/sitemap.xml');
 }
 
 /**
@@ -1195,7 +1406,7 @@ async function build(options = {}) {
 
   log(`Discovered ${colors.bright}${projectFolders.length}${colors.reset} project(s): [${projectFolders.join(', ')}]`);
 
-  // 3. Compile each project
+  // 3. Compile each project (Dual Routing: dist/<slug>/ & dist/projects/<slug>/)
   const projectManifests = [];
   for (const folder of projectFolders) {
     try {
@@ -1208,38 +1419,7 @@ async function build(options = {}) {
     }
   }
 
-  // 4. Compile Landing Page
-  log('Compiling landing portal...');
-  const hasLandingFiles = fs.existsSync(LANDING_DIR) && 
-    (await fsp.readdir(LANDING_DIR)).filter(f => f !== 'riff.md' && !shouldIgnore(f)).length > 0;
-
-  if (hasLandingFiles) {
-    // Check if landing has package.json build
-    const landingPkg = path.join(LANDING_DIR, 'package.json');
-    if (fs.existsSync(landingPkg)) {
-      const pkg = JSON.parse(await fsp.readFile(landingPkg, 'utf8'));
-      if (pkg.scripts && pkg.scripts.build) {
-        log('  Running landing build script...');
-        if (!fs.existsSync(path.join(LANDING_DIR, 'node_modules'))) {
-          execSync('npm install', { cwd: LANDING_DIR, stdio: 'inherit' });
-        }
-        execSync('npm run build', { cwd: LANDING_DIR, stdio: 'inherit' });
-        const outDir = path.join(LANDING_DIR, 'dist');
-        if (fs.existsSync(outDir)) {
-          await copyDir(outDir, DIST_DIR);
-        }
-      }
-    } else {
-      await copyDir(LANDING_DIR, DIST_DIR);
-    }
-  } else {
-    // Generate default ultra-modern landing page in dist/index.html
-    const landingHtml = getDefaultLandingHtml(projectManifests);
-    await fsp.writeFile(path.join(DIST_DIR, 'index.html'), landingHtml, 'utf8');
-    logSuccess('Generated landing portal index.html with interactive showcase.');
-  }
-
-  // 5. Generate Manifests
+  // 4. Generate Metadata Manifests
   log('Generating metadata manifests...');
   await fsp.writeFile(
     path.join(DIST_DIR, 'projects.json'),
@@ -1251,38 +1431,21 @@ async function build(options = {}) {
     JSON.stringify(projectManifests, null, 2),
     'utf8'
   );
+  logSuccess('Wrote dist/projects.json & dist/riffs.json');
 
-  // 6. Generate 404.html if not present
-  const dist404 = path.join(DIST_DIR, '404.html');
-  if (!fs.existsSync(dist404)) {
-    await fsp.writeFile(dist404, get404Html(), 'utf8');
-    logSuccess('Generated 404.html error handler.');
-  }
+  // 5. Compile Landing Portal & Pre-render HTML
+  await compileLanding(projectManifests);
 
-  // 7. Generate robots.txt & sitemap.xml
-  const robotsTxt = `User-agent: *\nAllow: /\nSitemap: https://riff.sohamlabs.workers.dev/sitemap.xml\n`;
-  await fsp.writeFile(path.join(DIST_DIR, 'robots.txt'), robotsTxt, 'utf8');
-
-  const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://riff.sohamlabs.workers.dev/</loc>
-    <changefreq>daily</changefreq>
-    <priority>1.0</priority>
-  </url>
-${projectManifests.map(p => `  <url>
-    <loc>https://riff.sohamlabs.workers.dev${p.route}</loc>
-    <changefreq>weekly</changefreq>
-    <priority>0.8</priority>
-  </url>`).join('\n')}
-</urlset>`;
-  await fsp.writeFile(path.join(DIST_DIR, 'sitemap.xml'), sitemapXml, 'utf8');
+  // 6. Generate robots.txt & sitemap.xml
+  await generateSitemapAndRobots(projectManifests);
 
   const duration = ((Date.now() - startTime) / 1000).toFixed(2);
   console.log(`\n${colors.bright}${colors.green}✔ Build completed in ${duration}s!${colors.reset}`);
   console.log(`  ${colors.dim}Target directory:${colors.reset} ${DIST_DIR}`);
   console.log(`  ${colors.dim}Total projects:${colors.reset}   ${projectManifests.length}`);
   console.log(`  ${colors.dim}Deployment ready for:${colors.reset} Cloudflare Workers Static Assets\n`);
+
+  return { projectManifests, duration: parseFloat(duration) };
 }
 
 /**
@@ -1367,28 +1530,57 @@ function startServer(port = 3000) {
   });
 }
 
+// Module Exports
+export {
+  build,
+  compileProject,
+  compileLanding,
+  extractProjectMetadata,
+  validateProjectManifest,
+  renderProjectCardsHtml,
+  preRenderLandingHtml,
+  generateSitemapAndRobots,
+  getDefaultLandingHtml,
+  get404Html,
+  slugify,
+  shouldIgnore,
+  copyDir,
+  startServer,
+  ROOT_DIR,
+  PROJECTS_DIR,
+  LANDING_DIR,
+  DIST_DIR
+};
+
 // CLI Execution Entrypoint
-const args = process.argv.slice(2);
-const isServe = args.includes('--serve') || args.includes('-s');
-const isClean = args.includes('--clean');
-const portArgIdx = args.indexOf('--port');
-const port = portArgIdx !== -1 && args[portArgIdx + 1] ? parseInt(args[portArgIdx + 1], 10) : 3000;
+const isMain = process.argv[1] && (
+  path.resolve(process.argv[1]).toLowerCase() === path.resolve(__filename).toLowerCase() ||
+  process.argv[1].replace(/\\/g, '/').endsWith('scripts/script.mjs')
+);
 
-(async () => {
-  try {
-    if (isClean) {
-      await build({ cleanOnly: true });
-      process.exit(0);
+if (isMain) {
+  const args = process.argv.slice(2);
+  const isServe = args.includes('--serve') || args.includes('-s');
+  const isClean = args.includes('--clean');
+  const portArgIdx = args.indexOf('--port');
+  const port = portArgIdx !== -1 && args[portArgIdx + 1] ? parseInt(args[portArgIdx + 1], 10) : 3000;
+
+  (async () => {
+    try {
+      if (isClean) {
+        await build({ cleanOnly: true });
+        process.exit(0);
+      }
+
+      await build();
+
+      if (isServe) {
+        startServer(port);
+      }
+    } catch (err) {
+      logError(`Build failed: ${err.message}`);
+      console.error(err);
+      process.exit(1);
     }
-
-    await build();
-
-    if (isServe) {
-      startServer(port);
-    }
-  } catch (err) {
-    logError(`Build failed: ${err.message}`);
-    console.error(err);
-    process.exit(1);
-  }
-})();
+  })();
+}
