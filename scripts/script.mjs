@@ -1372,6 +1372,30 @@ ${sitemapUrls.join('\n')}
 }
 
 /**
+ * Purge output directory (dist/) and temporary build artifacts
+ */
+async function clean() {
+  log('Purging build directory: dist/...');
+  if (fs.existsSync(DIST_DIR)) {
+    await fsp.rm(DIST_DIR, { recursive: true, force: true });
+  }
+
+  // Also clean temporary build artifacts if present
+  const tempDirs = [
+    path.join(ROOT_DIR, '.wrangler')
+  ];
+
+  for (const tempPath of tempDirs) {
+    if (fs.existsSync(tempPath)) {
+      await fsp.rm(tempPath, { recursive: true, force: true });
+      logSuccess(`Purged temp directory: ${path.basename(tempPath)}`);
+    }
+  }
+
+  logSuccess('Clean completed successfully.');
+}
+
+/**
  * Main build and aggregation process
  */
 async function build(options = {}) {
@@ -1380,6 +1404,11 @@ async function build(options = {}) {
   console.log(`${colors.bright}${colors.magenta}│             RIFF MONOREPO COMPILATION PIPELINE           │${colors.reset}`);
   console.log(`${colors.bright}${colors.magenta}└──────────────────────────────────────────────────────────┘${colors.reset}\n`);
 
+  if (options.cleanOnly) {
+    await clean();
+    return;
+  }
+
   // 1. Clean dist directory
   log('Cleaning output directory: dist/...');
   if (fs.existsSync(DIST_DIR)) {
@@ -1387,11 +1416,6 @@ async function build(options = {}) {
   }
   await fsp.mkdir(DIST_DIR, { recursive: true });
   await fsp.mkdir(path.join(DIST_DIR, 'projects'), { recursive: true });
-
-  if (options.cleanOnly) {
-    logSuccess('Clean completed successfully.');
-    return;
-  }
 
   // 2. Scan projects
   log(`Scanning projects directory: ${PROJECTS_DIR}...`);
@@ -1451,9 +1475,10 @@ async function build(options = {}) {
 /**
  * Local Static File HTTP Server (Zero Dependencies)
  */
-function startServer(port = 3000) {
+function startServer(port = (process.env.PORT ? parseInt(process.env.PORT, 10) : 8080)) {
   const MIME_TYPES = {
     '.html': 'text/html; charset=utf-8',
+    '.htm': 'text/html; charset=utf-8',
     '.css': 'text/css; charset=utf-8',
     '.js': 'application/javascript; charset=utf-8',
     '.mjs': 'application/javascript; charset=utf-8',
@@ -1465,11 +1490,21 @@ function startServer(port = 3000) {
     '.svg': 'image/svg+xml',
     '.ico': 'image/x-icon',
     '.webp': 'image/webp',
+    '.avif': 'image/avif',
+    '.wasm': 'application/wasm',
     '.woff': 'font/woff',
     '.woff2': 'font/woff2',
     '.ttf': 'font/ttf',
+    '.otf': 'font/otf',
+    '.eot': 'application/vnd.ms-fontobject',
     '.xml': 'application/xml',
-    '.txt': 'text/plain'
+    '.txt': 'text/plain; charset=utf-8',
+    '.map': 'application/json; charset=utf-8',
+    '.mp4': 'video/mp4',
+    '.webm': 'video/webm',
+    '.mp3': 'audio/mpeg',
+    '.wav': 'audio/wav',
+    '.pdf': 'application/pdf'
   };
 
   const server = http.createServer(async (req, res) => {
@@ -1477,21 +1512,32 @@ function startServer(port = 3000) {
       const url = new URL(req.url, `http://localhost:${port}`);
       let pathname = decodeURIComponent(url.pathname);
 
-      if (pathname.endsWith('/')) {
-        pathname += 'index.html';
-      }
+      // Normalize and prevent directory traversal
+      const safePath = path.normalize(pathname).replace(/^([a-zA-Z]:)?(\.\.[\/\\])+/, '').replace(/^[\/\\]+/, '');
+      let filePath = path.join(DIST_DIR, safePath);
 
-      let filePath = path.join(DIST_DIR, pathname);
-
-      // Check if path is a directory without trailing slash
-      if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
-        res.writeHead(301, { Location: `${url.pathname}/${url.search}` });
-        res.end();
+      // Verify that filePath resides within DIST_DIR
+      const relative = path.relative(DIST_DIR, filePath);
+      if (relative.startsWith('..') || path.isAbsolute(relative)) {
+        res.writeHead(403, { 'Content-Type': 'text/plain; charset=utf-8' });
+        res.end('403 Forbidden');
         return;
       }
 
-      // Check if file exists, or try appending .html
-      if (!fs.existsSync(filePath)) {
+      // Check if path is a directory without trailing slash
+      if (fs.existsSync(filePath) && fs.statSync(filePath).isDirectory()) {
+        if (!pathname.endsWith('/')) {
+          res.writeHead(301, { Location: `${url.pathname}/${url.search}` });
+          res.end();
+          return;
+        }
+        filePath = path.join(filePath, 'index.html');
+      } else if (pathname.endsWith('/')) {
+        filePath = path.join(filePath, 'index.html');
+      }
+
+      // Check if file exists, or try fallback lookups
+      if (!fs.existsSync(filePath) || fs.statSync(filePath).isDirectory()) {
         if (fs.existsSync(`${filePath}.html`)) {
           filePath = `${filePath}.html`;
         } else if (fs.existsSync(path.join(filePath, 'index.html'))) {
@@ -1502,11 +1548,19 @@ function startServer(port = 3000) {
           if (fs.existsSync(notFoundPath)) {
             const data = await fsp.readFile(notFoundPath);
             res.writeHead(404, { 'Content-Type': 'text/html; charset=utf-8' });
-            res.end(data);
+            if (req.method === 'HEAD') {
+              res.end();
+            } else {
+              res.end(data);
+            }
             return;
           }
-          res.writeHead(404, { 'Content-Type': 'text/plain' });
-          res.end('404 Not Found');
+          res.writeHead(404, { 'Content-Type': 'text/plain; charset=utf-8' });
+          if (req.method === 'HEAD') {
+            res.end();
+          } else {
+            res.end('404 Not Found');
+          }
           return;
         }
       }
@@ -1515,10 +1569,19 @@ function startServer(port = 3000) {
       const contentType = MIME_TYPES[ext] || 'application/octet-stream';
       const data = await fsp.readFile(filePath);
 
-      res.writeHead(200, { 'Content-Type': contentType });
-      res.end(data);
+      res.writeHead(200, {
+        'Content-Type': contentType,
+        'Access-Control-Allow-Origin': '*',
+        'Cache-Control': 'no-cache'
+      });
+
+      if (req.method === 'HEAD') {
+        res.end();
+      } else {
+        res.end(data);
+      }
     } catch (err) {
-      res.writeHead(500, { 'Content-Type': 'text/plain' });
+      res.writeHead(500, { 'Content-Type': 'text/plain; charset=utf-8' });
       res.end(`Internal Server Error: ${err.message}`);
     }
   });
@@ -1528,10 +1591,13 @@ function startServer(port = 3000) {
     console.log(`   ➜ Local:   ${colors.cyan}http://localhost:${port}/${colors.reset}`);
     console.log(`   ➜ Press ${colors.dim}Ctrl+C${colors.reset} to stop\n`);
   });
+
+  return server;
 }
 
 // Module Exports
 export {
+  clean,
   build,
   compileProject,
   compileLanding,
@@ -1561,24 +1627,28 @@ const isMain = process.argv[1] && (
 if (isMain) {
   const args = process.argv.slice(2);
   const isServe = args.includes('--serve') || args.includes('-s');
-  const isClean = args.includes('--clean');
-  const portArgIdx = args.indexOf('--port');
-  const port = portArgIdx !== -1 && args[portArgIdx + 1] ? parseInt(args[portArgIdx + 1], 10) : 3000;
+  const isClean = args.includes('--clean') || args.includes('-c');
+  const isNoBuild = args.includes('--no-build');
+  const portArgIdx = args.indexOf('--port') !== -1 ? args.indexOf('--port') : args.indexOf('-p');
+  const envPort = process.env.PORT ? parseInt(process.env.PORT, 10) : null;
+  const port = portArgIdx !== -1 && args[portArgIdx + 1] ? parseInt(args[portArgIdx + 1], 10) : (envPort || 8080);
 
   (async () => {
     try {
       if (isClean) {
-        await build({ cleanOnly: true });
+        await clean();
         process.exit(0);
       }
 
-      await build();
+      if (!isNoBuild || !fs.existsSync(DIST_DIR)) {
+        await build();
+      }
 
       if (isServe) {
         startServer(port);
       }
     } catch (err) {
-      logError(`Build failed: ${err.message}`);
+      logError(`Execution failed: ${err.message}`);
       console.error(err);
       process.exit(1);
     }
