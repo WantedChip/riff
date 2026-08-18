@@ -1,0 +1,8 @@
+name = "riff"
+compatibility_date = "2026-08-18"
+
+# Cloudflare Workers Static Assets Configuration
+# Serves the compiled dist directory containing the landing page and all projects
+[assets]
+directory = "./dist"
+not_found_handling = "404-page"
