@@ -1,0 +1,24 @@
+{
+  "name": "riff-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A collection of front-end design riffs — practice builds and reimaginings of interesting interfaces.",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/script.mjs",
+    "serve": "node scripts/script.mjs --serve",
+    "clean": "node scripts/script.mjs --clean",
+    "deploy": "wrangler deploy"
+  },
+  "keywords": [
+    "riffs",
+    "demos",
+    "frontend",
+    "design",
+    "clones",
+    "monorepo",
+    "static-site"
+  ],
+  "author": "sohamlabs",
+  "license": "MIT"
+}
