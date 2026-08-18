@@ -446,13 +446,24 @@ function focusSearchInput(select = true) {
 }
 
 function handleGlobalKeydown(e) {
-  // Modal focus trap & Escape handling
-  if (modalState && modalState.isOpen) {
-    if (e.key === 'Escape') {
-      e.preventDefault();
-      closeModal();
-      return;
-    }
+  const isEscapeKey = e.key === 'Escape' || e.key === 'Esc' || e.code === 'Escape';
+
+  // Priority 1: If preview modal is open / active
+  const modalEl = document.getElementById('preview-modal');
+  const isModalActive = Boolean(
+    (modalState && modalState.isOpen) ||
+    (modalEl && !modalEl.hasAttribute('hidden') && !modalEl.classList.contains('is-closing'))
+  );
+
+  if (isEscapeKey && isModalActive) {
+    if (typeof e.preventDefault === 'function') e.preventDefault();
+    if (typeof e.stopPropagation === 'function') e.stopPropagation();
+    closeModal();
+    return;
+  }
+
+  // Modal active non-Escape handling (Focus trap and shortcut suppression)
+  if (isModalActive || (modalState && modalState.isOpen)) {
     if (e.key === 'Tab') {
       handleModalFocusTrap(e);
       return;
@@ -461,6 +472,31 @@ function handleGlobalKeydown(e) {
     if (e.key === '/' || e.code === 'Slash') {
       return;
     }
+  }
+
+  // Priority 2: If Escape key is pressed and search input is focused or contains active query
+  if (isEscapeKey) {
+    const searchInput = document.getElementById('search-input');
+    const isSearchFocused = Boolean(searchInput && document.activeElement === searchInput);
+    const hasSearchVal = Boolean(searchInput && typeof searchInput.value === 'string' && searchInput.value.trim() !== '');
+    const hasStateQuery = Boolean(state && typeof state.searchQuery === 'string' && state.searchQuery.trim() !== '');
+
+    if (isSearchFocused || hasSearchVal || hasStateQuery) {
+      if (typeof e.preventDefault === 'function') e.preventDefault();
+      if (typeof e.stopPropagation === 'function') e.stopPropagation();
+      if (searchInput) {
+        searchInput.value = '';
+        if (typeof searchInput.blur === 'function') {
+          searchInput.blur();
+        }
+      }
+      state.searchQuery = '';
+      applyFilters();
+      return;
+    }
+
+    // Priority 3: When neither modal nor search has active state/focus, pressing Escape is a clean no-op
+    return;
   }
 
   // Global '/' Shortcut to focus Search
@@ -480,7 +516,6 @@ function handleGlobalKeydown(e) {
       (typeof activeEl.closest === 'function' && activeEl.closest('[contenteditable="true"]'))
     );
 
-    const modalEl = document.getElementById('preview-modal');
     const isModalVisible = (modalState && modalState.isOpen) || (modalEl && !modalEl.hasAttribute('hidden'));
     const isInsideModal = isModalVisible ||
       (target && typeof target.closest === 'function' && target.closest('#preview-modal, [role="dialog"]')) ||
@@ -496,19 +531,6 @@ function handleGlobalKeydown(e) {
       focusSearchInput(true);
     }
     return;
-  }
-
-  // Escape key handling on search input
-  if (e.key === 'Escape') {
-    const input = document.getElementById('search-input');
-    if (input && document.activeElement === input) {
-      if (input.value) {
-        input.value = '';
-        state.searchQuery = '';
-        applyFilters();
-      }
-      input.blur();
-    }
   }
 }
 
@@ -655,6 +677,7 @@ window.riffApp = {
   closeModal,
   reloadModalIframe,
   setPreviewViewport,
+  handleGlobalKeydown,
   modal: {
     open: openModal,
     close: closeModal,
