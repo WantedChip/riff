@@ -1,8 +1,22 @@
+# ==============================================================================
+# Cloudflare Workers Static Assets Configuration — Riff Monorepo
+# ==============================================================================
+# Deployment Target: https://riff.sohamlabs.workers.dev
+# Edge Platform: Cloudflare Workers Static Assets
+# Routing Architecture: Dual Route Static File Delivery with 404-page Handling
+# ==============================================================================
+
 name = "riff"
 compatibility_date = "2026-08-18"
 
-# Cloudflare Workers Static Assets Configuration
-# Serves the compiled dist directory containing the landing page and all projects
+# ------------------------------------------------------------------------------
+# Static Assets Edge Configuration
+# ------------------------------------------------------------------------------
+# - directory: Compiled monorepo output directory containing the landing portal,
+#   primary project routes (/<slug>/), alias routes (/projects/<slug>/), and manifests.
+# - not_found_handling: Configured as "404-page" to serve dist/404.html with a
+#   proper HTTP 404 status code when an unmapped route is requested.
+# ------------------------------------------------------------------------------
 [assets]
 directory = "./dist"
 not_found_handling = "404-page"
